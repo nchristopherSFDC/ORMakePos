@@ -1,0 +1,7 @@
+/.ssh/
+/ORMakePos/build/
+/ORMakePos/dist/
+/ORMakePos/nbproject/private/
+/build/
+/dist/
+/nbproject/private/

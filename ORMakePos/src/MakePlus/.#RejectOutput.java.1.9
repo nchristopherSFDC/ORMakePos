@@ -1,0 +1,131 @@
+package MakePlus;
+
+import OpenRate.adapter.jdbc.JDBCBatchOutputAdapter;
+import OpenRate.adapter.jdbc.JDBCOutputAdapter;
+import OpenRate.record.DBRecord;
+import OpenRate.record.IRecord;
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ *
+ * @author IanAdmin
+ */
+public class RejectOutput extends JDBCBatchOutputAdapter
+{
+  // this is the CVS version info
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: RejectOutput.java,v $, $Revision: 1.9 $, $Date: 2011/08/11 08:56:44 $";
+  CDRRecord tmpInRecord;
+  /*boolean SET_MSN = false;
+  boolean SET_WHOLESALE_DESCRIPTION = false;
+  boolean SET_RETAIL_DESCRIPTION = false;
+  boolean SET_LC = false;
+  boolean SET_RC = false;
+  boolean SET_RT = false;
+  boolean SET_LT = false;*/
+
+  /** Creates a new instance of DBOutput */
+  public RejectOutput()
+  {
+    super();
+  }
+
+  /**
+   * We transform the records here so that they are ready to output making any
+   * specific changes to the record that are necessary to make it ready for
+   * output.
+   *
+   * As we are using the JDBCOutput adapter, we should transform the records
+   * into DBRecords, storing the data to be written using the SetData() method.
+   * This means that we do not have to know about the internal workings of the
+   * output adapter.
+   *
+   * Note that this is just undoing the transformation that we did in the input
+   * adapter.
+   */
+    @Override
+    public Collection<IRecord> procValidRecord(IRecord r)
+    {
+      return null;
+    }
+
+  /**
+   * Handle any error records here so that they are ready to output making any
+   * specific changes to the record that are necessary to make it ready for
+   * output.
+   */
+    @Override
+    public Collection<IRecord> procErrorRecord(IRecord r)
+    {
+      
+      DBRecord tmpDataRecord;
+      Long      currentTime = System.currentTimeMillis()/1000;
+
+      Collection<IRecord> Outbatch;
+      Outbatch = new ArrayList<IRecord>();
+      tmpInRecord = (CDRRecord)r;
+      tmpDataRecord = new DBRecord();
+      tmpDataRecord.setOutputColumnCount(25);
+      //checkoutput();
+      tmpDataRecord.setOutputColumnString(0,tmpInRecord.EntryDate);
+      tmpDataRecord.setOutputColumnString(1,tmpInRecord.callReference);
+      tmpDataRecord.setOutputColumnString(2,tmpInRecord.Network);
+      tmpDataRecord.setOutputColumnString(3,tmpInRecord.CallType);
+      tmpDataRecord.setOutputColumnString(4,tmpInRecord.RemoteNetwork);
+      tmpDataRecord.setOutputColumnString(5,tmpInRecord.RemoteSwitch);
+      tmpDataRecord.setOutputColumnString(6,tmpInRecord.Direction);
+      tmpDataRecord.setOutputColumnString(7,tmpInRecord.PortingPrefix);
+      tmpDataRecord.setOutputColumnString(8,tmpInRecord.CLI);
+      tmpDataRecord.setOutputColumnString(9,tmpInRecord.Destination);
+      tmpDataRecord.setOutputColumnString(10,tmpInRecord.UsageType);
+      tmpDataRecord.setOutputColumnString(11,tmpInRecord.NumberType);
+      tmpDataRecord.setOutputColumnString(12,tmpInRecord.StartDate);
+      tmpDataRecord.setOutputColumnDouble(13,tmpInRecord.Duration);
+      tmpDataRecord.setOutputColumnString(14,tmpInRecord.GuidingKey);
+      tmpDataRecord.setOutputColumnString(15,tmpInRecord.DisplayNumber);
+      tmpDataRecord.setOutputColumnString(16,tmpInRecord.Platform);
+      tmpDataRecord.setOutputColumnString(17,tmpInRecord.Machine);
+      tmpDataRecord.setOutputColumnString(18,tmpInRecord.LinkNumber);
+      tmpDataRecord.setOutputColumnString(19,tmpInRecord.OriginalData);
+      tmpDataRecord.setOutputColumnString(20,tmpInRecord.getErrors().get(0).getMessage());
+      tmpDataRecord.setOutputColumnString(21,tmpInRecord.SuspenseCategory);
+      tmpDataRecord.setOutputColumnLong  (22,currentTime);
+      tmpDataRecord.setOutputColumnString(23,tmpInRecord.getErrors().get(0).getErrorDescription());
+      tmpDataRecord.setOutputColumnString(24,tmpInRecord.UID);
+      /*if(SET_MSN){tmpDataRecord.setOutputColumnString(25,tmpInRecord.MSN);}else{tmpDataRecord.setOutputColumnString(25,"NA");}
+      if(SET_WHOLESALE_DESCRIPTION){tmpDataRecord.setOutputColumnString(26,tmpInRecord.WholesaleDescription);}else{tmpDataRecord.setOutputColumnString(26,"NA");}
+      if(SET_RETAIL_DESCRIPTION){tmpDataRecord.setOutputColumnString(27,tmpInRecord.RetailDescription);}else{tmpDataRecord.setOutputColumnString(27,"NA");}
+      if(SET_LC){tmpDataRecord.setOutputColumnString(28,tmpInRecord.LocalCostDescription);}else{tmpDataRecord.setOutputColumnString(28,"NA");}
+      if(SET_RC){tmpDataRecord.setOutputColumnString(29,tmpInRecord.RemoteCostDescription);}else{tmpDataRecord.setOutputColumnString(29,"NA");}
+      if(SET_RT){tmpDataRecord.setOutputColumnString(30,tmpInRecord.RemoteTransitDescription);}else{tmpDataRecord.setOutputColumnString(30,"NA");}
+      if(SET_LT){tmpDataRecord.setOutputColumnString(31,tmpInRecord.LocalTransitDescription);}else{tmpDataRecord.setOutputColumnString(31,"NA");}*/
+
+      Outbatch.add((IRecord)tmpDataRecord);
+
+      return Outbatch;
+    }
+
+    /*private void checkoutput() {
+        if(tmpInRecord.MSN != null || !tmpInRecord.MSN.equals("")){
+            SET_MSN = true;
+        }
+        if(tmpInRecord.WholesaleDescription != null || !tmpInRecord.WholesaleDescription.equals("")){
+            SET_WHOLESALE_DESCRIPTION = true;
+        }
+        if(tmpInRecord.RetailDescription != null || !tmpInRecord.RetailDescription.equals("")){
+            SET_RETAIL_DESCRIPTION = true;
+        }
+        if(tmpInRecord.LocalCostDescription != null || !tmpInRecord.LocalCostDescription.equals("")){
+            SET_LC = true;
+        }
+        if(tmpInRecord.RemoteCostDescription != null || !tmpInRecord.RemoteCostDescription.equals("")){
+            SET_RC = true;
+        }
+        if(tmpInRecord.RemoteTransitDescription != null || !tmpInRecord.RemoteTransitDescription.equals("")){
+            SET_RT = true;
+        }
+        if(tmpInRecord.LocalTransitDescription != null || !tmpInRecord.LocalTransitDescription.equals("")){
+            SET_LT = true;
+        }
+    }*/
+}

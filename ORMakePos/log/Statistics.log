@@ -1,0 +1,19 @@
+2011-10-25 10:51:10,578 INFO  - Input  <InpAdapter> found <18652254> events for processing
+2011-10-25 10:51:17,593 INFO  - Plugin <Normalisation.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:51:38,562 INFO  - Plugin <CustomerLookup.Inst-0> processed <4> events in <20969> ms
+2011-10-25 10:51:38,562 INFO  - Plugin <BaseRateplanCheck.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:51:38,562 INFO  - Plugin <ZoneOriginLookup.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:51:38,578 INFO  - Plugin <ZoneDestinationLookup.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:51:38,578 INFO  - Plugin <DiscountLookup.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:51:38,578 INFO  - Plugin <PromoPreRating.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:51:38,578 INFO  - Plugin <ChargePacketCreation.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:51:38,578 INFO  - Plugin <TimeMatch.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:52:29,390 INFO  - Plugin <PriceGroupMatch.Inst-0> processed <4> events in <50812> ms
+2011-10-25 10:52:29,390 INFO  - Plugin <Rating.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:52:29,578 INFO  - Plugin <GatherRUMImpacts.Inst-0> processed <4> events in <188> ms
+2011-10-25 10:52:29,578 INFO  - Plugin <PreOutputMapping.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:52:29,578 INFO  - Plugin <AliasInTestCheck.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:52:29,593 INFO  - Plugin <FinancialCode.Inst-0> processed <4> events in <0> ms
+2011-10-25 10:52:29,593 INFO  - Plugin <SuspensePreparation.Inst-0> processed <4> events in <15> ms
+2011-10-25 10:52:29,609 INFO  - Plugin <Aggregation.Inst-0> processed <4> events in <16> ms
+2011-10-25 10:52:29,640 INFO  - Plugin <DumpLast.Inst-0> processed <4> events in <31> ms

@@ -1,0 +1,548 @@
+/* ====================================================================
+ * Limited Evaluation License:
+ *
+ * The exclusive owner of this work is Tiger Shore Management Ltd.
+ * This work, including all associated documents and components
+ * is Copyright Tiger Shore Management Ltd 2006-2010.
+ *
+ * The following restrictions apply unless they are expressly relaxed in a
+ * contractual agreement between the license holder or one of its officially
+ * assigned agents and you or your organisation:
+ *
+ * 1) This work may not be disclosed, either in full or in part, in any form
+ *    electronic or physical, to any third party. This includes both in the
+ *    form of source code and compiled modules.
+ * 2) This work contains trade secrets in the form of architecture, algorithms
+ *    methods and technologies. These trade secrets may not be disclosed to
+ *    third parties in any form, either directly or in summary or paraphrased
+ *    form, nor may these trade secrets be used to construct products of a
+ *    similar or competing nature either by you or third parties.
+ * 3) This work may not be included in full or in part in any application.
+ * 4) You may not remove or alter any proprietary legends or notices contained
+ *    in or on this work.
+ * 5) This software may not be reverse-engineered or otherwise decompiled, if
+ *    you received this work in a compiled form.
+ * 6) This work is licensed, not sold. Possession of this software does not
+ *    imply or grant any right to you.
+ * 7) You agree to disclose any changes to this work to the copyright holder
+ *    and that the copyright holder may include any such changes at its own
+ *    discretion into the work
+ * 8) You agree not to derive other works from the trade secrets in this work,
+ *    and that any such derivation may make you liable to pay damages to the
+ *    copyright holder
+ * 9) You agree to use this software exclusively for evaluation purposes, and
+ *    that you shall not use this software to derive commercial profit or
+ *    support your business or personal activities.
+ *
+ * This software is provided "as is" and any expressed or impled warranties,
+ * including, but not limited to, the impled warranties of merchantability
+ * and fitness for a particular purpose are disclaimed. In no event shall
+ * Tiger Shore Management or its officially assigned agents be liable to any
+ * direct, indirect, incidental, special, exemplary, or consequential damages
+ * (including but not limited to, procurement of substitute goods or services;
+ * Loss of use, data, or profits; or any business interruption) however caused
+ * and on theory of liability, whether in contract, strict liability, or tort
+ * (including negligence or otherwise) arising in any way out of the use of
+ * this software, even if advised of the possibility of such damage.
+ * This software contains portions by The Apache Software Foundation, Robert
+ * Half International.
+ * ====================================================================
+ */
+
+package MakePlus;
+
+import OpenRate.record.ErrorType;
+import OpenRate.record.IError;
+import OpenRate.record.RatingRecord;
+import OpenRate.record.RecordError;
+import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+
+/**
+ * A CDRRecord corresponds to a unit of work that is being processed by the
+ * pipeline. Records are created in the InputAdapter, pass through the Pipeline,
+ * and written out in the OutputAdapter. Any stage of the pipeline my update
+ * the record in any way, provided that later stages in the processing and the
+ * output adapter know how to treat the record they receive.
+ *
+ * As an alternative, you may define a less flexible record format as you wish
+ * and fill in the fields as required, but this costs performance.
+ *
+ * Generally, the record should know how to handle the following operations by
+ * linking the appropriate method:
+ *
+ * mapOriginalData()   [mandatory]
+ * -----------------
+ * Transformation from a flat record as read by the input adapter to a formatted
+ * record.
+ *
+ * unmapOriginalData() [mandatory if you wish to write output files]
+ * -------------------
+ * Transformation from a formatted record to a flat record ready for output.
+ *
+ * getDumpInfo()       [optional]
+ * -------------
+ * Preparation of the dump equivalent of the formatted record, ready for
+ * dumping out to a dump file.
+ *
+ * In this simple example, we require only to read the "B-Number", and write the
+ * "BNumberNorm" as a result of this. Because of the simplicity of the example
+ * we do not perform a full mapping, we just handle the fields we want directly,
+ * which is one of the advantages of the BBPA model (map as much as you want or
+ * as little as you have to).
+ *
+ */
+public class CDRRecord
+  extends RatingRecord
+{
+  // this is the CVS version info
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: CDRRecord.java,v $, $Revision: 1.21 $, $Date: 2011/07/21 08:40:26 $";
+
+  // Used to manage recycles
+  public static final String RECYCLE_TAG = "ORRECYCLE";
+
+    // Field Splitter in the records
+  public static final String FIELD_SPLITTER = ";";
+
+  // Field Splitter in the records
+  public static final int CDR_RECORD = 20;
+  public static String    INPUT_DELIMITER = ",";
+  public static final int EXPECTED_FIELDS = 21;
+
+  // Field offsets for input record
+  public static final int IDX_CALL_REF = 1;
+  public static final int IDX_NETWORK = 2;
+  public static final int IDX_CALL_TYPE = 3;
+  public static final int IDX_REMOTE_NETWORK = 4;
+  public static final int IDX_REMOTE_SWITCH = 5;
+  public static final int IDX_DIRECTION = 6;
+  public static final int IDX_PORTING_PREFIX = 7;
+  public static final int IDX_START_DATE = 12;
+  public static final int IDX_USER = 14;
+  public static final int IDX_CALLER = 14;
+  public static final int IDX_DEST = 9;
+  public static final int IDX_DURATION = 13;
+  public static final int IDX_SERVICE = 3;
+  public static final int IDX_NUMBER_TYPE = 11;  
+    
+  // expected format for dates in CDR
+  public static final String DATE_FORMAT="yyyy-MM-dd HH:mm:SS";
+  public static final String DEFAULT_RESELLER="Live";
+  public int          Recycle_Count = 0;
+
+  ArrayList<String> AggFilter = new ArrayList<String>();
+  
+  // Worker variables to save references during processing. We are using the
+  // B-Number to look up the destination.
+  public String Type = null;
+  public String Direction = null;
+  public String ANumber = null;
+  public String ANumberNorm = null;
+  public String BNumberNorm = null;
+  public String BNumber = null;
+  public String Caller = null;
+  public String Network = null;
+  public String RemoteNetwork = null;
+  public String RemoteSwitch = null;
+  public String PortingPrefix = null;
+  public String ZoneOrigin = null;
+  public String ZoneDestination = null;
+  public String Reseller = DEFAULT_RESELLER;
+  public String callReference = null;
+  public double Duration;
+  public String NumberType;
+
+  // These are the variables for the output
+  public double retailPrice = 0;
+  public double wholeSalePrice = 0;
+  public double localPolo = 0;
+  public double localRolo = 0;
+  public double localTransit = 0;
+  public double remotePolo = 0;
+  public double remoteRolo = 0;
+  public double remoteTransit = 0;
+ 
+  public Long start_date;
+  public Long end_date;
+
+  // SalesForce integration fields
+  public int    UserId;
+  public String GuidingKey;
+  public int    BalanceGroup;
+  public String UserTariff;
+  public String BaseRateplan;
+  public String AggregationID;
+  public String FinancialCode;
+  public String SuspenseCategory;
+
+  // duplicate flag
+  public boolean duplicate = false;
+   
+ /**
+  * Constructor for SimpleRecord from DB
+  *
+  * @param OriginalFields - the already split data we are to map
+  */
+  public CDRRecord(String[] OriginalFields)
+  {
+    super();
+    
+    this.fields = OriginalFields;
+    this.RECORD_TYPE = CDR_RECORD;
+    this.OriginalData = unmapOriginalData();
+  }
+
+ /**
+  * Constructor for SimpleRecord from File
+  *
+  * @param OriginalData - the already split data we are to map
+  */
+  public CDRRecord(String OriginalData)
+  {
+    super();
+    
+    this.OriginalData = OriginalData;
+    this.RECORD_TYPE = CDR_RECORD;
+  }
+
+  /**
+   * We split up the record at the tabs, and put the information into fields
+   * so that we can manipulate it as we want.
+   *
+   */
+  public void mapOriginalData()
+  {
+    this.fields = this.getOriginalData().split(INPUT_DELIMITER,-1);
+  }
+
+  /**
+   * Reconstruct the record from the field values, replacing the original
+   * structure of tab separated records
+   *
+   * @return The unmapped original data
+   */
+  private String unmapOriginalData()
+  {
+    int NumberOfFields;
+    int i;
+    StringBuilder tmpReassemble;
+
+    // We use the string buffer for the reassembly of the record. Avoid
+    // just catenating strings, as it is a LOT slower because of the
+    // java internal string handling (it has to allocate/deallocate many
+    // times to rebuild the string).
+    tmpReassemble = new StringBuilder(1024);
+
+    // write the destination information back
+    // this.setField(DESTINATION_IDX, BNumberNorm);
+    NumberOfFields = this.fields.length;
+
+    for (i = 0; i < NumberOfFields; i++)
+    {
+      if (i == 0)
+      {
+        tmpReassemble.append(this.fields[i]);
+      }
+      else
+      {
+        tmpReassemble.append(INPUT_DELIMITER);
+        tmpReassemble.append(this.fields[i]);
+      }
+    }
+
+    tmpReassemble.append(INPUT_DELIMITER);
+    tmpReassemble.append(this.retailPrice);
+    tmpReassemble.append(INPUT_DELIMITER);
+    tmpReassemble.append(this.wholeSalePrice);
+
+    return tmpReassemble.toString();
+  }
+
+
+  /**
+   * Return the dump-ready data
+   *
+   * @return The dump info strings
+   */
+  public ArrayList<String> getDumpInfo()
+  {
+
+    ArrayList<String> tmpDumpList = null;
+    tmpDumpList = new ArrayList<String>();
+
+    // Format the fields
+    tmpDumpList.add("============ BEGIN RECORD ============");
+    tmpDumpList.add("  Record Number   = <" + this.RecordNumber + ">");
+    tmpDumpList.add("  Output Streams  = <" + this.getOutputs() + ">");
+    tmpDumpList.add("--------------------------------------");
+    tmpDumpList.add("  Call Reference  = <" + this.callReference + ">");
+    tmpDumpList.add("  Record Type     = <" + this.Type + ">");
+    tmpDumpList.add("  Direction       = <" + this.Direction + ">");
+    tmpDumpList.add("  Service         = <" + this.Service + ">");
+    tmpDumpList.add("  ANumber         = <" + this.ANumber + ">");
+    tmpDumpList.add("  ANumber Norm    = <" + this.ANumberNorm + ">");
+    tmpDumpList.add("  BNumber         = <" + this.BNumber + ">");
+    tmpDumpList.add("  BNumber Norm    = <" + this.BNumberNorm + ">");
+    tmpDumpList.add("  Caller          = <" + this.Caller + ">");
+    tmpDumpList.add("  Network         = <" + this.Network + ">");
+    tmpDumpList.add("  Remote Network  = <" + this.RemoteNetwork + ">");
+    tmpDumpList.add("  Remote Switch   = <" + this.RemoteSwitch + ">");
+    tmpDumpList.add("  Porting Prefix  = <" + this.PortingPrefix + ">");
+    tmpDumpList.add("  EventStartDate  = <" + this.EventStartDate + ">");
+    tmpDumpList.add("  EventEndDate    = <" + this.EventEndDate + ">");
+    tmpDumpList.add("  Duration        = <" + this.Duration + ">");
+    tmpDumpList.add("  Reseller        = <" + this.Reseller + ">");
+    tmpDumpList.add("--------------------------------------");
+    tmpDumpList.add("  Guiding Key     = <" + this.GuidingKey + ">");
+    tmpDumpList.add("  User ID         = <" + this.UserId + ">");
+    tmpDumpList.add("  Rate Plan       = <" + this.UserTariff + ">");
+    tmpDumpList.add("  Base Rate Plan  = <" + this.BaseRateplan + ">");
+    tmpDumpList.add("  ZoneOrigin      = <" + this.ZoneOrigin + ">");
+    tmpDumpList.add("  ZoneDestination = <" + this.ZoneDestination + ">");
+    tmpDumpList.add("--------------------------------------");
+    tmpDumpList.add("  Retail Price    = <" + this.retailPrice + ">");
+    tmpDumpList.add("  WholeSale Price = <" + this.wholeSalePrice + ">");
+    tmpDumpList.add("  Local Polo      = <" + this.localPolo + ">");
+    tmpDumpList.add("  Local Rolo      = <" + this.localRolo + ">");
+    tmpDumpList.add("  Local Transit   = <" + this.localTransit + ">");
+    tmpDumpList.add("  Remote Polo     = <" + this.remotePolo + ">");
+    tmpDumpList.add("  Remote Rolo     = <" + this.remoteRolo + ">");
+    tmpDumpList.add("  Remote Transit  = <" + this.remoteTransit + ">");
+    tmpDumpList.add("  Aggregation ID  = <" + this.AggregationID + ">");
+    tmpDumpList.add("  FinancialCode   = <" + this.FinancialCode + ">");
+
+    for (String cpd : this.getChargePacketsDump())
+      tmpDumpList.add(cpd);
+    for (String bid : this.getBalanceImpactsDump())
+      tmpDumpList.add(bid);
+
+    Iterator<IError> it = this.getErrors().iterator();
+    while (it.hasNext())
+    {
+        IError err = it.next();
+        tmpDumpList.add("------------ Begin Error -------------");
+        tmpDumpList.add("  Error  :     " + err.getMessage());
+        tmpDumpList.add("  Message:     " + err.getType());
+        tmpDumpList.add("  Set by:      " + err.getModuleName());
+        tmpDumpList.add("------------ End Error ---------------");
+    }
+
+    return tmpDumpList;
+  }
+
+  public Object getSourceKey()
+  {
+    return null;
+  }
+
+  public void performFieldsValidation(String moduleName)
+  {
+    if (fields.length != EXPECTED_FIELDS)
+    {
+      RecordError tmpError = new RecordError("ERR_INP_MAP_FIELD_COUNT",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("InputMap");
+      tmpError.setErrorDescription("Invalid Number of Fields ("+ fields.length +" instead of "+EXPECTED_FIELDS+")");
+      this.addError(tmpError);
+      return;
+    }
+
+    if (fields[IDX_CALL_REF] == null || fields[IDX_CALL_REF].length()==0)
+    { // headers or no record type
+      return;
+    }
+            
+    this.Type="SELL";
+
+    if (fields[IDX_NETWORK] == null || fields[IDX_NETWORK].equalsIgnoreCase(""))
+    {
+      RecordError tmpError = new RecordError("ERR_NETWORK_MISSING",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("InputMap");
+      tmpError.setErrorDescription("Invalid Network - missing value");
+      this.addError(tmpError);
+    }
+    else
+    {
+      Network = fields[IDX_NETWORK];
+    }
+
+    if (fields[IDX_CALL_TYPE] == null || fields[IDX_CALL_TYPE].equalsIgnoreCase(""))
+    {
+      RecordError tmpError = new RecordError("ERR_CALL_TYPE_MISSING",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("InputMap");
+      tmpError.setErrorDescription("Invalid Call Type - missing value");
+      this.addError(tmpError);
+    }
+    else
+    {
+      this.Service = fields[IDX_CALL_TYPE];
+    }
+
+    // map 0, blank and "NULL" to null
+    RemoteNetwork = fields[IDX_REMOTE_NETWORK];
+    if (RemoteNetwork == null || RemoteNetwork.equals("0") || RemoteNetwork.isEmpty() || RemoteNetwork.equalsIgnoreCase("null"))
+    {
+      RemoteNetwork = "NULL";
+    }
+
+    // map 0, blank and "NULL" to null
+    RemoteSwitch = fields[IDX_REMOTE_SWITCH];
+    if (RemoteSwitch == null || RemoteSwitch.equals("0") || RemoteSwitch.isEmpty() || RemoteSwitch.equalsIgnoreCase("null"))
+    {
+      RemoteSwitch = "NULL";
+    }
+
+    if (fields[IDX_DIRECTION] == null || fields[IDX_DIRECTION].equalsIgnoreCase("") ||
+            (!fields[IDX_DIRECTION].equals("IN") && !fields[IDX_DIRECTION].equals("OUT")))
+    {
+      RecordError tmpError = new RecordError("ERR_DIRECTION_INVALID",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("InputMap");
+      tmpError.setErrorDescription("Invalid Directon:"+fields[2]);
+      this.addError(tmpError);
+    }
+    else
+    {
+      Direction = fields[IDX_DIRECTION];
+    }
+
+    // map 0, blank and "NULL" to null
+    PortingPrefix = fields[IDX_PORTING_PREFIX];
+    if (PortingPrefix == null || PortingPrefix.equals("0") || PortingPrefix.isEmpty() || PortingPrefix.equalsIgnoreCase("null"))
+    {
+      PortingPrefix = "NULL";
+    }
+
+    if (fields[IDX_START_DATE] == null || fields[IDX_START_DATE].equalsIgnoreCase(""))
+    {
+      RecordError tmpError = new RecordError("ERR_START_DATE_MISSING",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("InputMap");
+      tmpError.setErrorDescription("Missing start date");
+      this.addError(tmpError);
+    }
+    else
+    {
+      try
+      {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        this.EventStartDate = sdf.parse(fields[IDX_START_DATE]);
+        this.start_date = this.UTCEventDate = this.EventStartDate.getTime()/1000;
+      }
+      catch (Exception e)
+      {
+        RecordError tmpError = new RecordError("ERR_START_DATE_INVALID",ErrorType.DATA_VALIDATION);
+        tmpError.setModuleName("InputMap");
+        tmpError.setErrorDescription("Invalid start date:"+fields[3]);
+        this.addError(tmpError);
+      }
+    }
+
+    if (fields[IDX_USER] == null || fields[IDX_USER].equalsIgnoreCase(""))
+    {
+      RecordError tmpError = new RecordError("ERR_MISSING_USER",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("InputMap");
+      tmpError.setErrorDescription("Missing user");
+      this.addError(tmpError);
+    }
+    else
+    {
+      this.ANumber=fields[IDX_USER];
+    }
+
+    if (fields[IDX_DEST] == null || fields[IDX_DEST].equalsIgnoreCase(""))
+    {
+      //destination
+      RecordError tmpError = new RecordError("ERR_MISSING_DEST",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("InputMap");
+      tmpError.setErrorDescription("Missing destination");
+      this.addError(tmpError);
+    }
+    else
+    {
+      this.BNumber=fields[IDX_DEST];
+    }
+
+    // don't check anything here because it might be null
+    this.Caller=fields[IDX_CALLER];
+
+    //check not necessary here Call Reference Field
+    this.callReference = fields[IDX_CALL_REF];
+
+    if (fields[IDX_DURATION] == null || fields[IDX_DURATION].equalsIgnoreCase(""))
+    {
+      //duration
+      RecordError tmpError = new RecordError("ERR_MISSING_DURATION",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("InputMap");
+      tmpError.setErrorDescription("Missing duration");
+      this.addError(tmpError);
+    }
+    else
+    {
+      try
+      {
+        this.Duration = Double.parseDouble(fields[IDX_DURATION]);
+        if (this.Duration == 0)
+        {
+          RecordError tmpError = new RecordError("ERR_ZERO_DURATION",ErrorType.DATA_VALIDATION);
+          tmpError.setModuleName("InputMap");
+          tmpError.setErrorDescription("Zero duration");
+          this.addError(tmpError);
+        }
+      }
+      catch (Exception e)
+      {
+        RecordError tmpError = new RecordError("ERR_INVALID_DURATION",ErrorType.DATA_VALIDATION);
+        tmpError.setModuleName("InputMap");
+        tmpError.setErrorDescription("Invalid duration:"+fields[IDX_DURATION]);
+        this.addError(tmpError);
+      }
+    }
+
+    if (fields[IDX_NUMBER_TYPE] == null || fields[IDX_NUMBER_TYPE].equalsIgnoreCase(""))
+    {
+      //duration
+      RecordError tmpError = new RecordError("ERR_NUMBERTYPE_MISSING_DURATION",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("InputMap");
+      tmpError.setErrorDescription("Missing NumberType");
+      this.addError(tmpError);
+    }
+    else
+    {
+
+        this.NumberType = fields[IDX_NUMBER_TYPE];
+
+    }
+
+    // The end date does not seem to give the right results. Calculate
+    // from start date plus duration
+    end_date = (long) (start_date + Duration);
+    EventEndDate = new Date(end_date * 1000); // here we need milliseconds
+
+    this.setRUMValue("DUR", this.Duration);
+  }
+
+  String unmapSuspenseData()
+  {
+    StringBuilder recordData = null;
+
+    // We use the string buffer for the reassembly of the record. Avoid
+    // just catenating strings, as it is a LOT slower because of the
+    // java internal string handling (it has to allocate/deallocate many
+    // times to rebuild the string).
+    recordData = new StringBuilder(1024);
+
+    String ErrorCode = getErrors().get(0).getMessage();
+    Recycle_Count++;
+
+    recordData.append(CDRRecord.RECYCLE_TAG);
+    recordData.append(CDRRecord.FIELD_SPLITTER);
+    recordData.append(ErrorCode);
+    recordData.append(CDRRecord.FIELD_SPLITTER);
+    recordData.append(Recycle_Count);
+    recordData.append(CDRRecord.FIELD_SPLITTER);
+    recordData.append(this.OriginalData);
+
+    return recordData.toString();
+  }
+}

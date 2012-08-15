@@ -1,0 +1,1 @@
+echo Framework:Shutdown=true> "C:\MakePos\LatestOR\ORMakePos\ORMakePos\Semaphore\Semaphore.txt"

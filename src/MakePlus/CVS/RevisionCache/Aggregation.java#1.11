@@ -1,0 +1,80 @@
+package MakePlus;
+
+import OpenRate.exception.ProcessingException;
+import OpenRate.process.AbstractAggregation;
+import OpenRate.record.ErrorType;
+import OpenRate.record.IRecord;
+import OpenRate.record.RecordError;
+import java.text.SimpleDateFormat;
+
+/**
+ * 
+ */
+public class Aggregation
+  extends AbstractAggregation
+{
+  // this is the CVS version info
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: Aggregation.java,v $, $Revision: 1.11 $, $Date: 2011/07/21 20:30:23 $";
+
+  private String[] AggFields = new String[12];
+
+  // -----------------------------------------------------------------------------
+  // ------------------ Start of inherited Plug In functions ---------------------
+  // -----------------------------------------------------------------------------
+
+  /**
+  * This is called when a data record is encountered. You should do any normal
+  * processing here.
+  */
+    @Override
+  public IRecord procValidRecord(IRecord r)
+  {
+    CDRRecord CurrentRecord = (CDRRecord)r;
+
+    // this needs to be modified if aggregation keys are modified
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    CurrentRecord.AggregationID=CurrentRecord.ANumber+df.format(CurrentRecord.EventStartDate);
+
+    // the field that will be used for the aggregation scenario
+    AggFields[0] = CurrentRecord.ANumber;
+    AggFields[1] = df.format(CurrentRecord.EventStartDate); // the day of the event
+    AggFields[2] = CurrentRecord.AggregationID;
+    AggFields[3] = CurrentRecord.FinancialCode;
+    AggFields[4] = CurrentRecord.AliasStatus;
+    AggFields[5] = Double.toString(CurrentRecord.retailPrice);
+    AggFields[6] = Double.toString(CurrentRecord.wholeSalePrice);
+    AggFields[7] = Double.toString(CurrentRecord.remotePolo);
+    AggFields[8] = Double.toString(CurrentRecord.remoteRolo);
+    AggFields[9] = Double.toString(CurrentRecord.localPolo);
+    AggFields[10] = Double.toString(CurrentRecord.localRolo);
+    AggFields[11] = Double.toString(CurrentRecord.localTransit);
+    AggFields[12] = Double.toString(CurrentRecord.remoteTransit);
+
+    // perform the aggregation
+    try
+    {
+      CurrentRecord.AggFilter.add("Aggregate");
+      Aggregate(AggFields,CurrentRecord.AggFilter);
+    }
+    catch (ProcessingException pe)
+    {
+      RecordError tmpError = new RecordError("ERR_AGGREGATION_FAILED",ErrorType.SPECIAL);
+      tmpError.setModuleName(getSymbolicName());
+      tmpError.setErrorDescription("Aggregation error:"+AggFields[0]+":"+AggFields[1]+":"+AggFields[2]+":"+AggFields[3]+":"+AggFields[4]+":"+AggFields[5]);
+      CurrentRecord.addError(tmpError);
+    }
+
+    return r;
+  }
+
+  /**
+  * This is called when a data record with errors is encountered. You should do
+  * any processing here that you have to do for error records, e.g. stratistics,
+  * special handling, even error correction!
+  */
+    @Override
+  public IRecord procErrorRecord(IRecord r)
+  {
+    return r;
+  }
+}

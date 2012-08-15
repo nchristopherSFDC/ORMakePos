@@ -1,0 +1,12 @@
+2011-06-27 10:18:32,062 DEBUG - Registered Client <LogFactory>
+2011-06-27 10:18:32,062 DEBUG - Registered Client Service <Reload>
+2011-06-27 10:18:32,062 INFO  - :::: OpenRate Started ::::
+2011-06-27 10:18:32,093 FATAL - InitializationException thrown. Message <Semaphore File <C:\MakePos\ORMakePos\ConfigData\Semaphore.txt> is not a valid path>
+OpenRate.exception.InitializationException: Semaphore File <C:\MakePos\ORMakePos\ConfigData\Semaphore.txt> is not a valid path
+	at OpenRate.configurationmanager.EventHandler.init(EventHandler.java:158)
+	at OpenRate.OpenRate.LoadResources(OpenRate.java:930)
+	at OpenRate.OpenRate.StartupFramework(OpenRate.java:417)
+	at OpenRate.OpenRate.createApplication(OpenRate.java:256)
+	at OpenRate.OpenRate.main(OpenRate.java:217)
+2011-06-27 10:18:32,093 FATAL - InitializationException thrown. Message <Semaphore File <C:\MakePos\ORMakePos\ConfigData\Semaphore.txt> is not a valid path>
+2011-06-27 10:18:32,093 INFO  - :::: OpenRate Stopped ::::

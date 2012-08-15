@@ -1,0 +1,585 @@
+CREATE DATABASE  IF NOT EXISTS `ormakeplus` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `ormakeplus`;
+-- MySQL dump 10.13  Distrib 5.1.40, for Win32 (ia32)
+--
+-- Host: localhost    Database: ormakeplus
+-- ------------------------------------------------------
+-- Server version	5.1.49-community
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `product`
+--
+
+DROP TABLE IF EXISTS `PRODUCT`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PRODUCT` (
+  `ID` int(11) NOT NULL,
+  `accountVerID` int(11) DEFAULT NULL,
+  `productID` varchar(255) DEFAULT NULL,
+  `service` varchar(255) DEFAULT NULL,
+  `startDate` int(11) DEFAULT NULL,
+  `endDate` int(11) DEFAULT NULL,
+  `accountID` int(11) DEFAULT NULL,
+  `subscriptionID` varchar(255) DEFAULT NULL,
+  `ModT` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `IDX_PROD` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product`
+--
+
+LOCK TABLES `PRODUCT` WRITE;
+/*!40000 ALTER TABLE `PRODUCT` DISABLE KEYS */;
+/*!40000 ALTER TABLE `PRODUCT` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rejected_cdr`
+--
+
+DROP TABLE IF EXISTS `rejected_cdr`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rejected_cdr` (
+  `ORIGINAL_DATA` varchar(999) NOT NULL,
+  `REJECTION_REASON` varchar(99) NOT NULL,
+  `REJECTION_TIMESTAMP` int(11) NOT NULL,
+  `STATE` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rejected_cdr`
+--
+
+LOCK TABLES `rejected_cdr` WRITE;
+/*!40000 ALTER TABLE `rejected_cdr` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rejected_cdr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `origin_map`
+--
+
+DROP TABLE IF EXISTS `origin_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `origin_map` (
+  `MAP_GROUP` varchar(24) DEFAULT NULL,
+  `PREFIX` varchar(24) DEFAULT NULL,
+  `TIER_CODE` varchar(24) DEFAULT NULL,
+  `DESCRIPTION` varchar(100) DEFAULT NULL,
+  `CATEGORY` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `origin_map`
+--
+
+LOCK TABLES `origin_map` WRITE;
+/*!40000 ALTER TABLE `origin_map` DISABLE KEYS */;
+INSERT INTO `origin_map` VALUES ('TEL','0870','0870','',''),('TEL','0844','0844','',''),('TEL','0845','0845','',''),('TEL','00','UKG','',''),('TEL','0800','0800','','');
+/*!40000 ALTER TABLE `origin_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `price_map`
+--
+
+DROP TABLE IF EXISTS `price_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `price_map` (
+  `MAP_GROUP` varchar(24) NOT NULL,
+  `NETWORK` varchar(9) NOT NULL,
+  `DIRECTION` varchar(8) NOT NULL,
+  `CDR_TYPE` varchar(4) NOT NULL,
+  `SERVICE` varchar(9) NOT NULL,
+  `ZONE_RESULT` varchar(64) NOT NULL,
+  `TIME_RESULT` varchar(9) NOT NULL,
+  `PRICE_GROUP` varchar(64) NOT NULL,
+  `DESCRIPTION` varchar(64) NOT NULL,
+  `STARTDATE` varchar(19) NOT NULL DEFAULT '2000-12-01 00:00:00',
+  `ENDDATE` varchar(19) NOT NULL DEFAULT '2020-12-31 23:59:59',
+  UNIQUE KEY `IDX_PRICE_MODEL` (`MAP_GROUP`,`NETWORK`,`DIRECTION`,`CDR_TYPE`,`SERVICE`,`ZONE_RESULT`,`TIME_RESULT`,`STARTDATE`,`ENDDATE`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `price_map`
+--
+
+LOCK TABLES `price_map` WRITE;
+/*!40000 ALTER TABLE `price_map` DISABLE KEYS */;
+INSERT INTO `price_map` VALUES ('StandardPlan','15','Outbound','SELL','TEL','0800_TO_AFG','PEAK','SP_15OSELL_TEL_0800_TO_AFG_PEAK','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_AFG','ECO','SP_15OSELL_TEL_0800_TO_AFG_ECO','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_AFG','WKD','SP_15OSELL_TEL_0800_TO_AFG_WKD','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_ALB','PEAK','SP_15OSELL_TEL_0800_TO_ALB_PEAK','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_ALB','ECO','SP_15OSELL_TEL_0800_TO_ALB_ECO','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_ALB','WKD','SP_15OSELL_TEL_0800_TO_ALB_WKD','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_ALG','PEAK','SP_15OSELL_TEL_0800_TO_ALG_PEAK','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_ALG','ECO','SP_15OSELL_TEL_0800_TO_ALG_ECO','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_ALG','WKD','SP_15OSELL_TEL_0800_TO_ALG_WKD','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_ALGM','PEAK','SP_15OSELL_TEL_0800_TO_ALGM_PEAK','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_ALGM','ECO','SP_15OSELL_TEL_0800_TO_ALGM_ECO','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_ALGM','WKD','SP_15OSELL_TEL_0800_TO_ALGM_WKD','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_AFG','PEAK','SP_15OSELL_TEL_0870_TO_AFG_PEAK','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_AFG','ECO','SP_15OSELL_TEL_0870_TO_AFG_ECO','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_AFG','WKD','SP_15OSELL_TEL_0870_TO_AFG_WKD','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_ALB','PEAK','SP_15OSELL_TEL_0870_TO_ALB_PEAK','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_ALB','ECO','SP_15OSELL_TEL_0870_TO_ALB_ECO','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_ALB','WKD','SP_15OSELL_TEL_0870_TO_ALB_WKD','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_ALG','PEAK','SP_15OSELL_TEL_0870_TO_ALG_PEAK','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_ALG','ECO','SP_15OSELL_TEL_0870_TO_ALG_ECO','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_ALG','WKD','SP_15OSELL_TEL_0870_TO_ALG_WKD','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_ALGM','PEAK','SP_15OSELL_TEL_0870_TO_ALGM_PEAK','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_ALGM','ECO','SP_15OSELL_TEL_0870_TO_ALGM_ECO','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0870_TO_ALGM','WKD','SP_15OSELL_TEL_0870_TO_ALGM_WKD','','2010-12-01 00:00:00','2011-12-10 23:59:59'),('StandardPlan','15','Outbound','SELL','TEL','0800_TO_AFG','PEAK','SP_15OSELL_TEL_0800_TO_AFG_ECO','','2010-12-11 00:00:00','2010-12-31 23:59:59');
+/*!40000 ALTER TABLE `price_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `destination_map`
+--
+
+DROP TABLE IF EXISTS `destination_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `destination_map` (
+  `MAP_GROUP` varchar(24) DEFAULT NULL,
+  `PREFIX` varchar(24) DEFAULT NULL,
+  `TIER_CODE` varchar(24) DEFAULT NULL,
+  `DESCRIPTION` varchar(100) DEFAULT NULL,
+  `CATEGORY` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `destination_map`
+--
+
+LOCK TABLES `destination_map` WRITE;
+/*!40000 ALTER TABLE `destination_map` DISABLE KEYS */;
+INSERT INTO `destination_map` VALUES ('TEL','0093','AFG','Afghanistan',''),('TEL','00355','ALB','Albania',''),('TEL','00213','ALG','Algeria',''),('TEL','002133','ALGM','Algeria Mobile','');
+/*!40000 ALTER TABLE `destination_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `E_R_A`
+--
+
+DROP TABLE IF EXISTS `E_R_A`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `E_R_A` (
+  `ID` int(11) NOT NULL,
+  `accountVerID` int(11) DEFAULT NULL,
+  `ERAKey` varchar(255) DEFAULT NULL,
+  `ERAValue` varchar(255) DEFAULT NULL,
+  `accountID` int(11) DEFAULT NULL,
+  `ModT` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `IDX_ERA` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `E_R_A`
+--
+
+LOCK TABLES `E_R_A` WRITE;
+/*!40000 ALTER TABLE `E_R_A` DISABLE KEYS */;
+/*!40000 ALTER TABLE `E_R_A` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `time_model_interval`
+--
+
+DROP TABLE IF EXISTS `time_model_interval`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `time_model_interval` (
+  `TIME_MODEL_NAME_IN` varchar(24) DEFAULT NULL,
+  `DAY_IN` varchar(24) DEFAULT NULL,
+  `FROM_IN` varchar(24) DEFAULT NULL,
+  `TO_IN` varchar(24) DEFAULT NULL,
+  `RESULT_OUT` varchar(24) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `time_model_interval`
+--
+
+LOCK TABLES `time_model_interval` WRITE;
+/*!40000 ALTER TABLE `time_model_interval` DISABLE KEYS */;
+INSERT INTO `time_model_interval` VALUES ('Standard','4','00:00','07:59','ECO'),('Standard','4','08:00','18:59','PEAK'),('Standard','4','19:00','23:59','ECO'),('Standard','5','00:00','07:59','ECO'),('Standard','5','08:00','18:59','PEAK'),('Standard','5','19:00','23:59','ECO'),('Standard','6','00:00','23:59','WKD'),('Standard','3','19:00','23:59','ECO'),('Standard','3','08:00','18:59','PEAK'),('Standard','3','00:00','07:59','ECO'),('Standard','2','19:00','23:59','ECO'),('Standard','2','08:00','18:59','PEAK'),('Standard','2','00:00','07:59','ECO'),('Standard','1','19:00','23:59','ECO'),('Standard','1','08:00','18:59','PEAK'),('Standard','1','00:00','07:59','ECO'),('Standard','0','00:00','23:59','WKD');
+/*!40000 ALTER TABLE `time_model_interval` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `specific_rateplan`
+--
+
+DROP TABLE IF EXISTS `specific_rateplan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `specific_rateplan` (
+  `SPECIFIC_RATEPLAN` varchar(24) NOT NULL,
+  `BASE_RATEPLAN` varchar(24) NOT NULL,
+  UNIQUE KEY `IDX_SPECIFIC_RATEPLAN` (`SPECIFIC_RATEPLAN`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `specific_rateplan`
+--
+
+LOCK TABLES `specific_rateplan` WRITE;
+/*!40000 ALTER TABLE `specific_rateplan` DISABLE KEYS */;
+INSERT INTO `specific_rateplan` VALUES ('SpecificPlan','StandardPlan');
+/*!40000 ALTER TABLE `specific_rateplan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `suspense_map`
+--
+
+DROP TABLE IF EXISTS `suspense_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `suspense_map` (
+  `MAP_GROUP` varchar(24) NOT NULL,
+  `ERROR_CODE` varchar(64) NOT NULL,
+  `OUTPUT` varchar(24) NOT NULL,
+  `RANK` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `suspense_map`
+--
+
+LOCK TABLES `suspense_map` WRITE;
+/*!40000 ALTER TABLE `suspense_map` DISABLE KEYS */;
+INSERT INTO `suspense_map` VALUES ('TEL','.*','RejectOutput',1);
+/*!40000 ALTER TABLE `suspense_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rum_map`
+--
+
+DROP TABLE IF EXISTS `rum_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rum_map` (
+  `PRICE_GROUP` varchar(99) DEFAULT NULL,
+  `PRICE_MODEL` varchar(99) DEFAULT NULL,
+  `RUM` varchar(24) DEFAULT NULL,
+  `RESOURCE` varchar(24) DEFAULT NULL,
+  `RESOURCE_ID` int(11) DEFAULT NULL,
+  `RUM_TYPE` varchar(24) DEFAULT NULL,
+  `CONSUME_FLAG` int(11) DEFAULT NULL,
+  `STEP` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rum_map`
+--
+
+LOCK TABLES `rum_map` WRITE;
+/*!40000 ALTER TABLE `rum_map` DISABLE KEYS */;
+INSERT INTO `rum_map` VALUES ('SP_15OSELL_TEL_0800_TO_AFG_PEAK','SP_15OSELL_TEL_0800_TO_AFG_PEAK_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_AFG_ECO','SP_15OSELL_TEL_0800_TO_AFG_ECO_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_AFG_WKD','SP_15OSELL_TEL_0800_TO_AFG_WKD_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALB_PEAK','SP_15OSELL_TEL_0800_TO_ALB_PEAK_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALB_ECO','SP_15OSELL_TEL_0800_TO_ALB_ECO_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALB_WKD','SP_15OSELL_TEL_0800_TO_ALB_WKD_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALG_PEAK','SP_15OSELL_TEL_0800_TO_ALG_PEAK_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALG_ECO','SP_15OSELL_TEL_0800_TO_ALG_ECO_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALG_WKD','SP_15OSELL_TEL_0800_TO_ALG_WKD_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALGM_PEAK','SP_15OSELL_TEL_0800_TO_ALGM_PEAK_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALGM_ECO','SP_15OSELL_TEL_0800_TO_ALGM_ECO_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALGM_WKD','SP_15OSELL_TEL_0800_TO_ALGM_WKD_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_AFG_PEAK','SP_15OSELL_TEL_0800_TO_AFG_PEAK_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_AFG_ECO','SP_15OSELL_TEL_0800_TO_AFG_ECO_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_AFG_WKD','SP_15OSELL_TEL_0800_TO_AFG_WKD_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALB_PEAK','SP_15OSELL_TEL_0800_TO_ALB_PEAK_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALB_ECO','SP_15OSELL_TEL_0800_TO_ALB_ECO_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALB_WKD','SP_15OSELL_TEL_0800_TO_ALB_WKD_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALG_PEAK','SP_15OSELL_TEL_0800_TO_ALG_PEAK_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALG_ECO','SP_15OSELL_TEL_0800_TO_ALG_ECO_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALG_WKD','SP_15OSELL_TEL_0800_TO_ALG_WKD_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALGM_PEAK','SP_15OSELL_TEL_0800_TO_ALGM_PEAK_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALGM_ECO','SP_15OSELL_TEL_0800_TO_ALGM_ECO_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0800_TO_ALGM_WKD','SP_15OSELL_TEL_0800_TO_ALGM_WKD_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_AFG_PEAK','SP_15OSELL_TEL_0870_TO_AFG_PEAK_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_AFG_ECO','SP_15OSELL_TEL_0870_TO_AFG_ECO_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_AFG_WKD','SP_15OSELL_TEL_0870_TO_AFG_WKD_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALB_PEAK','SP_15OSELL_TEL_0870_TO_ALB_PEAK_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALB_ECO','SP_15OSELL_TEL_0870_TO_ALB_ECO_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALB_WKD','SP_15OSELL_TEL_0870_TO_ALB_WKD_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALG_PEAK','SP_15OSELL_TEL_0870_TO_ALG_PEAK_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALG_ECO','SP_15OSELL_TEL_0870_TO_ALG_ECO_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALG_WKD','SP_15OSELL_TEL_0870_TO_ALG_WKD_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALGM_PEAK','SP_15OSELL_TEL_0870_TO_ALGM_PEAK_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALGM_ECO','SP_15OSELL_TEL_0870_TO_ALGM_ECO_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALGM_WKD','SP_15OSELL_TEL_0870_TO_ALGM_WKD_WHOLESALE','DUR','PPM_WHOLESALE',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_AFG_PEAK','SP_15OSELL_TEL_0870_TO_AFG_PEAK_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_AFG_ECO','SP_15OSELL_TEL_0870_TO_AFG_ECO_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_AFG_WKD','SP_15OSELL_TEL_0870_TO_AFG_WKD_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALB_PEAK','SP_15OSELL_TEL_0870_TO_ALB_PEAK_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALB_ECO','SP_15OSELL_TEL_0870_TO_ALB_ECO_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALB_WKD','SP_15OSELL_TEL_0870_TO_ALB_WKD_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALG_PEAK','SP_15OSELL_TEL_0870_TO_ALG_PEAK_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALG_ECO','SP_15OSELL_TEL_0870_TO_ALG_ECO_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALG_WKD','SP_15OSELL_TEL_0870_TO_ALG_WKD_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALGM_PEAK','SP_15OSELL_TEL_0870_TO_ALGM_PEAK_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALGM_ECO','SP_15OSELL_TEL_0870_TO_ALGM_ECO_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1),('SP_15OSELL_TEL_0870_TO_ALGM_WKD','SP_15OSELL_TEL_0870_TO_ALGM_WKD_RETAIL','DUR','PPM_RETAIL',100,'FLAT',0,1);
+/*!40000 ALTER TABLE `rum_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ACCOUNT`
+--
+
+DROP TABLE IF EXISTS `ACCOUNT`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ACCOUNT` (
+  `ID` int(11) NOT NULL,
+  `accountVerID` int(11) DEFAULT NULL,
+  `accountID` int(11) DEFAULT NULL,
+  `MSN` varchar(255) DEFAULT NULL,
+  `ModT` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `IDX_ACCT` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ACCOUNT`
+--
+
+LOCK TABLES `ACCOUNT` WRITE;
+/*!40000 ALTER TABLE `ACCOUNT` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ACCOUNT` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `financial_code`
+--
+
+DROP TABLE IF EXISTS `financial_code`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `financial_code` (
+  `NETWORK` varchar(9) NOT NULL,
+  `CODE` varchar(9) NOT NULL,
+  UNIQUE KEY `IDX_SPECIFIC_RATEPLAN` (`NETWORK`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `financial_code`
+--
+
+LOCK TABLES `financial_code` WRITE;
+/*!40000 ALTER TABLE `financial_code` DISABLE KEYS */;
+INSERT INTO `financial_code` VALUES ('.*','00001');
+/*!40000 ALTER TABLE `financial_code` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rated_cdr`
+--
+
+DROP TABLE IF EXISTS `rated_cdr`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rated_cdr` (
+  `TYPE` varchar(4) NOT NULL,
+  `SERVICE` varchar(9) NOT NULL,
+  `DIRECTION` varchar(8) NOT NULL,
+  `NETWORK` varchar(99) NOT NULL,
+  `START_TIMESTAMP` int(11) NOT NULL,
+  `USER` varchar(99) NOT NULL,
+  `DESTINATION` varchar(99) NOT NULL,
+  `CALLER` varchar(99) NOT NULL,
+  `DURATION` double NOT NULL,
+  `RETAIL_PRICE` double NOT NULL,
+  `WHOLESALE_PRICE` double NOT NULL,
+  `RESELLER` varchar(4) NOT NULL,
+  `FINANCIAL_CODE` varchar(9) NOT NULL,  
+  `BILL_ID` int(9) NOT NULL DEFAULT 0,
+  `AGGREGATION_ID` varchar(99) NOT NULL,
+  `BILL_STATUS` varchar(9) NOT NULL DEFAULT 'U',  
+  `STATE` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rated_cdr`
+--
+
+LOCK TABLES `rated_cdr` WRITE;
+/*!40000 ALTER TABLE `rated_cdr` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rated_cdr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `alias_in_test`
+--
+
+DROP TABLE IF EXISTS `alias_in_test`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `alias_in_test` (
+  `ALIAS` varchar(24) NOT NULL,
+  UNIQUE KEY `IDX_ALIAS_IN_TEST` (`ALIAS`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alias_in_test`
+--
+
+LOCK TABLES `alias_in_test` WRITE;
+/*!40000 ALTER TABLE `alias_in_test` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alias_in_test` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ACCOUNT_VERSION`
+--
+
+DROP TABLE IF EXISTS `ACCOUNT_VERSION`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ACCOUNT_VERSION` (
+  `AccountVerID` int(11) NOT NULL,
+  `effectiveDate` int(11) DEFAULT NULL,
+  `startDate` int(11) DEFAULT NULL,
+  `endDate` int(11) DEFAULT NULL,
+  `accountID` int(11) DEFAULT NULL,
+  `MSN` varchar(255) DEFAULT NULL,
+  `ModT` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`AccountVerID`),
+  UNIQUE KEY `IDX_ACCT_VER` (`AccountVerID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ACCOUNT_VERSION`
+--
+
+LOCK TABLES `ACCOUNT_VERSION` WRITE;
+/*!40000 ALTER TABLE `ACCOUNT_VERSION` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ACCOUNT_VERSION` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `time_model_map`
+--
+
+DROP TABLE IF EXISTS `time_model_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `time_model_map` (
+  `PRODUCT_NAME_IN` varchar(24) DEFAULT NULL,
+  `TIME_MODEL_OUT` varchar(24) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `time_model_map`
+--
+
+LOCK TABLES `time_model_map` WRITE;
+/*!40000 ALTER TABLE `time_model_map` DISABLE KEYS */;
+INSERT INTO `time_model_map` VALUES ('StandardPlan','Standard');
+/*!40000 ALTER TABLE `time_model_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ALIAS`
+--
+
+DROP TABLE IF EXISTS `ALIAS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ALIAS` (
+  `ID` int(11) NOT NULL,
+  `alias` varchar(255) DEFAULT NULL,
+  `service` varchar(255) DEFAULT NULL,
+  `startDate` int(11) DEFAULT NULL,
+  `endDate` int(11) DEFAULT NULL,
+  `accountID` int(11) DEFAULT NULL,
+  `subscriptionID` varchar(255) DEFAULT NULL,
+  `ModT` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `IDX_ALIAS` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ALIAS`
+--
+
+LOCK TABLES `ALIAS` WRITE;
+/*!40000 ALTER TABLE `ALIAS` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ALIAS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `aggregated_cdr`
+--
+
+DROP TABLE IF EXISTS `aggregated_cdr`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `aggregated_cdr` (
+  `USER` varchar(24) NOT NULL,
+  `DATE` varchar(10) NOT NULL,
+  `AGGREGATION_ID` varchar(99) NOT NULL,
+  `CURRENT_BAL` double NOT NULL,
+  `DELTA_BAL` double DEFAULT NULL,
+  `STATUS` varchar(9) NOT NULL DEFAULT 'U',
+  `BILL_ID` int(9) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `aggregated_cdr`
+--
+
+LOCK TABLES `aggregated_cdr` WRITE;
+/*!40000 ALTER TABLE `aggregated_cdr` DISABLE KEYS */;
+/*!40000 ALTER TABLE `aggregated_cdr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `price_model`
+--
+
+DROP TABLE IF EXISTS `price_model`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `price_model` (
+  `PRICE_MODEL` varchar(64) NOT NULL,
+  `STEP` int(11) NOT NULL DEFAULT '0',
+  `TIER_FROM` int(11) DEFAULT NULL,
+  `TIER_TO` int(11) DEFAULT NULL,
+  `BEAT` int(11) DEFAULT NULL,
+  `FACTOR` double DEFAULT NULL,
+  `CHARGE_BASE` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `price_model`
+--
+
+LOCK TABLES `price_model` WRITE;
+/*!40000 ALTER TABLE `price_model` DISABLE KEYS */;
+INSERT INTO `price_model` VALUES ('SP_15OSELL_TEL_0800_TO_AFG_PEAK_RETAIL',1,0,999999,1,118.7194,60),('SP_15OSELL_TEL_0800_TO_AFG_ECO_RETAIL',1,0,999999,1,117.2647,60),('SP_15OSELL_TEL_0800_TO_AFG_WKD_RETAIL',1,0,999999,1,116.8666,60),('SP_15OSELL_TEL_0800_TO_ALB_PEAK_RETAIL',1,0,999999,1,33.235,60),('SP_15OSELL_TEL_0800_TO_ALB_ECO_RETAIL',1,0,999999,1,31.6772,60),('SP_15OSELL_TEL_0800_TO_ALB_WKD_RETAIL',1,0,999999,1,31.3291,60),('SP_15OSELL_TEL_0800_TO_ALG_PEAK_RETAIL',1,0,999999,1,29.8819,60),('SP_15OSELL_TEL_0800_TO_ALG_ECO_RETAIL',1,0,999999,1,27.5866,60),('SP_15OSELL_TEL_0800_TO_ALG_WKD_RETAIL',1,0,999999,1,27.0291,60),('SP_15OSELL_TEL_0800_TO_ALGM_PEAK_RETAIL',1,0,999999,1,44.1881,60),('SP_15OSELL_TEL_0800_TO_ALGM_ECO_RETAIL',1,0,999999,1,42.6303,60),('SP_15OSELL_TEL_0800_TO_ALGM_WKD_RETAIL',1,0,999999,1,42.2853,60),('SP_15OSELL_TEL_0800_TO_AFG_PEAK_WHOLESALE',1,0,999999,1,118.7194,60),('SP_15OSELL_TEL_0800_TO_AFG_ECO_WHOLESALE',1,0,999999,1,117.2647,60),('SP_15OSELL_TEL_0800_TO_AFG_WKD_WHOLESALE',1,0,999999,1,116.8666,60),('SP_15OSELL_TEL_0800_TO_ALB_PEAK_WHOLESALE',1,0,999999,1,33.235,60),('SP_15OSELL_TEL_0800_TO_ALB_ECO_WHOLESALE',1,0,999999,1,31.6772,60),('SP_15OSELL_TEL_0800_TO_ALB_WKD_WHOLESALE',1,0,999999,1,31.3291,60),('SP_15OSELL_TEL_0800_TO_ALG_PEAK_WHOLESALE',1,0,999999,1,29.8819,60),('SP_15OSELL_TEL_0800_TO_ALG_ECO_WHOLESALE',1,0,999999,1,27.5866,60),('SP_15OSELL_TEL_0800_TO_ALG_WKD_WHOLESALE',1,0,999999,1,27.0291,60),('SP_15OSELL_TEL_0800_TO_ALGM_PEAK_WHOLESALE',1,0,999999,1,44.1881,60),('SP_15OSELL_TEL_0800_TO_ALGM_ECO_WHOLESALE',1,0,999999,1,42.6303,60),('SP_15OSELL_TEL_0800_TO_ALGM_WKD_WHOLESALE',1,0,999999,1,42.2853,60),('SP_15OSELL_TEL_0870_TO_AFG_PEAK_WHOLESALE',1,0,999999,1,110.5707,60),('SP_15OSELL_TEL_0870_TO_AFG_ECO_WHOLESALE',1,0,999999,1,113.656,60),('SP_15OSELL_TEL_0870_TO_AFG_WKD_WHOLESALE',1,0,999999,1,115.6041,60),('SP_15OSELL_TEL_0870_TO_ALB_PEAK_WHOLESALE',1,0,999999,1,25.0864,60),('SP_15OSELL_TEL_0870_TO_ALB_ECO_WHOLESALE',1,0,999999,1,28.0686,60),('SP_15OSELL_TEL_0870_TO_ALB_WKD_WHOLESALE',1,0,999999,1,30.0666,60),('SP_15OSELL_TEL_0870_TO_ALG_PEAK_WHOLESALE',1,0,999999,1,21.7332,60),('SP_15OSELL_TEL_0870_TO_ALG_ECO_WHOLESALE',1,0,999999,1,23.9779,60),('SP_15OSELL_TEL_0870_TO_ALG_WKD_WHOLESALE',1,0,999999,1,25.7666,60),('SP_15OSELL_TEL_0870_TO_ALGM_PEAK_WHOLESALE',1,0,999999,1,36.0395,60),('SP_15OSELL_TEL_0870_TO_ALGM_ECO_WHOLESALE',1,0,999999,1,39.0217,60),('SP_15OSELL_TEL_0870_TO_ALGM_WKD_WHOLESALE',1,0,999999,1,41.0229,60),('SP_15OSELL_TEL_0870_TO_AFG_PEAK_RETAIL',1,0,999999,1,110.5707,60),('SP_15OSELL_TEL_0870_TO_AFG_ECO_RETAIL',1,0,999999,1,113.656,60),('SP_15OSELL_TEL_0870_TO_AFG_WKD_RETAIL',1,0,999999,1,115.6041,60),('SP_15OSELL_TEL_0870_TO_ALB_PEAK_RETAIL',1,0,999999,1,25.0864,60),('SP_15OSELL_TEL_0870_TO_ALB_ECO_RETAIL',1,0,999999,1,28.0686,60),('SP_15OSELL_TEL_0870_TO_ALB_WKD_RETAIL',1,0,999999,1,30.0666,60),('SP_15OSELL_TEL_0870_TO_ALG_PEAK_RETAIL',1,0,999999,1,21.7332,60),('SP_15OSELL_TEL_0870_TO_ALG_ECO_RETAIL',1,0,999999,1,23.9779,60),('SP_15OSELL_TEL_0870_TO_ALG_WKD_RETAIL',1,0,999999,1,25.7666,60),('SP_15OSELL_TEL_0870_TO_ALGM_PEAK_RETAIL',1,0,999999,1,36.0395,60),('SP_15OSELL_TEL_0870_TO_ALGM_ECO_RETAIL',1,0,999999,1,39.0217,60),('SP_15OSELL_TEL_0870_TO_ALGM_WKD_RETAIL',1,0,999999,1,41.0229,60);
+/*!40000 ALTER TABLE `price_model` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'ormakeplus'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `sp_UpdateCounter` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `sp_UpdateCounter`(
+IN IN_USER VARCHAR(24),
+IN IN_DATE VARCHAR(10),
+IN IN_AGG_ID VARCHAR(99),
+IN IN_UPDATE_VAL double
+)
+BEGIN
+DECLARE rowExist int;
+DECLARE currentBal,newBal double;
+select count(*) from aggregated_cdr where AGGREGATION_ID=IN_AGG_ID and STATUS="U" into rowExist;
+If rowExist=0 then
+INSERT INTO aggregated_cdr (USER,DATE,CURRENT_BAL,DELTA_BAL,AGGREGATION_ID) VALUES (IN_USER,IN_DATE,IN_UPDATE_VAL,IN_UPDATE_VAL,IN_AGG_ID);
+else
+select CURRENT_BAL from aggregated_cdr where AGGREGATION_ID=IN_AGG_ID and STATUS="U" into currentBal;
+set newBal = currentBal + IN_UPDATE_VAL;
+update aggregated_cdr set CURRENT_BAL = newBal, DELTA_BAL=DELTA_BAL+IN_UPDATE_VAL where AGGREGATION_ID=IN_AGG_ID and STATUS="U";
+end if;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2010-12-10 16:29:45

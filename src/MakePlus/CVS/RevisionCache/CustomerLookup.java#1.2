@@ -1,0 +1,209 @@
+/* ====================================================================
+ * Limited Evaluation License:
+ *
+ * The exclusive owner of this work is Tiger Shore Management Ltd.
+ * This work, including all associated documents and components
+ * is Copyright Tiger Shore Management Ltd 2006-2010.
+ *
+ * The following restrictions apply unless they are expressly relaxed in a
+ * contractual agreement between the license holder or one of its officially
+ * assigned agents and you or your organisation:
+ *
+ * 1) This work may not be disclosed, either in full or in part, in any form
+ *    electronic or physical, to any third party. This includes both in the
+ *    form of source code and compiled modules.
+ * 2) This work contains trade secrets in the form of architecture, algorithms
+ *    methods and technologies. These trade secrets may not be disclosed to
+ *    third parties in any form, either directly or in summary or paraphrased
+ *    form, nor may these trade secrets be used to construct products of a
+ *    similar or competing nature either by you or third parties.
+ * 3) This work may not be included in full or in part in any application.
+ * 4) You may not remove or alter any proprietary legends or notices contained
+ *    in or on this work.
+ * 5) This software may not be reverse-engineered or otherwise decompiled, if
+ *    you received this work in a compiled form.
+ * 6) This work is licensed, not sold. Possession of this software does not
+ *    imply or grant any right to you.
+ * 7) You agree to disclose any changes to this work to the copyright holder
+ *    and that the copyright holder may include any such changes at its own
+ *    discretion into the work
+ * 8) You agree not to derive other works from the trade secrets in this work,
+ *    and that any such derivation may make you liable to pay damages to the
+ *    copyright holder
+ * 9) You agree to use this software exclusively for evaluation purposes, and
+ *    that you shall not use this software to derive commercial profit or
+ *    support your business or personal activities.
+ *
+ * This software is provided "as is" and any expressed or impled warranties,
+ * including, but not limited to, the impled warranties of merchantability
+ * and fitness for a particular purpose are disclaimed. In no event shall
+ * Tiger Shore Management or its officially assigned agents be liable to any
+ * direct, indirect, incidental, special, exemplary, or consequential damages
+ * (including but not limited to, procurement of substitute goods or services;
+ * Loss of use, data, or profits; or any business interruption) however caused
+ * and on theory of liability, whether in contract, strict liability, or tort
+ * (including negligence or otherwise) arising in any way out of the use of
+ * this software, even if advised of the possibility of such damage.
+ * This software contains portions by The Apache Software Foundation, Robert
+ * Half International.
+ * ====================================================================
+ */
+package MakePlus;
+
+import OpenRate.exception.ProcessingException;
+import OpenRate.lang.CustProductInfo;
+import OpenRate.lang.ProductList;
+import OpenRate.process.AbstractCustomerLookupAudited;
+import OpenRate.record.ErrorType;
+import OpenRate.record.IError;
+import OpenRate.record.IRecord;
+import OpenRate.record.RecordError;
+
+/**
+ *
+ * @author marco
+ */
+public class CustomerLookup extends AbstractCustomerLookupAudited
+{
+  // this is the CVS version info
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: CustomerLookup.java,v $, $Revision: 1.2 $, $Date: 2011/02/02 15:26:46 $";
+
+  /**
+  * This is called when a valid detail record is encountered.
+  */
+  @Override
+  public IRecord procValidRecord(IRecord r)
+  {
+    CDRRecord CurrentRecord;
+
+    CurrentRecord = (CDRRecord)r;
+    IError tmpError;
+
+    // Get the customer information
+    if (!LookupCustomerID(CurrentRecord))
+    {
+      // we could not identify the customer that has to be charged for this event
+      tmpError = new RecordError("ERR_CUSTOMER_NOT_FOUND", ErrorType.SPECIAL);
+      CurrentRecord.addError(tmpError);
+    }
+    else if(!LookupProduct(CurrentRecord))
+    {
+      // we cannot find the rateplan associated to the alias
+      tmpError = new RecordError("ERR_RATEPLAN_NOT_FOUND", ErrorType.SPECIAL);
+      CurrentRecord.addError(tmpError);
+    }
+
+    return r;
+  }
+
+ /**
+  * This is called when an error detail record is encountered.
+  */
+  @Override
+  public IRecord procErrorRecord(IRecord r)
+  {
+    return null;
+  }
+
+  // -----------------------------------------------------------------------------
+  // ------------------------ Start of custom functions --------------------------
+  // -----------------------------------------------------------------------------
+
+ /**
+  * This looks up a customer record and the products associated with it,
+  * based on the validity of the customer and of the individual products.
+  *
+  * @param CurrentRecord
+  * @return 0 if everything went OK
+  */
+  private boolean LookupCustomerID(CDRRecord CurrentRecord)
+  {
+    Integer CustomerID = 0;
+
+    try
+    {
+      // get the customer ID for the alias
+      CustomerID = getCustId(CurrentRecord.GuidingKey,CurrentRecord.UTCEventDate);
+
+      if ((CustomerID != null) && (CustomerID.intValue() != 0))
+      {
+        // Set the internal user Id for managing the balance group
+        CurrentRecord.UserId = CustomerID;
+        return true;
+      }
+    }
+    catch (ProcessingException pe)
+    {
+      return false;
+    }
+
+    return false;
+  }
+
+   /**
+  * This looks up a customer record and the products associated with it,
+  * based on the validity of the customer and of the individual products.
+  *
+  * @param CurrentRecord
+  * @return 0 if everything went OK
+  */
+  private boolean LookupProduct(CDRRecord CurrentRecord)
+  {
+    try
+    {
+      // Get all the product for the customer (all subscriptions)
+      ProductList tmpProductList = CC.getProducts(CurrentRecord.UserId, CurrentRecord.GuidingKey,
+              CurrentRecord.UTCEventDate);
+
+      // we need to have at only 1 product for the rateplan (at the EventDate time)
+      if (tmpProductList != null && tmpProductList.getProductCount()== 1)
+      {
+        CustProductInfo product=tmpProductList.getProduct(0);
+
+        CurrentRecord.UserTariff=product.getProductID();
+        CurrentRecord.getChargePacket(0).RatePlanName=CurrentRecord.UserTariff;
+        CurrentRecord.getChargePacket(0).SubscriptionID=CurrentRecord.GuidingKey;
+        // TO DO: we might want to hardcode the time model if we want to use always the
+        // same no matter what the customer-specific rateplan is
+        CurrentRecord.getChargePacket(0).TimeModel=CurrentRecord.UserTariff;
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    catch (ProcessingException pe)
+    {
+      return false;
+    }
+  }
+
+ /**
+  * This looks up a customer record and the products associated with it,
+  * based on the validity of the customer and of the individual products.
+  *
+  * @param CurrentRecord
+  * @return 0 if everything went OK
+  */
+  private boolean LookupERA(CDRRecord CurrentRecord,String key)
+  {
+    try
+    {
+      String reseller = getERA(CurrentRecord.GuidingKey, key, CurrentRecord.UTCEventDate);
+
+      if (reseller==null || reseller.length()==0)
+      {
+        return false;
+      }
+      CurrentRecord.Reseller=reseller;
+    }
+    catch (ProcessingException pe)
+    {
+      return false;
+    }
+
+    return true;
+  }
+}
+

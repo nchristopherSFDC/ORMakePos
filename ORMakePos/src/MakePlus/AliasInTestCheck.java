@@ -1,0 +1,66 @@
+package MakePlus;
+
+import OpenRate.process.AbstractRegexMatch;
+import OpenRate.record.IRecord;
+
+/**
+ * This module inspects records with an error, and sends the error record to
+ * the output that is defined in the suspense map. This allows the categorisation
+ * of errors.
+ *
+ * @author afzaal
+ */
+public class AliasInTestCheck
+  extends AbstractRegexMatch
+{
+  // this is the CVS version info
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: AliasInTestCheck.java,v $, $Revision: 1.3 $, $Date: 2011/07/21 20:30:23 $";
+
+  public static final String TEST_RESELLER="Test";
+  
+	// this is used for the lookup
+  String[] tmpSearchParameters = new String[1];
+
+	/**
+	  * Default Constructor
+	  */
+  public AliasInTestCheck()
+  {
+    super();
+  }
+
+  @Override
+  public IRecord procValidRecord(IRecord r)
+  {
+	  String RegexGroup;
+    String RegexResult;
+    CDRRecord CurrentRecord;
+
+    CurrentRecord = (CDRRecord) r;
+
+    RegexGroup = "DEF";
+    tmpSearchParameters[0] = CurrentRecord.GuidingKey;
+    RegexResult = getRegexMatch(RegexGroup,tmpSearchParameters);
+
+    if (!RegexResult.equalsIgnoreCase("NOMATCH"))
+    { // if the alias is in the table, then it's a test reseller
+      CurrentRecord.Reseller=TEST_RESELLER;
+      CurrentRecord.AliasStatus = "Test Live";
+    }
+        CurrentRecord.AliasStatus = "Live";
+
+	  return r;
+  }
+
+ /**
+  * Skip error record processing
+  *
+  * @param r The record we are working on
+  * @return The processed record
+  */
+  @Override
+  public IRecord procErrorRecord(IRecord r)
+  {
+    return r;
+  }
+}

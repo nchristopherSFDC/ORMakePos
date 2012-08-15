@@ -1,0 +1,89 @@
+package MakePlus;
+
+import OpenRate.adapter.jdbc.JDBCBatchOutputAdapter;
+import OpenRate.adapter.jdbc.JDBCOutputAdapter;
+import OpenRate.record.DBRecord;
+import OpenRate.record.IRecord;
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ *
+ * @author IanAdmin
+ */
+public class RatedOutput extends JDBCBatchOutputAdapter
+{
+  // this is the CVS version info
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: RatedOutput.java,v $, $Revision: 1.10 $, $Date: 2011/07/19 18:36:46 $";
+
+  /** Creates a new instance of DBOutput */
+  public RatedOutput()
+  {
+    super();
+  }
+
+  /**
+   * We transform the records here so that they are ready to output making any
+   * specific changes to the record that are necessary to make it ready for
+   * output.
+   *
+   * As we are using the JDBCOutput adapter, we should transform the records
+   * into DBRecords, storing the data to be written using the SetData() method.
+   * This means that we do not have to know about the internal workings of the
+   * output adapter.
+   *
+   * Note that this is just undoing the transformation that we did in the input
+   * adapter.
+   */
+    @Override
+    public Collection<IRecord> procValidRecord(IRecord r)
+    {
+      DBRecord tmpDataRecord;
+      CDRRecord tmpInRecord;
+
+      Collection<IRecord> Outbatch;
+      Outbatch = new ArrayList<IRecord>();
+      tmpInRecord = (CDRRecord)r;
+      tmpDataRecord = new DBRecord();
+      tmpDataRecord.setOutputColumnCount(24);
+      tmpDataRecord.setOutputColumnString(0,tmpInRecord.Type);
+      tmpDataRecord.setOutputColumnString(1,tmpInRecord.Service);
+      tmpDataRecord.setOutputColumnString(2,tmpInRecord.Direction);
+      tmpDataRecord.setOutputColumnString(3,tmpInRecord.Network);
+      tmpDataRecord.setOutputColumnString(4,tmpInRecord.RemoteNetwork);
+      tmpDataRecord.setOutputColumnString(5,tmpInRecord.RemoteSwitch);
+      tmpDataRecord.setOutputColumnString(6,tmpInRecord.PortingPrefix);
+      tmpDataRecord.setOutputColumnDate  (7,tmpInRecord.start_date);
+      tmpDataRecord.setOutputColumnString(8,tmpInRecord.ANumberNorm);
+      tmpDataRecord.setOutputColumnString(9,tmpInRecord.BNumberNorm);
+      tmpDataRecord.setOutputColumnString(10,tmpInRecord.Caller);
+      tmpDataRecord.setOutputColumnDouble(11,tmpInRecord.Duration);
+      tmpDataRecord.setOutputColumnDouble(12,tmpInRecord.retailPrice);
+      tmpDataRecord.setOutputColumnDouble(13,tmpInRecord.wholeSalePrice);
+      tmpDataRecord.setOutputColumnDouble(14,tmpInRecord.localPolo);
+      tmpDataRecord.setOutputColumnDouble(15,tmpInRecord.localRolo);
+      tmpDataRecord.setOutputColumnDouble(16,tmpInRecord.localTransit);
+      tmpDataRecord.setOutputColumnDouble(17,tmpInRecord.remotePolo);
+      tmpDataRecord.setOutputColumnDouble(18,tmpInRecord.remoteRolo);
+      tmpDataRecord.setOutputColumnDouble(19,tmpInRecord.remoteTransit);
+      tmpDataRecord.setOutputColumnString(20,tmpInRecord.Reseller);
+      tmpDataRecord.setOutputColumnString(21,tmpInRecord.FinancialCode);
+      tmpDataRecord.setOutputColumnString(22,tmpInRecord.AggregationID);
+      tmpDataRecord.setOutputColumnString(23,tmpInRecord.callReference);
+
+      Outbatch.add((IRecord)tmpDataRecord);
+
+      return Outbatch;
+   }
+
+  /**
+   * Handle any error records here so that they are ready to output making any
+   * specific changes to the record that are necessary to make it ready for
+   * output.
+   */
+    @Override
+    public Collection<IRecord> procErrorRecord(IRecord r)
+    {
+      return null;
+    }
+}

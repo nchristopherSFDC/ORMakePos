@@ -1,0 +1,189 @@
+package MakePlus;
+
+import OpenRate.record.ErrorType;
+import OpenRate.record.IError;
+import OpenRate.record.RatingRecord;
+import OpenRate.record.RecordError;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+ * basic implementation of a record that will have to be aggregated into the balance table
+ * @author marco
+ */
+public class BalanceRecord extends RatingRecord
+{
+  // this is the CVS version info
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: BalanceRecord.java,v $, $Revision: 1.9 $, $Date: 2011/05/06 15:36:06 $";
+
+    private static final String INPUT_DELIMITER = ";";
+    public static final int IDX_USER = 1;
+    public static final int IDX_DATE = 2;
+    public static final int IDX_AGG_ID = 3;
+    public static final int IDX_FIN_CD = 4;
+    public static final int IDX_COUNT = 5;
+    public static final int IDX_RETAIL = 6;
+    public static final int IDX_WHOLESALE = 7;
+    public static final int IDX_REMOTEPOLO = 8;
+    public static final int IDX_REMOTEROLO = 9;
+    public static final int IDX_LOCALPOLO = 10;
+    public static final int IDX_LOCALROLO = 11;
+    public static final int IDX_LOCALTRANSIT = 12;
+    public static final int IDX_REMOTETRANSIT = 13;
+
+  public String User;
+  public String Financial_Code;
+  public String Date;
+  public String AggID;
+  public String Count;
+  public double RetailCost;
+  public double WholeSaleCost;
+  public double RemotePolo;
+  public double RemoteRolo;
+  public double LocalPolo;
+  public double LocalRolo;
+  public double LocalTransit;
+  public double RemoteTransit;
+
+  public BalanceRecord(String user,String date,double newBal)
+  {
+    this.User=user;
+    this.Date=date;
+    this.RetailCost=newBal;
+  }
+
+  public BalanceRecord(String data)
+  {
+    this.OriginalData=data;
+    this.fields = this.getOriginalData().split(INPUT_DELIMITER);
+  }
+
+  public boolean performFieldValidation(String moduleName)
+  {
+    if (fields.length<5)
+    {
+      RecordError tmpError = new RecordError("ERR_INVALID_FIELD_NUMBER",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("Balance mapping");
+      tmpError.setErrorDescription("Invalid Number of Fields");
+      addError(tmpError);
+      return false;
+    }
+    if (fields[IDX_USER]==null || fields[IDX_USER].length()==0)
+    {
+      RecordError tmpError = new RecordError("ERR_MISSING_USER",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("Balance mapping");
+      tmpError.setErrorDescription("Missing user");
+      addError(tmpError);
+      return false;
+    }
+    if (fields[IDX_DATE]==null || fields[IDX_DATE].length()==0)
+    {
+      RecordError tmpError = new RecordError("ERR_MISSING_DATE",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("Balance mapping");
+      tmpError.setErrorDescription("Missing date");
+      addError(tmpError);
+      return false;
+    }
+    if (fields[IDX_AGG_ID]==null || fields[IDX_AGG_ID].length()==0)
+    {
+      RecordError tmpError = new RecordError("ERR_MISSING_AGG_ID",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("Balance mapping");
+      tmpError.setErrorDescription("Missing aggregatition ID");
+      addError(tmpError);
+      return false;
+    }
+    if (fields[IDX_FIN_CD]==null || fields[IDX_FIN_CD].length()==0)
+    {
+      RecordError tmpError = new RecordError("ERR_FIN_CD_MISSING",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("Balance mapping");
+      tmpError.setErrorDescription("Missing financial code");
+      addError(tmpError);
+      return false;
+    }
+    if (fields[IDX_COUNT]==null || fields[IDX_COUNT].length()==0)
+    {
+      RecordError tmpError = new RecordError("ERR_COUNT_MISSING",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("Balance mapping");
+      tmpError.setErrorDescription("Count Information Missing");
+      addError(tmpError);
+      return false;
+    }
+
+    try
+    {
+      Double retail = Double.parseDouble(fields[IDX_RETAIL]);
+      Double wholesale = Double.parseDouble(fields[IDX_WHOLESALE]);
+      Double rp = Double.parseDouble(fields[IDX_REMOTEPOLO]);
+      Double rr = Double.parseDouble(fields[IDX_REMOTEROLO]);
+      Double lp = Double.parseDouble(fields[IDX_LOCALPOLO]);
+      Double lr = Double.parseDouble(fields[IDX_LOCALROLO]);
+      Double lt = Double.parseDouble(fields[IDX_LOCALTRANSIT]);
+      Double rt = Double.parseDouble(fields[IDX_REMOTETRANSIT]);
+      this.User=fields[IDX_USER];
+      this.Date=fields[IDX_DATE];
+      this.AggID=fields[IDX_AGG_ID];
+      this.Financial_Code=fields[IDX_FIN_CD];
+      this.Count=fields[IDX_COUNT];
+      this.RetailCost=retail.doubleValue();
+      this.WholeSaleCost=wholesale.doubleValue();
+      this.RemotePolo=rp.doubleValue();
+      this.RemoteRolo=rr.doubleValue();
+      this.LocalPolo=lp.doubleValue();
+      this.LocalRolo=lr.doubleValue();
+      this.LocalTransit=lt.doubleValue();
+      this.RemoteTransit=rt.doubleValue();
+    }
+    catch (NumberFormatException e)
+    {
+      RecordError tmpError = new RecordError("ERR_INVALID_CAST",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("Balance mapping");
+      tmpError.setErrorDescription("Balance invalid");
+      addError(tmpError);
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Return the dump-ready data
+   *
+   * @return The dump info strings
+   */
+  public ArrayList<String> getDumpInfo()
+  {
+    ArrayList<String> tmpDumpList = null;
+    tmpDumpList = new ArrayList<String>();
+
+    // Format the fields
+    tmpDumpList.add("============ BEGIN RECORD ============");
+    tmpDumpList.add("  Record Number   = <" + this.RecordNumber + ">");
+    tmpDumpList.add("  Output Streams  = <" + this.getOutputs() + ">");
+    tmpDumpList.add("--------------------------------------");
+    tmpDumpList.add("  User            = <" + this.User + ">");
+    tmpDumpList.add("  Date            = <" + this.Date + ">");
+    tmpDumpList.add("  AggID           = <" + this.AggID + ">");
+    tmpDumpList.add("  Financial Code  = <" + this.Financial_Code + ">");
+    tmpDumpList.add("  Retail Cost     = <" + this.RetailCost + ">");
+    tmpDumpList.add("  Wholesale Cost  = <" + this.WholeSaleCost + ">");
+    tmpDumpList.add("  Remote Polo     = <" + this.RemotePolo + ">");
+    tmpDumpList.add("  Remote Rolo     = <" + this.RemoteRolo + ">");
+    tmpDumpList.add("  Local Polo      = <" + this.LocalPolo + ">");
+    tmpDumpList.add("  Local Rolo      = <" + this.LocalRolo + ">");
+    tmpDumpList.add("  Local Transit   = <" + this.LocalTransit + ">");
+    tmpDumpList.add("  Remote Transit  = <" + this.RemoteTransit + ">");
+    tmpDumpList.add("  Count           = <" + this.Count + ">");
+
+    Iterator<IError> it = this.getErrors().iterator();
+    while (it.hasNext())
+    {
+      IError err = it.next();
+      tmpDumpList.add("------------ Begin Error -------------");
+      tmpDumpList.add("  Message:     " + err.getMessage());
+      tmpDumpList.add("  Set by:      " + err.getModuleName());
+      tmpDumpList.add("------------ End Error ---------------");
+    }
+
+    return tmpDumpList;
+  }
+}

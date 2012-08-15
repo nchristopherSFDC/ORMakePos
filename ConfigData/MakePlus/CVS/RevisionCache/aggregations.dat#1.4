@@ -1,0 +1,90 @@
+SCENARIO;DailyCharge;Count the daily events per user
+KEY;DailyCharge;Aggregate
+GROUPINGFIELDOFFSET;DailyCharge;1
+GROUPINGFIELDOFFSET;DailyCharge;2
+GROUPINGFIELDOFFSET;DailyCharge;3
+GROUPINGFIELDOFFSET;DailyCharge;4
+OPERATION;DailyCharge;COUNT
+INPFIELDOFFSET;DailyCharge;4
+OUTPUTFILE;DailyCharge;_DailyCharge.txt
+SCENARIO;DailyChargeRT;Aggregate the daily Retail charges per user
+KEY;DailyChargeRT;Aggregate
+GROUPINGFIELDOFFSET;DailyChargeRT;1
+GROUPINGFIELDOFFSET;DailyChargeRT;2
+GROUPINGFIELDOFFSET;DailyChargeRT;3
+GROUPINGFIELDOFFSET;DailyChargeRT;4
+OPERATION;DailyChargeRT;SUM
+#OUTPUTFILE;DailyChargeRT;_DailyChargeRT.txt
+INPFIELDOFFSET;DailyChargeRT;5
+SCENARIO;DailyChargeWS;Aggregate the daily Wholesale charges per user
+KEY;DailyChargeWS;Aggregate
+GROUPINGFIELDOFFSET;DailyChargeWS;1
+GROUPINGFIELDOFFSET;DailyChargeWS;2
+GROUPINGFIELDOFFSET;DailyChargeWS;3
+GROUPINGFIELDOFFSET;DailyChargeWS;4
+OPERATION;DailyChargeWS;SUM
+#OUTPUTFILE;DailyChargeWS;_DailyChargeWS.txt
+INPFIELDOFFSET;DailyChargeWS;6
+SCENARIO;DailyChargeRP;Aggregate the daily RemotePolo charges per user
+KEY;DailyChargeRP;Aggregate
+GROUPINGFIELDOFFSET;DailyChargeRP;1
+GROUPINGFIELDOFFSET;DailyChargeRP;2
+GROUPINGFIELDOFFSET;DailyChargeRP;3
+GROUPINGFIELDOFFSET;DailyChargeRP;4
+OPERATION;DailyChargeRP;SUM
+#OUTPUTFILE;DailyChargeRP;_DailyChargeRP.txt
+INPFIELDOFFSET;DailyChargeRP;7
+SCENARIO;DailyChargeRR;Aggregate the daily RemoteRolo charges per user
+KEY;DailyChargeRR;Aggregate
+GROUPINGFIELDOFFSET;DailyChargeRR;1
+GROUPINGFIELDOFFSET;DailyChargeRR;2
+GROUPINGFIELDOFFSET;DailyChargeRR;3
+GROUPINGFIELDOFFSET;DailyChargeRR;4
+OPERATION;DailyChargeRR;SUM
+#OUTPUTFILE;DailyChargeRR;_DailyChargeRR.txt
+INPFIELDOFFSET;DailyChargeRR;8
+SCENARIO;DailyChargeLP;Aggregate the daily LocalPolo charges per user
+KEY;DailyChargeLP;Aggregate
+GROUPINGFIELDOFFSET;DailyChargeLP;1
+GROUPINGFIELDOFFSET;DailyChargeLP;2
+GROUPINGFIELDOFFSET;DailyChargeLP;3
+GROUPINGFIELDOFFSET;DailyChargeLP;4
+OPERATION;DailyChargeLP;SUM
+#OUTPUTFILE;DailyChargeLP;_DailyChargeLP.txt
+INPFIELDOFFSET;DailyChargeLP;9
+SCENARIO;DailyChargeLR;Aggregate the daily LocalRolo charges per user
+KEY;DailyChargeLR;Aggregate
+GROUPINGFIELDOFFSET;DailyChargeLR;1
+GROUPINGFIELDOFFSET;DailyChargeLR;2
+GROUPINGFIELDOFFSET;DailyChargeLR;3
+GROUPINGFIELDOFFSET;DailyChargeLR;4
+OPERATION;DailyChargeLR;SUM
+#OUTPUTFILE;DailyChargeLR;_DailyChargeLR.txt
+INPFIELDOFFSET;DailyChargeLR;10
+SCENARIO;DailyChargeLT;Aggregate the daily LocalTransit charges per user
+KEY;DailyChargeLT;Aggregate
+GROUPINGFIELDOFFSET;DailyChargeLT;1
+GROUPINGFIELDOFFSET;DailyChargeLT;2
+GROUPINGFIELDOFFSET;DailyChargeLT;3
+GROUPINGFIELDOFFSET;DailyChargeLT;4
+OPERATION;DailyChargeLT;SUM
+#OUTPUTFILE;DailyChargeLT;_DailyChargeLT.txt
+INPFIELDOFFSET;DailyChargeLT;11
+SCENARIO;DailyChargeRTT;Aggregate the daily RemoteTransit charges per user
+KEY;DailyChargeRTT;Aggregate
+GROUPINGFIELDOFFSET;DailyChargeRTT;1
+GROUPINGFIELDOFFSET;DailyChargeRTT;2
+GROUPINGFIELDOFFSET;DailyChargeRTT;3
+GROUPINGFIELDOFFSET;DailyChargeRTT;4
+OPERATION;DailyChargeRTT;SUM
+#OUTPUTFILE;DailyChargeRTT;_DailyChargeRTT.txt
+INPFIELDOFFSET;DailyChargeRTT;12
+MERGEOUTPUT;DailyCharge;DailyCharge;1
+MERGEOUTPUT;DailyChargeRT;DailyCharge;2
+MERGEOUTPUT;DailyChargeWS;DailyCharge;3
+MERGEOUTPUT;DailyChargeRP;DailyCharge;4
+MERGEOUTPUT;DailyChargeRR;DailyCharge;5
+MERGEOUTPUT;DailyChargeLP;DailyCharge;6
+MERGEOUTPUT;DailyChargeLR;DailyCharge;7
+MERGEOUTPUT;DailyChargeLT;DailyCharge;8
+MERGEOUTPUT;DailyChargeRTT;DailyCharge;9

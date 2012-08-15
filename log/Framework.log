@@ -1,0 +1,37 @@
+2011-08-23 16:21:00,484 INFO  - :::: OpenRate Started ::::
+2011-08-23 16:21:21,125 INFO  - Creating DataSource <OpenRateDB> using driver <com.microsoft.sqlserver.jdbc.SQLServerDriver> from URL <jdbc:sqlserver://172.16.1.76;databaseName=Ormakeplus;>
+2011-08-23 16:21:29,625 INFO  - Successfully created DataSource <OpenRateDB>
+2011-08-23 16:21:29,640 INFO  - Creating DataSource <PLATFORM_CDR_DB> using driver <com.microsoft.sqlserver.jdbc.SQLServerDriver> from URL <jdbc:sqlserver://172.16.1.76;databaseName=Platform_CDRs_DB;>
+2011-08-23 16:21:29,703 INFO  - Successfully created DataSource <PLATFORM_CDR_DB>
+2011-08-23 16:21:29,750 INFO  - Starting CacheFactory initialisation
+2011-08-23 16:21:29,953 INFO  - Created Cacheable Class <NormCache>
+2011-08-23 16:21:29,953 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-08-23 16:21:29,953 INFO  - Starting cache loading for <NormCache>
+2011-08-23 16:21:29,953 INFO  - Starting Regex Match Cache Loading from DB for <NormCache>
+2011-08-23 16:21:30,000 INFO  - Using defined key factor for regex cache <NormCache>. Using Key = <1> and Result = <2>
+2011-08-23 16:21:30,046 INFO  - Regex Map Data Loading completed. <11> configuration lines loaded for <NormCache> from <OpenRateDB>
+2011-08-23 16:21:30,046 INFO  - Loaded  Cacheable Class <NormCache>...
+2011-08-23 16:21:30,078 INFO  - Created Cacheable Class <CustomerCache>
+2011-08-23 16:21:30,078 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-08-23 16:21:30,078 INFO  - Starting cache loading for <CustomerCache>
+2011-08-23 16:21:30,078 INFO  - Starting Customer Login Cache Loading from DB
+2011-08-23 16:21:31,281 INFO  - Customer Cache Alias Loading: <10000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:31,968 INFO  - Customer Cache Alias Loading: <20000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:34,453 INFO  - Customer Cache Alias Loading: <30000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:36,265 INFO  - Customer Cache Alias Loading: <40000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:38,015 INFO  - Customer Cache Alias Loading: <50000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:38,718 INFO  - Customer Cache Alias Loading: <60000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:39,843 INFO  - Customer Cache Alias Loading: <70000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:41,015 INFO  - Customer Cache Alias Loading: <80000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:41,703 INFO  - Customer Cache Alias Loading: <90000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:43,781 INFO  - Customer Cache Alias Loading: <100000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:44,406 INFO  - Customer Cache Alias Loading: <110000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:45,656 INFO  - Customer Cache Alias Loading: <120000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:46,406 INFO  - Customer Cache Alias Loading: <130000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:47,515 INFO  - Customer Cache Alias Loading: <140000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:48,500 INFO  - Customer Cache Alias Loading: <150000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:48,578 INFO  - Login Loading completed. 152019 configuration lines loaded from <OpenRateDB>
+2011-08-23 16:21:48,656 INFO  - Audit segment Loading completed. 509 configuration lines loaded from <OpenRateDB>
+2011-08-23 16:21:52,250 INFO  - Customer Cache Product Loading: <10000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:21:57,890 INFO  - Customer Cache Product Loading: <20000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-08-23 16:22:03,000 INFO  - Customer Cache Product Loading: <30000> configuration lines loaded for <CustomerCache> from <OpenRateDB>

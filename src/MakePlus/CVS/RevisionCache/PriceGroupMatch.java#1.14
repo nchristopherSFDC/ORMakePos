@@ -1,0 +1,175 @@
+package MakePlus;
+
+import OpenRate.process.AbstractRegexMatch;
+import OpenRate.record.ChargePacket;
+import OpenRate.record.IRecord;
+import OpenRate.record.RecordError;
+import OpenRate.record.ErrorType;
+import java.util.ArrayList;
+
+/**
+ * 
+ */
+public class PriceGroupMatch
+  extends AbstractRegexMatch
+{
+  // this is the CVS version info
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: PriceGroupMatch.java,v $, $Revision: 1.14 $, $Date: 2011/08/15 15:27:06 $";
+
+  // String key used for searching
+  private String[] tmpSearchParameters = new String[10];
+    private ArrayList<String> RegexResult;
+
+  // -----------------------------------------------------------------------------
+  // ------------------ Start of inherited Plug In functions ---------------------
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Number mappings
+   * +----------------------+-------------+-------------:----------+
+   * | Scenario             :      A      :      B      : NORM/INV |
+   * +----------------------+-------------+-------------:----------+
+   * | Inbound Cost Local   : Don't care  : Destination :   NORM   |
+   * | Inbound Retail       : Don't care  : NumberType  :   INV    |
+   * | Inbound Wholesale    : Don't Care  : NumberType  :   INV    |
+   * | Inbound Cost Remote  : NumberType  : Destination :   NORM   |
+   * | Inbound Trans Local  : Don't Care  : Destination :   NORM   |
+   * | Inbound Trans Remote : NumberType  : Destination :   NORM   |
+   * +----------------------+-------------+-------------:----------+
+   * | Outbound Cost Local  : Don't care  : Destination :   NORM   |
+   * | Outbound Retail      : NumberType  : Destination :   NORM   |
+   * | Outbound Wholesale   : NumberType  : Destination :   NORM   |
+   * | Outbound Cost Remote : NumberType  : Don't Care  :   NORM   |
+   * | Outbound Trans Local : NumberType  : Don't care  :   NORM   |
+   * | Outbound Trans Remote: NumberType  : Don't care  :   NORM   |
+   * +----------------------+-------------+-------------:----------+
+   */
+  @Override
+  public IRecord procValidRecord(IRecord r)
+  {
+    String RegexGroup;
+    
+    int Index;
+    RecordError tmpError;
+    ChargePacket tmpCP;
+    CDRRecord CurrentRecord = (CDRRecord) r;
+
+    if (CurrentRecord.RECORD_TYPE == CDRRecord.CDR_RECORD)
+    {        
+      // Prepare the paramters to perform the search on
+      tmpSearchParameters[3]=CurrentRecord.Network;
+      tmpSearchParameters[4]=CurrentRecord.Direction;
+      tmpSearchParameters[5]=CurrentRecord.RemoteNetwork;
+      tmpSearchParameters[6]=CurrentRecord.PortingPrefix;
+      tmpSearchParameters[7]=CurrentRecord.Type;
+      tmpSearchParameters[8]=CurrentRecord.Service;
+      tmpSearchParameters[9]=CurrentRecord.RemoteSwitch;
+
+      for (Index = 0; Index < CurrentRecord.getChargePacketCount(); Index++)
+      {
+        tmpCP = CurrentRecord.getChargePacket(Index);
+        
+       /* if (!(CurrentRecord.NumberType.equals("9999")) & (CurrentRecord.Direction.equals("IN")) & ((tmpCP.PacketType.equals("R")) | (tmpCP.PacketType.equals("W"))))
+        {
+          // Inverted charging for
+          tmpSearchParameters[0]=CurrentRecord.NumberTypeNorm;
+          tmpSearchParameters[1]=tmpCP.TimeResult;
+          tmpSearchParameters[2]=tmpCP.ZoneResult;
+        }
+        else*/
+        //{
+          tmpSearchParameters[0]=tmpCP.ZoneResult;
+          tmpSearchParameters[1]=tmpCP.TimeResult;
+          tmpSearchParameters[2]=CurrentRecord.NumberTypeNorm;
+        //}
+
+        // Get the specific rate plan name to use
+        RegexGroup = getRatePlan(tmpCP.RatePlanName, tmpCP.PacketType);
+        tmpCP.RatePlanName = RegexGroup; 
+
+        // Look up the rate model to use
+        RegexResult = getRegexMatchWithChildData(RegexGroup,tmpSearchParameters);
+
+        // See if we get a match on the specific plan
+        if (RegexResult.get(0).equals("NOMATCH"))
+        {
+          // No match on the specific plan - try to look if there is a base rateplan
+          if ((CurrentRecord.BaseRateplan != null) && (CurrentRecord.BaseRateplan.length()>0))
+          {
+            RegexGroup = getRatePlan(CurrentRecord.BaseRateplan, tmpCP.PacketType);
+            tmpCP.RatePlanName = RegexGroup; 
+            //RegexResult = getRegexMatch(RegexGroup,tmpSearchParameters);
+            
+            RegexResult = getRegexMatchWithChildData(RegexGroup,tmpSearchParameters);
+            if (RegexResult.get(0).equals("NOMATCH"))
+            {
+              tmpError = new RecordError("ERR_PRICE_MODEL_NOT_FOUND_"+CurrentRecord.getChargePacket(Index).PacketType, ErrorType.DATA_NOT_FOUND);
+              tmpError.setModuleName(getSymbolicName());
+              tmpError.setErrorDescription("Could not find price model for base rate plan:"+CurrentRecord.BaseRateplan + " charge packet type " + CurrentRecord.getChargePacket(Index).PacketType);
+              CurrentRecord.addError(tmpError);
+              return r;
+            }
+            else
+            {
+              // falling back on the base rateplan
+              tmpCP.RatePlanName = CurrentRecord.BaseRateplan;
+              tmpCP.PriceGroup = RegexResult.get(0);
+              tmpCP.PriceModel = RegexResult.get(0);
+            }
+          }
+        }
+        else
+        {
+          tmpCP.PriceGroup = RegexResult.get(0);
+          tmpCP.PriceModel = RegexResult.get(0);
+        }
+        
+        // Set the description
+        if (tmpCP.PacketType.equals("W")){
+            CurrentRecord.WholesaleDescription = RegexResult.get(1);
+        }
+        else if (tmpCP.PacketType.equals("R")){
+            CurrentRecord.RetailDescription = RegexResult.get(1);
+        }
+        else if (tmpCP.PacketType.equals("LC")){
+            CurrentRecord.LocalCostDescription = RegexResult.get(1);
+        }
+        else if (tmpCP.PacketType.equals("RC")){
+            CurrentRecord.RemoteCostDescription = RegexResult.get(1);
+        }
+        else if (tmpCP.PacketType.equals("LT")){
+            CurrentRecord.LocalTransitDescription = RegexResult.get(1);
+        }
+        else if (tmpCP.PacketType.equals("RT")){
+            CurrentRecord.RemoteTransitDescription = RegexResult.get(1);
+        }
+      }
+    }
+
+    return r;
+  }
+
+ /**
+  * This is called when a data record with errors is encountered. You should do
+  * any processing here that you have to do for error records, e.g. stratistics,
+  * special handling, even error correction!
+  */
+  @Override
+  public IRecord procErrorRecord(IRecord r)
+  {
+    return r;
+  }
+  
+  public String getRatePlan(String ratePlanName, String packetType)
+  {
+    if (packetType.equals("R") | packetType.equals("W"))
+    {
+      return ratePlanName + "_" + packetType;
+    }
+    else
+    {
+      return packetType;
+    }
+  }
+}
+

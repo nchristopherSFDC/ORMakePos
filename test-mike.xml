@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+	<request table='events' orderby='alias,eventdate'>
+		<aggregates>
+		   	<aggregate fieldname='eventdate' type='date' formatting='DD' />
+		   	<aggregate fieldname='alias' type='standard' />
+		   	<aggregate fieldname='cdrtpe' type='standard' />
+		   	<filter fieldname='alias' operator='IN'>213213,132131321,32131</filter>
+		</aggregates>
+		<filters>
+        	   	<filter operand='OR' fieldname='alias' operator='IN' value='079734603,323232,43254545432,21321321321'>
+				<filter operand='AND' fieldname='eventbilled' operator='='>false</filter>
+			</filter>
+			<filter operand='OR' fieldname='eventbilled' operator='!='>false</filter>
+		</filters>
+		<fields>
+        	        <field>description</field>
+			<field>acode</field>
+		</fields>
+	</request>
+
+<!--
+End Result ->
+SELECT eventdate,alias,cdrtype,description,acode from events
+WHERE (alias IN (079734603,323232,43254545432,21321321321) AND eventbilled = false)
+OR eventbilled != false
+GROUP BY eventdate,alias, cdrtype
+having alias IN (213213,132131321,32131)
+ORDER BY alias,eventdate-->
+
+<!--
+SELECT description,acode,eventdate,alias,cdrtpe from events GROUP BY eventdate,alias,cdrtpe having alias IN(213213,132131321,32131) 
+ORDER BY alias,eventdate
+-->

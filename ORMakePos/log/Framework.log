@@ -1,0 +1,251 @@
+2011-10-25 10:45:01,062 INFO  - :::: OpenRate Started ::::
+2011-10-25 10:45:01,421 INFO  - Creating DataSource <OpenRateDB> using driver <com.microsoft.sqlserver.jdbc.SQLServerDriver> from URL <jdbc:sqlserver://172.16.1.76;databaseName=Ormakeplus;>
+2011-10-25 10:45:02,218 INFO  - Successfully created DataSource <OpenRateDB>
+2011-10-25 10:45:02,234 INFO  - Creating DataSource <PLATFORM_CDR_DB> using driver <com.microsoft.sqlserver.jdbc.SQLServerDriver> from URL <jdbc:sqlserver://172.16.1.76;databaseName=Platform_CDRs_DB;>
+2011-10-25 10:45:02,281 INFO  - Successfully created DataSource <PLATFORM_CDR_DB>
+2011-10-25 10:45:02,296 INFO  - Starting CacheFactory initialisation
+2011-10-25 10:45:02,312 INFO  - Created Cacheable Class <NormCache>
+2011-10-25 10:45:02,312 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:45:02,312 INFO  - Starting cache loading for <NormCache>
+2011-10-25 10:45:02,312 INFO  - Starting Regex Match Cache Loading from DB for <NormCache>
+2011-10-25 10:45:03,578 INFO  - Using defined key factor for regex cache <NormCache>. Using Key = <1> and Result = <2>
+2011-10-25 10:45:03,609 INFO  - Regex Map Data Loading completed. <11> configuration lines loaded for <NormCache> from <OpenRateDB>
+2011-10-25 10:45:03,609 INFO  - Loaded  Cacheable Class <NormCache>...
+2011-10-25 10:45:03,609 INFO  - Created Cacheable Class <CustomerCache>
+2011-10-25 10:45:03,609 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:45:03,609 INFO  - Starting cache loading for <CustomerCache>
+2011-10-25 10:45:03,609 INFO  - Starting Customer Alias Cache Loading from DB
+2011-10-25 10:45:11,078 INFO  - Customer Cache Alias Loading: <10000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:13,750 INFO  - Customer Cache Alias Loading: <20000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:15,968 INFO  - Customer Cache Alias Loading: <30000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:17,343 INFO  - Customer Cache Alias Loading: <40000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:18,968 INFO  - Customer Cache Alias Loading: <50000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:19,890 INFO  - Customer Cache Alias Loading: <60000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:20,546 INFO  - Customer Cache Alias Loading: <70000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:22,015 INFO  - Customer Cache Alias Loading: <80000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:24,156 INFO  - Customer Cache Alias Loading: <90000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:26,093 INFO  - Customer Cache Alias Loading: <100000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:29,640 INFO  - Customer Cache Alias Loading: <110000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:31,703 INFO  - Customer Cache Alias Loading: <120000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:33,156 INFO  - Customer Cache Alias Loading: <130000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:33,718 INFO  - Customer Cache Alias Loading: <140000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:34,781 INFO  - Customer Cache Alias Loading: <150000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:36,953 INFO  - Customer Cache Alias Loading: <160000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:39,468 INFO  - Customer Cache Alias Loading: <170000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:45:41,187 INFO  - Alias Loading completed. 178636 configuration lines loaded from <OpenRateDB>
+2011-10-25 10:45:43,875 INFO  - Audit segment Loading completed. 578 configuration lines loaded from <OpenRateDB>
+2011-10-25 10:45:56,515 INFO  - Customer Cache Product Loading: <10000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:46:04,671 INFO  - Customer Cache Product Loading: <20000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:46:21,609 INFO  - Customer Cache Product Loading: <30000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:46:35,812 INFO  - Customer Cache Product Loading: <40000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:46:41,265 INFO  - Customer Cache Product Loading: <50000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:46:47,203 INFO  - Customer Cache Product Loading: <60000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:47:04,656 INFO  - Customer Cache Product Loading: <70000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:47:19,718 INFO  - Customer Cache Product Loading: <80000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:47:33,015 INFO  - Customer Cache Product Loading: <90000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:48:03,578 INFO  - Customer Cache Product Loading: <100000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:48:17,640 INFO  - Customer Cache Product Loading: <110000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:48:35,515 INFO  - Customer Cache Product Loading: <120000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:48:50,531 INFO  - Customer Cache Product Loading: <130000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:48:57,328 INFO  - Customer Cache Product Loading: <140000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:49:28,546 INFO  - Customer Cache Product Loading: <150000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:49:37,062 INFO  - Customer Cache Product Loading: <160000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:49:43,640 INFO  - Customer Cache Product Loading: <170000> configuration lines loaded for <CustomerCache> from <OpenRateDB>
+2011-10-25 10:49:48,156 INFO  - Customer Cache Data Loading completed from <OpenRateDB>
+2011-10-25 10:49:48,156 INFO  - Alias Loaded:                  178636
+2011-10-25 10:49:48,156 INFO  - CustomerAudit Segments Loaded: 578
+2011-10-25 10:49:48,156 INFO  - Products Loaded:               178636
+2011-10-25 10:49:48,156 INFO  - ERAs Loaded:                   1
+2011-10-25 10:49:48,156 INFO  - Loaded  Cacheable Class <CustomerCache>...
+2011-10-25 10:49:48,156 INFO  - Created Cacheable Class <ZoneOriginCache>
+2011-10-25 10:49:48,171 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:49:48,171 INFO  - Starting cache loading for <ZoneOriginCache>
+2011-10-25 10:49:48,171 INFO  - Starting Best Match Cache Loading from DB for <ZoneOriginCache>
+2011-10-25 10:49:48,890 INFO  - Best Match Data Loading completed. <8> configuration lines loaded for <ZoneOriginCache> from <OpenRateDB>
+2011-10-25 10:49:48,890 INFO  - Loaded <3> base fields and <2> additional data fields
+2011-10-25 10:49:48,890 INFO  - Loaded  Cacheable Class <ZoneOriginCache>...
+2011-10-25 10:49:48,890 INFO  - Created Cacheable Class <ZoneDestinationCache>
+2011-10-25 10:49:48,890 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:49:48,890 INFO  - Starting cache loading for <ZoneDestinationCache>
+2011-10-25 10:49:48,890 INFO  - Starting Best Match Cache Loading from DB for <ZoneDestinationCache>
+2011-10-25 10:49:51,250 INFO  - Best Match Data Loading completed. <4388> configuration lines loaded for <ZoneDestinationCache> from <OpenRateDB>
+2011-10-25 10:49:51,250 INFO  - Loaded <3> base fields and <2> additional data fields
+2011-10-25 10:49:51,250 INFO  - Loaded  Cacheable Class <ZoneDestinationCache>...
+2011-10-25 10:49:51,250 INFO  - Created Cacheable Class <TimeCache>
+2011-10-25 10:49:51,250 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:49:51,250 INFO  - Starting cache loading for <TimeCache>
+2011-10-25 10:49:51,250 INFO  - Starting Time Model Cache Loading from DB for <TimeCache>
+2011-10-25 10:49:53,078 INFO  - Time Model Cache: <17> Checking Model intervals
+2011-10-25 10:49:53,078 INFO  - Time Model Cache: <17> Model intervals Loaded
+2011-10-25 10:49:53,078 INFO  - Time Model Cache: <52> Mappings Loaded
+2011-10-25 10:49:53,078 INFO  - Time Model Cache: <0> Days Loaded
+2011-10-25 10:49:53,078 INFO  - Time Model Data Loading completed from <OpenRateDB>
+2011-10-25 10:49:53,078 INFO  - Loaded  Cacheable Class <TimeCache>...
+2011-10-25 10:49:53,078 INFO  - Created Cacheable Class <PriceGroupCache>
+2011-10-25 10:49:53,078 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:49:53,078 INFO  - Starting cache loading for <PriceGroupCache>
+2011-10-25 10:49:53,078 INFO  - Starting Regex Match Cache Loading from DB for <PriceGroupCache>
+2011-10-25 10:49:55,015 INFO  - Using defined key factor for regex cache <PriceGroupCache>. Using Key = <10> and Result = <6>
+2011-10-25 10:49:57,609 INFO  - Regex Map Data Loading: <10000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:00,015 INFO  - Regex Map Data Loading: <20000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:02,031 INFO  - Regex Map Data Loading: <30000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:03,890 INFO  - Regex Map Data Loading: <40000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:06,484 INFO  - Regex Map Data Loading: <50000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:10,203 INFO  - Regex Map Data Loading: <60000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:13,468 INFO  - Regex Map Data Loading: <70000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:17,796 INFO  - Regex Map Data Loading: <80000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:19,921 INFO  - Regex Map Data Loading: <90000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:21,828 INFO  - Regex Map Data Loading: <100000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:25,031 INFO  - Regex Map Data Loading: <110000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:27,281 INFO  - Regex Map Data Loading: <120000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:29,093 INFO  - Regex Map Data Loading: <130000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:32,140 INFO  - Regex Map Data Loading: <140000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:33,734 INFO  - Regex Map Data Loading: <150000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:35,625 INFO  - Regex Map Data Loading: <160000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:37,312 INFO  - Regex Map Data Loading: <170000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:40,968 INFO  - Regex Map Data Loading: <180000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:44,546 INFO  - Regex Map Data Loading: <190000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:49,125 INFO  - Regex Map Data Loading: <200000> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:53,421 INFO  - Regex Map Data Loading completed. <206241> configuration lines loaded for <PriceGroupCache> from <OpenRateDB>
+2011-10-25 10:50:53,421 INFO  - Loaded  Cacheable Class <PriceGroupCache>...
+2011-10-25 10:50:53,453 INFO  - Created Cacheable Class <RateCache>
+2011-10-25 10:50:53,453 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:50:53,453 INFO  - Starting cache loading for <RateCache>
+2011-10-25 10:50:53,453 INFO  - Starting RUM Rate Cache Loading from DB for <RateCache>
+2011-10-25 10:50:53,453 INFO  - Starting Price Model Data Loading from DB for <RateCache>
+2011-10-25 10:50:59,109 INFO  - Price Model Data Loading completed. 21583 configuration lines loaded from <RateCache>
+2011-10-25 10:50:59,109 INFO  - Loaded  Cacheable Class <RateCache>...
+2011-10-25 10:50:59,109 INFO  - Created Cacheable Class <BaseRateplanCache>
+2011-10-25 10:50:59,109 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:50:59,109 INFO  - Starting cache loading for <BaseRateplanCache>
+2011-10-25 10:50:59,109 INFO  - Starting Regex Match Cache Loading from DB for <BaseRateplanCache>
+2011-10-25 10:50:59,328 INFO  - Using defined key factor for regex cache <BaseRateplanCache>. Using Key = <1> and Result = <1>
+2011-10-25 10:50:59,343 INFO  - Regex Map Data Loading completed. <41> configuration lines loaded for <BaseRateplanCache> from <OpenRateDB>
+2011-10-25 10:50:59,343 INFO  - Loaded  Cacheable Class <BaseRateplanCache>...
+2011-10-25 10:50:59,343 INFO  - Created Cacheable Class <FinancialCodeCache>
+2011-10-25 10:50:59,343 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:50:59,343 INFO  - Starting cache loading for <FinancialCodeCache>
+2011-10-25 10:50:59,343 INFO  - Starting Regex Match Cache Loading from DB for <FinancialCodeCache>
+2011-10-25 10:51:00,140 INFO  - Using defined key factor for regex cache <FinancialCodeCache>. Using Key = <1> and Result = <1>
+2011-10-25 10:51:00,156 INFO  - Regex Map Data Loading completed. <1> configuration lines loaded for <FinancialCodeCache> from <OpenRateDB>
+2011-10-25 10:51:00,156 INFO  - Loaded  Cacheable Class <FinancialCodeCache>...
+2011-10-25 10:51:00,156 INFO  - Created Cacheable Class <AliasInTestCache>
+2011-10-25 10:51:00,171 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:51:00,171 INFO  - Starting cache loading for <AliasInTestCache>
+2011-10-25 10:51:00,171 INFO  - Starting Regex Match Cache Loading from DB for <AliasInTestCache>
+2011-10-25 10:51:00,171 INFO  - Using defined key factor for regex cache <AliasInTestCache>. Using Key = <1> and Result = <1>
+2011-10-25 10:51:00,187 INFO  - Regex Map Data Loading completed. <0> configuration lines loaded for <AliasInTestCache> from <OpenRateDB>
+2011-10-25 10:51:00,187 INFO  - Loaded  Cacheable Class <AliasInTestCache>...
+2011-10-25 10:51:00,187 INFO  - Created Cacheable Class <SuspensePreparationCache>
+2011-10-25 10:51:00,187 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:51:00,187 INFO  - Starting cache loading for <SuspensePreparationCache>
+2011-10-25 10:51:00,187 INFO  - Starting Regex Match Cache Loading from DB for <SuspensePreparationCache>
+2011-10-25 10:51:01,312 INFO  - Using defined key factor for regex cache <SuspensePreparationCache>. Using Key = <1> and Result = <2>
+2011-10-25 10:51:01,328 INFO  - Regex Map Data Loading completed. <5> configuration lines loaded for <SuspensePreparationCache> from <OpenRateDB>
+2011-10-25 10:51:01,328 INFO  - Loaded  Cacheable Class <SuspensePreparationCache>...
+2011-10-25 10:51:01,343 INFO  - Created Cacheable Class <AggregationCache>
+2011-10-25 10:51:01,343 INFO  - Starting Aggregation Cache Configuration <AggregationCache>
+2011-10-25 10:51:01,359 INFO  - Aggregation Result Path <Data/MakePlus> set for <AggregationCache>
+2011-10-25 10:51:01,359 INFO  - Completed Aggregation Cache Configuration <AggregationCache>
+2011-10-25 10:51:01,359 INFO  - Loaded  Cacheable Class <AggregationCache>...
+2011-10-25 10:51:01,359 INFO  - Created Cacheable Class <DiscountCache>
+2011-10-25 10:51:01,359 INFO  - Cache <CacheFactory> is set to auto reload with a period of <0>
+2011-10-25 10:51:01,359 INFO  - Starting cache loading for <DiscountCache>
+2011-10-25 10:51:01,359 INFO  - Starting Regex Match Cache Loading from DB for <DiscountCache>
+2011-10-25 10:51:02,609 INFO  - Using defined key factor for regex cache <DiscountCache>. Using Key = <4> and Result = <6>
+2011-10-25 10:51:02,625 INFO  - Regex Map Data Loading completed. <1> configuration lines loaded for <DiscountCache> from <OpenRateDB>
+2011-10-25 10:51:02,625 INFO  - Loaded  Cacheable Class <DiscountCache>...
+2011-10-25 10:51:02,625 INFO  - Created Cacheable Class <BalCache>
+2011-10-25 10:51:02,625 INFO  - Starting cache loading for <BalCache>
+2011-10-25 10:51:02,625 INFO  - Starting Balance Cache Loading from DB for<BalCache>
+2011-10-25 10:51:02,640 INFO  - Balance Loading completed. 0 lines loaded from <OpenRateDB>
+2011-10-25 10:51:02,640 INFO  - Loaded  Cacheable Class <BalCache>...
+2011-10-25 10:51:02,640 INFO  - CacheFactory initialised
+2011-10-25 10:51:02,656 INFO  - *** Constructing Batch pipeline <RatingPipeline> ***
+2011-10-25 10:51:02,906 INFO  - Starting TransactionManager initialisation for pipeline <RatingPipeline>
+2011-10-25 10:51:02,921 INFO  - TransactionManager initialised
+2011-10-25 10:51:05,625 INFO  - *** Constructing Batch pipeline <RejectionPipeline> ***
+2011-10-25 10:51:05,625 WARN  - Starting pipeline <RejectionPipeline> in inactive state
+2011-10-25 10:51:05,671 INFO  - Starting TransactionManager initialisation for pipeline <RejectionPipeline>
+2011-10-25 10:51:05,671 INFO  - TransactionManager initialised
+2011-10-25 10:51:05,687 INFO  - *** Constructing Batch pipeline <BalLoader> ***
+2011-10-25 10:51:05,687 WARN  - Starting pipeline <BalLoader> in inactive state
+2011-10-25 10:51:05,765 INFO  - Starting TransactionManager initialisation for pipeline <BalLoader>
+2011-10-25 10:51:05,796 INFO  - TransactionManager initialised
+2011-10-25 10:51:05,953 INFO  - -----------------
+2011-10-25 10:51:05,953 INFO  - Start version map
+2011-10-25 10:51:05,953 INFO  -   AbstractAggregation                                         1.23      2011/08/24 20:15:34  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractBalanceHandlerPlugIn                                1.22      2011/07/03 11:26:11  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractBestMatch                                           1.40      2011/07/03 11:26:11  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractBuffer                                              1.27      2011/07/03 11:26:11  (OpenRate.buffer)
+2011-10-25 10:51:05,953 INFO  -   AbstractCustomerLookupAudited                               1.27      2011/08/30 06:05:16  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractInputAdapter                                        1.65      2011/07/03 11:26:21  (OpenRate.adapter)
+2011-10-25 10:51:05,953 INFO  -   AbstractOutputAdapter                                       1.66      2011/07/16 12:26:45  (OpenRate.adapter)
+2011-10-25 10:51:05,953 INFO  -   AbstractPlugIn                                              1.74      2011/07/03 18:47:26  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractRUMCPRateCalc                                       1.19      2011/07/03 11:26:10  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractRUMTimeMatch                                        1.21      2011/07/03 11:26:11  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractRateCalc                                            1.47      2011/07/03 11:26:11  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractRecord                                              1.38      2011/07/03 11:26:20  (OpenRate.record)
+2011-10-25 10:51:05,953 INFO  -   AbstractRegexMatch                                          1.42      2011/07/03 11:26:11  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractStubPlugIn                                          1.9       2011/07/03 11:26:11  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractSyncLoaderCache                                     1.49      2011/08/24 20:22:25  (OpenRate.cache.RegexMatchCache)
+2011-10-25 10:51:05,953 INFO  -   AbstractTimeMatch                                           1.30      2011/07/03 11:26:11  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractTransactionalInputAdapter                           1.44      2011/07/03 11:26:21  (OpenRate.adapter)
+2011-10-25 10:51:05,953 INFO  -   AbstractTransactionalPlugIn                                 1.26      2011/08/24 20:19:48  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   AbstractTransactionalSTOutputAdapter                        1.46      2011/07/03 11:20:51  (OpenRate.adapter)
+2011-10-25 10:51:05,953 INFO  -   Aggregation                                                 1.20      2011/09/30 17:17:42  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   AggregationCache                                            1.43      2011/07/03 11:26:11  (OpenRate.cache)
+2011-10-25 10:51:05,953 INFO  -   AliasInTestCheck                                            1.3       2011/07/21 20:30:23  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   ArrayListQueueBuffer                                        1.17      2011/07/03 11:26:11  (OpenRate.buffer)
+2011-10-25 10:51:05,953 INFO  -   AuditUtils                                                  1.15      2011/07/03 11:26:21  (OpenRate.audit)
+2011-10-25 10:51:05,953 INFO  -   BalDBOutputAdapter                                          1.12      2011/09/12 09:47:09  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   BalInputAdapter                                             1.2       2011/04/28 14:48:46  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   BalRejectOutputAdapter                                      1.2       2011/04/28 14:48:46  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   BalanceCache                                                1.44      2011/08/30 06:04:15  (OpenRate.cache)
+2011-10-25 10:51:05,953 INFO  -   BaseRateplanCheck                                           1.7       2011/09/11 23:06:54  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   C3P0DataSource                                              1.4       2011/07/19 17:40:23  (OpenRate.db)
+2011-10-25 10:51:05,953 INFO  -   CDRInputAdapterDB                                           1.2       2011/06/28 13:23:00  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   CDRRejectInputAdapterDB                                     1.1       2011/07/28 14:45:31  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   CacheFactory                                                1.58      2011/08/24 20:22:07  (OpenRate.cache)
+2011-10-25 10:51:05,953 INFO  -   CacheManager                                                1.24      2011/07/03 11:26:12  (OpenRate.cache)
+2011-10-25 10:51:05,953 INFO  -   ChargePacketCreation                                        1.7       2011/08/30 05:59:26  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   CustomerLookup                                              1.15      2011/09/12 09:47:09  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   DBRecord                                                    1.34      2011/07/15 16:54:43  (OpenRate.record)
+2011-10-25 10:51:05,953 INFO  -   DataSourceFactory                                           1.34      2011/07/03 11:26:21  (OpenRate.db)
+2011-10-25 10:51:05,953 INFO  -   DiscountLookup                                              1.4       2011/09/22 22:21:04  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   Dump                                                        1.57      2011/07/03 11:26:11  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   FinancialCode                                               1.1       2011/02/03 16:08:07  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   FlatFileInputAdapter                                        1.72      2011/07/03 18:45:46  (OpenRate.adapter.file)
+2011-10-25 10:51:05,953 INFO  -   FlatFileOutputAdapter                                       1.53      2011/07/30 12:11:28  (OpenRate.adapter.file)
+2011-10-25 10:51:05,953 INFO  -   FlatRecord                                                  1.22      2011/07/03 11:26:20  (OpenRate.record)
+2011-10-25 10:51:05,953 INFO  -   GatherRUMImpacts                                            1.18      2011/07/03 11:26:11  (OpenRate.process)
+2011-10-25 10:51:05,953 INFO  -   JDBCBatchOutputAdapter                                      1.20      2011/09/06 06:14:11  (OpenRate.adapter.jdbc)
+2011-10-25 10:51:05,953 INFO  -   JDBCInputAdapter                                            1.72      2011/07/03 11:26:16  (OpenRate.adapter.jdbc)
+2011-10-25 10:51:05,953 INFO  -   JDBCOutputAdapter                                           1.76      2011/09/06 06:14:11  (OpenRate.adapter.jdbc)
+2011-10-25 10:51:05,953 INFO  -   Normalisation                                               1.4       2011/07/22 08:43:11  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   NumberTypeLookup                                            1.1       2011/07/22 08:44:36  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   OpenRate                                                    1.75      2011/07/03 18:46:47  (OpenRate)
+2011-10-25 10:51:05,953 INFO  -   OutputPreparation                                           1.8       2011/07/16 13:14:20  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   Pipeline                                                    1.80      2011/08/24 20:24:14  (OpenRate)
+2011-10-25 10:51:05,953 INFO  -   PreOutputMapping                                            1.3       2011/06/28 13:23:57  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   PriceGroupMatch                                             1.20      2011/09/25 11:37:14  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   PromoCalcPreRating                                          1.2       2011/08/30 06:08:46  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   RatedOutput                                                 1.22      2011/09/22 16:19:09  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   Rating                                                      1.4       2011/09/22 16:19:09  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   RatingRecord                                                1.27      2011/07/03 11:26:20  (OpenRate.record)
+2011-10-25 10:51:05,953 INFO  -   RejectOutput                                                1.9       2011/08/11 08:56:44  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   TimeMatch                                                   1.6       2011/09/25 11:36:25  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   TransactionManager                                          1.50      2011/07/03 11:26:21  (OpenRate.transaction)
+2011-10-25 10:51:05,953 INFO  -   TransactionManagerFactory                                   1.26      2011/07/03 11:26:21  (OpenRate.transaction)
+2011-10-25 10:51:05,953 INFO  -   ZoneDestinationLookupNumberAnalysis                         1.5       2011/09/22 16:19:09  (MakePlus)
+2011-10-25 10:51:05,953 INFO  -   ZoneOriginLookup                                            1.8       2011/08/15 17:57:43  (MakePlus)
+2011-10-25 10:51:05,953 INFO  - End version map
+2011-10-25 10:51:05,953 INFO  - -----------------
+2011-10-25 10:51:17,609 INFO  - Starting Customer Alias Cache Loading from DB
+2011-10-25 10:51:25,468 INFO  - Alias Loading completed. 0 configuration lines loaded from <OpenRateDB>
+2011-10-25 10:51:28,421 INFO  - Audit segment Loading completed. 0 configuration lines loaded from <OpenRateDB>
+2011-10-25 10:51:38,562 INFO  - Customer Cache Data Loading completed from <OpenRateDB>
+2011-10-25 10:51:38,562 INFO  - Alias Loaded:                  0
+2011-10-25 10:51:38,562 INFO  - CustomerAudit Segments Loaded: 0
+2011-10-25 10:51:38,562 INFO  - Products Loaded:               0
+2011-10-25 10:51:38,562 INFO  - ERAs Loaded:                   0

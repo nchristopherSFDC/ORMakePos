@@ -44,22 +44,23 @@ public class BalDBOutputAdapter extends JDBCBatchOutputAdapter
       Outbatch = new ArrayList<IRecord>();
       tmpInRecord = (BalanceRecord)r;
       tmpDataRecord = new DBRecord();
-      tmpDataRecord.setOutputColumnCount(15);
+      tmpDataRecord.setOutputColumnCount(16);
       tmpDataRecord.setOutputColumnString(0,tmpInRecord.User);
       tmpDataRecord.setOutputColumnString(1,tmpInRecord.Date);
       tmpDataRecord.setOutputColumnString(2,tmpInRecord.AggID);
       tmpDataRecord.setOutputColumnString(3,tmpInRecord.Financial_Code);
       tmpDataRecord.setOutputColumnString(4,tmpInRecord.AliasStat);
       tmpDataRecord.setOutputColumnString(5,tmpInRecord.Network);
-      tmpDataRecord.setOutputColumnString(6,tmpInRecord.Count);
-      tmpDataRecord.setOutputColumnDouble(7,tmpInRecord.RetailCost);
-      tmpDataRecord.setOutputColumnDouble(8,tmpInRecord.WholeSaleCost);
-      tmpDataRecord.setOutputColumnDouble(9,tmpInRecord.RemotePolo);
-      tmpDataRecord.setOutputColumnDouble(10,tmpInRecord.RemoteRolo);
-      tmpDataRecord.setOutputColumnDouble(11,tmpInRecord.LocalPolo);
-      tmpDataRecord.setOutputColumnDouble(12,tmpInRecord.LocalRolo);
-      tmpDataRecord.setOutputColumnDouble(13,tmpInRecord.LocalTransit);
-      tmpDataRecord.setOutputColumnDouble(14,tmpInRecord.RemoteTransit);
+      tmpDataRecord.setOutputColumnInt(6,tmpInRecord.Count);
+      tmpDataRecord.setOutputColumnDouble(7,tmpInRecord.Duration);
+      tmpDataRecord.setOutputColumnDouble(8,tmpInRecord.RetailCost);
+      tmpDataRecord.setOutputColumnDouble(9,tmpInRecord.WholeSaleCost);
+      tmpDataRecord.setOutputColumnDouble(10,tmpInRecord.RemotePolo);
+      tmpDataRecord.setOutputColumnDouble(11,tmpInRecord.RemoteRolo);
+      tmpDataRecord.setOutputColumnDouble(12,tmpInRecord.LocalPolo);
+      tmpDataRecord.setOutputColumnDouble(13,tmpInRecord.LocalRolo);
+      tmpDataRecord.setOutputColumnDouble(14,tmpInRecord.LocalTransit);
+      tmpDataRecord.setOutputColumnDouble(15,tmpInRecord.RemoteTransit);
 
       Outbatch.add((IRecord)tmpDataRecord);
 

@@ -1,0 +1,1 @@
+echo Framework:Shutdown=true> "C:\Users\Vikram Middha\Desktop\Vikram\Espresso\Open Rate\ORMakePos\Semaphore.txt"

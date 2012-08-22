@@ -19,7 +19,7 @@ public class Aggregation
   // this is the CVS version info
   public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: Aggregation.java,v $, $Revision: 1.17 $, $Date: 2011/08/24 13:32:42 $";
 
-  private String[] AggFields = new String[14];
+  private String[] AggFields = new String[15];
   // this needs to be modified if aggregation keys are modified
   private static SimpleDateFormat df = new SimpleDateFormat("MMM");
   private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -71,14 +71,15 @@ public class Aggregation
     AggFields[3] = CurrentRecord.FinancialCode;
     AggFields[4] = CurrentRecord.AliasStatus;
     AggFields[5] = CurrentRecord.Network;
-    AggFields[6] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.retailPrice,DECIMAL_PLACES));
-    AggFields[7] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.wholeSalePrice,DECIMAL_PLACES));
-    AggFields[8] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.remotePolo,DECIMAL_PLACES));
-    AggFields[9] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.remoteRolo,DECIMAL_PLACES));
-    AggFields[10] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.localPolo,DECIMAL_PLACES));
-    AggFields[11] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.localRolo,DECIMAL_PLACES));
-    AggFields[12] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.localTransit,DECIMAL_PLACES));
-    AggFields[13] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.remoteTransit,DECIMAL_PLACES));
+    AggFields[6] = Double.toString(CurrentRecord.Duration);
+    AggFields[7] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.retailPrice,DECIMAL_PLACES));
+    AggFields[8] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.wholeSalePrice,DECIMAL_PLACES));
+    AggFields[9] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.remotePolo,DECIMAL_PLACES));
+    AggFields[10] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.remoteRolo,DECIMAL_PLACES));
+    AggFields[11] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.localPolo,DECIMAL_PLACES));
+    AggFields[12] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.localRolo,DECIMAL_PLACES));
+    AggFields[13] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.localTransit,DECIMAL_PLACES));
+    AggFields[14] = Double.toString(conv.getRoundedValueRoundUp(CurrentRecord.remoteTransit,DECIMAL_PLACES));
     
     
     // perform the aggregation

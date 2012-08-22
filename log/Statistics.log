@@ -1,0 +1,9 @@
+2012-08-16 14:47:40,747 INFO  - Input  <InpAdapter> found <40> events for processing
+2012-08-16 14:47:40,786 INFO  - Plugin <Normalisation.Inst-0> processed <42> events in <2> ms
+2012-08-16 14:47:40,787 INFO  - Plugin <CustomerLookup.Inst-0> processed <42> events in <1> ms
+2012-08-16 14:52:18,608 INFO  - Plugin <ZoneOriginLookup.Inst-0> processed <42> events in <277821> ms
+2012-08-16 14:57:17,025 INFO  - Plugin <ZoneDestinationLookup.Inst-0> processed <42> events in <298417> ms
+2012-08-16 15:00:28,313 INFO  - Plugin <BaseRateplanCheck.Inst-0> processed <42> events in <191288> ms
+2012-08-16 15:07:40,272 INFO  - Plugin <ChargePacketCreation.Inst-0> processed <42> events in <431958> ms
+2012-08-16 15:09:12,709 INFO  - Plugin <TimeMatch.Inst-0> processed <42> events in <92437> ms
+2012-08-16 15:18:35,345 INFO  - Plugin <PriceGroupMatch.Inst-0> processed <42> events in <562635> ms

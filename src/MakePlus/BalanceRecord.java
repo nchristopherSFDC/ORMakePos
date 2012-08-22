@@ -17,7 +17,7 @@ public class BalanceRecord extends RatingRecord
   public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: BalanceRecord.java,v $, $Revision: 1.12 $, $Date: 2011/08/09 12:31:04 $";
 
     private static final String INPUT_DELIMITER = ";";
-    private static final int INPUT_FIELD_COUNT = 16;
+    private static final int INPUT_FIELD_COUNT = 17;
     
     public static final int IDX_USER = 1;
     public static final int IDX_DATE = 2;
@@ -25,15 +25,16 @@ public class BalanceRecord extends RatingRecord
     public static final int IDX_FIN_CD = 4;
     public static final int IDX_ALIAS_STAT = 5;
     public static final int IDX_NETWORK = 6;
-    public static final int IDX_COUNT = 7;
-    public static final int IDX_RETAIL = 8;
-    public static final int IDX_WHOLESALE = 9;
-    public static final int IDX_REMOTEPOLO = 10;
-    public static final int IDX_REMOTEROLO = 11;
-    public static final int IDX_LOCALPOLO = 12;
-    public static final int IDX_LOCALROLO = 13;
-    public static final int IDX_LOCALTRANSIT = 14;
-    public static final int IDX_REMOTETRANSIT = 15;
+    public static final int IDX_DURATION = 7;
+    public static final int IDX_COUNT = 8;
+    public static final int IDX_RETAIL = 9;
+    public static final int IDX_WHOLESALE = 10;
+    public static final int IDX_REMOTEPOLO = 11;
+    public static final int IDX_REMOTEROLO = 12;
+    public static final int IDX_LOCALPOLO = 13;
+    public static final int IDX_LOCALROLO = 14;
+    public static final int IDX_LOCALTRANSIT = 15;
+    public static final int IDX_REMOTETRANSIT = 16;
 
   public String User;
   public String Financial_Code;
@@ -41,7 +42,8 @@ public class BalanceRecord extends RatingRecord
   public String AggID;
   public String AliasStat;
   public String Network;
-  public String Count;
+  public Integer Count;
+  public double Duration;
   public double RetailCost;
   public double WholeSaleCost;
   public double RemotePolo;
@@ -129,6 +131,15 @@ public class BalanceRecord extends RatingRecord
       return false;
     }
     
+    if (fields[IDX_DURATION]==null || fields[IDX_DURATION].length()==0)
+    {
+      RecordError tmpError = new RecordError("ERR_DURATION_MISSING",ErrorType.DATA_VALIDATION);
+      tmpError.setModuleName("Balance mapping");
+      tmpError.setErrorDescription("Duration Information Missing");
+      addError(tmpError);
+      return false;
+    }
+    
     if (fields[IDX_COUNT]==null || fields[IDX_COUNT].length()==0)
     {
       RecordError tmpError = new RecordError("ERR_COUNT_MISSING",ErrorType.DATA_VALIDATION);
@@ -155,7 +166,8 @@ public class BalanceRecord extends RatingRecord
       this.Financial_Code=fields[IDX_FIN_CD];
       this.AliasStat=fields[IDX_ALIAS_STAT];
       this.Network=fields[IDX_NETWORK];
-      this.Count=fields[IDX_COUNT];
+      this.Duration=Double.parseDouble(fields[IDX_DURATION]);
+      this.Count=Integer.valueOf(fields[IDX_COUNT]);
       this.RetailCost=retail.doubleValue();
       this.WholeSaleCost=wholesale.doubleValue();
       this.RemotePolo=rp.doubleValue();
@@ -198,6 +210,7 @@ public class BalanceRecord extends RatingRecord
     tmpDumpList.add("  Financial Code  = <" + this.Financial_Code + ">");
     tmpDumpList.add("  Alias Status    = <" + this.AliasStat + ">");
     tmpDumpList.add("  Network         = <" + this.Network + ">");
+    tmpDumpList.add("  Duration        = <" + this.Duration + ">");
     tmpDumpList.add("  Retail Cost     = <" + this.RetailCost + ">");
     tmpDumpList.add("  Wholesale Cost  = <" + this.WholeSaleCost + ">");
     tmpDumpList.add("  Remote Polo     = <" + this.RemotePolo + ">");

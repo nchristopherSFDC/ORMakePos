@@ -591,8 +591,8 @@
                     <DataSourceType>File</DataSourceType>
                     <AggConfigFileName>ConfigData/MakePlus/aggregations.dat</AggConfigFileName>
                     <AggResultPath>Data/MakePlus</AggResultPath>
-                </AggregationCache>
-
+                </AggregationCache>				
+				
             </CacheableClass>
         </CacheFactory>
 

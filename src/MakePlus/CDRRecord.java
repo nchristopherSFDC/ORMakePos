@@ -183,6 +183,9 @@ public class CDRRecord
   public double remotePolo = 0;
   public double remoteRolo = 0;
   public double remoteTransit = 0;
+  public String TimeBand = null;
+  public String MSN = null;
+  public String DestinationDescription = null;
  
   public Long start_date;
   public Long end_date;
@@ -218,6 +221,7 @@ public class CDRRecord
   String DiscountRule;
   double DiscountGranted = 0;
   long   RecId = 0;
+  
    
  /**
   * Constructor for SimpleRecord from DB

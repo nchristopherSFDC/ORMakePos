@@ -43,14 +43,11 @@ public class RatedOutput extends JDBCBatchOutputAdapter {
      */
     @Override
     public Collection<IRecord> procValidRecord(IRecord r) {
-        DBRecord tmpDataRecord;
-        CDRRecord tmpInRecord;
-
-        Collection<IRecord> Outbatch;
-        Outbatch = new ArrayList<IRecord>();
-        tmpInRecord = (CDRRecord) r;
-        tmpDataRecord = new DBRecord();
-        tmpDataRecord.setOutputColumnCount(33);
+       
+        Collection Outbatch = new ArrayList();
+        CDRRecord tmpInRecord = (CDRRecord)r;
+        DBRecord tmpDataRecord = new DBRecord();
+        tmpDataRecord.setOutputColumnCount(37);
         tmpDataRecord.setOutputColumnString(0, tmpInRecord.Type);
         tmpDataRecord.setOutputColumnString(1, tmpInRecord.Service);
         tmpDataRecord.setOutputColumnString(2, tmpInRecord.Direction);
@@ -62,15 +59,15 @@ public class RatedOutput extends JDBCBatchOutputAdapter {
         tmpDataRecord.setOutputColumnString(8, tmpInRecord.GuidingKey);
         tmpDataRecord.setOutputColumnString(9, tmpInRecord.BNumberNorm);
         tmpDataRecord.setOutputColumnString(10, tmpInRecord.CLI);
-        tmpDataRecord.setOutputColumnDouble(11, tmpInRecord.Duration);
-        tmpDataRecord.setOutputColumnDouble(12, conv.getRoundedValueRoundUp(tmpInRecord.retailPrice,DECIMAL_PLACES));
-        tmpDataRecord.setOutputColumnDouble(13, conv.getRoundedValueRoundUp(tmpInRecord.wholeSalePrice,DECIMAL_PLACES));
-        tmpDataRecord.setOutputColumnDouble(14, conv.getRoundedValueRoundUp(tmpInRecord.localPolo,DECIMAL_PLACES));
-        tmpDataRecord.setOutputColumnDouble(15, conv.getRoundedValueRoundUp(tmpInRecord.localRolo,DECIMAL_PLACES));
-        tmpDataRecord.setOutputColumnDouble(16, conv.getRoundedValueRoundUp(tmpInRecord.localTransit,DECIMAL_PLACES));
-        tmpDataRecord.setOutputColumnDouble(17, conv.getRoundedValueRoundUp(tmpInRecord.remotePolo,DECIMAL_PLACES));
-        tmpDataRecord.setOutputColumnDouble(18, conv.getRoundedValueRoundUp(tmpInRecord.remoteRolo,DECIMAL_PLACES));
-        tmpDataRecord.setOutputColumnDouble(19, conv.getRoundedValueRoundUp(tmpInRecord.remoteTransit,DECIMAL_PLACES));
+        tmpDataRecord.setOutputColumnDouble(11, Double.valueOf(tmpInRecord.Duration));
+        tmpDataRecord.setOutputColumnDouble(12, Double.valueOf(tmpInRecord.retailPrice));
+        tmpDataRecord.setOutputColumnDouble(13, Double.valueOf(tmpInRecord.wholeSalePrice));
+        tmpDataRecord.setOutputColumnDouble(14, Double.valueOf(tmpInRecord.localPolo));
+        tmpDataRecord.setOutputColumnDouble(15, Double.valueOf(tmpInRecord.localRolo));
+        tmpDataRecord.setOutputColumnDouble(16, Double.valueOf(tmpInRecord.localTransit));
+        tmpDataRecord.setOutputColumnDouble(17, Double.valueOf(tmpInRecord.remotePolo));
+        tmpDataRecord.setOutputColumnDouble(18, Double.valueOf(tmpInRecord.remoteRolo));
+        tmpDataRecord.setOutputColumnDouble(19, Double.valueOf(tmpInRecord.remoteTransit));
         tmpDataRecord.setOutputColumnString(20, tmpInRecord.Reseller);
         tmpDataRecord.setOutputColumnString(21, tmpInRecord.FinancialCode);
         tmpDataRecord.setOutputColumnString(22, tmpInRecord.AggregationID);
@@ -83,8 +80,12 @@ public class RatedOutput extends JDBCBatchOutputAdapter {
         tmpDataRecord.setOutputColumnString(29, tmpInRecord.RemoteCostDescription);
         tmpDataRecord.setOutputColumnString(30, tmpInRecord.LocalTransitDescription);
         tmpDataRecord.setOutputColumnString(31, tmpInRecord.RemoteTransitDescription);
-        tmpDataRecord.setOutputColumnString(32, tmpInRecord.UID);
-
+        tmpDataRecord.setOutputColumnString(32, tmpInRecord.Platform);
+        tmpDataRecord.setOutputColumnString(33, tmpInRecord.TimeBand);
+        tmpDataRecord.setOutputColumnString(34, tmpInRecord.MSN);
+        tmpDataRecord.setOutputColumnString(35, tmpInRecord.DestinationDescription);
+        tmpDataRecord.setOutputColumnString(36, tmpInRecord.UID);
+       
         Outbatch.add((IRecord) tmpDataRecord);
 
         return Outbatch;

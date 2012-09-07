@@ -1,4 +1,4 @@
-set OR_ROOT_DIR=Z:\NoBackup\Data\OR\ORMakePos
+set OR_ROOT_DIR=C:\Users\Vikram Middha\Desktop\Vikram\Espresso\Open Rate\ORMakePos\ORMakePos
 set LIB_DIR=%OR_ROOT_DIR%\lib
 set OR_LIB=%OR_ROOT_DIR%\ORlib\OpenRateV1.3.0.0.jar
 set APP_LIB_DIR=%OR_ROOT_DIR%\dist

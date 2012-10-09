@@ -17,17 +17,18 @@
     </PipelineList>
 
     <RatingPipeline>
-        <InputAdapter>
-            <InpAdapter>
+             <InputAdapter>
+           <InpAdapter>
                 <ClassName>MakePlus.CDRInputAdapterDB</ClassName>
                 <BatchSize>5000</BatchSize>
                 <BufferSize>5000</BufferSize>
                 <DataSourceType>DB</DataSourceType>
                 <DataSource>PLATFORM_CDR_DB</DataSource>
-                <RecordCountStatement>Select count(*) from Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset, Platform_CDRs_Test_DB.dbo.TimeStamps WHERE STATE = 0</RecordCountStatement>
-                <InitStatement>update Platform_CDRs_Test_DB.dbo.Platform_CDRs_TestSet set STATE = 1 where STATE = 0</InitStatement>
-                <RecordSelectStatement>Select * from Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset, Platform_CDRs_Test_DB.dbo.TimeStamps WHERE STATE = 1</RecordSelectStatement>
-                <CommitStatement>update Platform_CDRs_Test_DB.dbo.Platform_CDRs_TestSet set STATE = 2 where STATE = 1</CommitStatement>
+                <RecordCountStatement>Select count(*) from Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset, Platform_CDRs_Test_DB.dbo.TimeStamps where  [Platform_CDRs_Test_DB].[dbo].[TimeStamps].Last_Time_CDR_Processed &lt; Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset.DateTime</RecordCountStatement>
+                <InitStatement>select 1</InitStatement>
+                <RecordSelectStatement>Select * from Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset, Platform_CDRs_Test_DB.dbo.TimeStamps where  [Platform_CDRs_Test_DB].[dbo].[TimeStamps].Last_Time_CDR_Processed &lt; Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset.DateTime</RecordSelectStatement>
+                <CommitStatement>update [Platform_CDRs_Test_DB].[dbo].[TimeStamps] set [Last_Time_CDR_Processed] =(select MAX(DateTime) from [Platform_CDRs_Test_DB].[dbo].[Platform_CDRs_TestSet]),[Last_Time_stamp_Read] = GETDATE()</CommitStatement>
+                
                 <RollbackStatement></RollbackStatement>
             </InpAdapter>
         </InputAdapter>
@@ -164,7 +165,7 @@
             </RatedOutput>
 
             <RejectOutput>
-                <ClassName>MakePlus.RejectOutput</ClassName>
+                <ClassName>OpenRate.adapter.NullOutputAdapter</ClassName>
                 <OutputName>RejectOutput</OutputName>
                 <BatchSize>5000</BatchSize>
                 <BufferSize>25000</BufferSize>
@@ -332,7 +333,7 @@
 
         <OutputAdapter>
             <RatedOutput>
-                <ClassName>MakePlus.RatedOutput</ClassName>
+                <ClassName>OpenRate.adapter.NullOutputAdapter</ClassName>
                 <OutputName>RatedOutput</OutputName>
                 <BatchSize>5000</BatchSize>
                 <BufferSize>25000</BufferSize>

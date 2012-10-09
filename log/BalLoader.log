@@ -1,1 +1,10 @@
-2012-08-16 14:47:40,612 INFO  - Request Start for Transaction manager.
+2012-10-09 13:33:23,247 INFO  - Request Start for Transaction manager.
+2012-10-09 13:33:28,382 INFO  - Opened transaction <1>
+2012-10-09 13:33:28,382 INFO  - Input File name is <Agg-1349769803729-1_DailyCharge.txt>
+2012-10-09 13:33:28,429 INFO  - Transaction <1> closed
+2012-10-09 13:34:40,501 INFO  - Opened transaction <2>
+2012-10-09 13:34:40,501 INFO  - Input File name is <Agg-1349769876192-2_DailyCharge.txt>
+2012-10-09 13:34:40,525 INFO  - Transaction <2> closed
+2012-10-09 13:35:22,568 INFO  - Opened transaction <3>
+2012-10-09 13:35:22,569 INFO  - Input File name is <Agg-1349769918432-3_DailyCharge.txt>
+2012-10-09 13:35:22,618 INFO  - Transaction <3> closed

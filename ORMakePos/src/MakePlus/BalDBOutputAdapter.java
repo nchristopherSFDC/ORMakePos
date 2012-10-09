@@ -13,7 +13,7 @@ import java.util.Collection;
 public class BalDBOutputAdapter extends JDBCBatchOutputAdapter
 {
   // this is the CVS version info
-  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: BalDBOutputAdapter.java,v $, $Revision: 1.12 $, $Date: 2011/09/12 09:47:09 $";
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: BalDBOutputAdapter.java,v $, $Revision: 1.11 $, $Date: 2011/08/23 17:19:47 $";
 
   /** Creates a new instance of DBOutput */
   public BalDBOutputAdapter()

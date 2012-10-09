@@ -1,9 +1,90 @@
-2012-08-16 14:47:40,747 INFO  - Input  <InpAdapter> found <40> events for processing
-2012-08-16 14:47:40,786 INFO  - Plugin <Normalisation.Inst-0> processed <42> events in <2> ms
-2012-08-16 14:47:40,787 INFO  - Plugin <CustomerLookup.Inst-0> processed <42> events in <1> ms
-2012-08-16 14:52:18,608 INFO  - Plugin <ZoneOriginLookup.Inst-0> processed <42> events in <277821> ms
-2012-08-16 14:57:17,025 INFO  - Plugin <ZoneDestinationLookup.Inst-0> processed <42> events in <298417> ms
-2012-08-16 15:00:28,313 INFO  - Plugin <BaseRateplanCheck.Inst-0> processed <42> events in <191288> ms
-2012-08-16 15:07:40,272 INFO  - Plugin <ChargePacketCreation.Inst-0> processed <42> events in <431958> ms
-2012-08-16 15:09:12,709 INFO  - Plugin <TimeMatch.Inst-0> processed <42> events in <92437> ms
-2012-08-16 15:18:35,345 INFO  - Plugin <PriceGroupMatch.Inst-0> processed <42> events in <562635> ms
+2012-10-09 13:33:23,367 INFO  - Input  <InpAdapter> found <40> events for processing
+2012-10-09 13:33:23,399 INFO  - Plugin <Normalisation.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:33:23,400 INFO  - Plugin <CustomerLookup.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:33:23,400 INFO  - Plugin <ZoneOriginLookup.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:33:23,400 INFO  - Plugin <ZoneDestinationLookup.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:33:23,402 INFO  - Plugin <BaseRateplanCheck.Inst-0> processed <42> events in <2> ms
+2012-10-09 13:33:23,403 INFO  - Plugin <ChargePacketCreation.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:33:23,413 INFO  - Plugin <TimeMatch.Inst-0> processed <42> events in <10> ms
+2012-10-09 13:33:23,641 INFO  - Plugin <PriceGroupMatch.Inst-0> processed <42> events in <227> ms
+2012-10-09 13:33:23,644 INFO  - Plugin <Rating.Inst-0> processed <42> events in <3> ms
+2012-10-09 13:33:23,646 INFO  - Plugin <GatherRUMImpacts.Inst-0> processed <42> events in <2> ms
+2012-10-09 13:33:23,646 INFO  - Plugin <PreOutputMapping.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:33:23,646 INFO  - Plugin <AliasInTestCheck.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:33:23,646 INFO  - Plugin <FinancialCode.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:33:23,646 INFO  - Plugin <SuspensePreparation.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:33:23,659 INFO  - Plugin <Aggregation.Inst-0> processed <42> events in <13> ms
+2012-10-09 13:33:23,666 INFO  - Plugin <DumpLast.Inst-0> processed <42> events in <7> ms
+2012-10-09 13:33:23,733 INFO  - Transaction <1> closed
+2012-10-09 13:33:23,733 INFO  - Statistics: Records  <40>
+2012-10-09 13:33:23,733 INFO  -             Duration <362> ms
+2012-10-09 13:33:23,733 INFO  -             Speed    <110> records /sec
+2012-10-09 13:33:23,733 INFO  - Output <RatedOutput> persisted <42> events from a batch of <42> events in <67> ms
+2012-10-09 13:33:23,733 INFO  - Output <RejectOutput> persisted <2> events from a batch of <2> events in <0> ms
+2012-10-09 13:33:28,406 INFO  - Plugin <DumpBalance.Inst-0> processed <10> events in <14> ms
+2012-10-09 13:33:28,415 INFO  - Output <BalDBOutputAdapter> persisted <10> events from a batch of <10> events in <9> ms
+2012-10-09 13:33:28,429 INFO  - Transaction <1> closed
+2012-10-09 13:33:28,429 INFO  - Statistics: Records  <8>
+2012-10-09 13:33:28,429 INFO  -             Duration <47> ms
+2012-10-09 13:33:28,429 INFO  -             Speed    <170> records /sec
+2012-10-09 13:33:28,429 INFO  - Output <RejectOutput> persisted <2> events from a batch of <2> events in <14> ms
+2012-10-09 13:34:35,774 INFO  - Input  <InpAdapter> found <40> events for processing
+2012-10-09 13:34:35,820 INFO  - Plugin <Normalisation.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:34:35,827 INFO  - Plugin <CustomerLookup.Inst-0> processed <42> events in <7> ms
+2012-10-09 13:34:35,828 INFO  - Plugin <ZoneOriginLookup.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:34:35,829 INFO  - Plugin <ZoneDestinationLookup.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:34:35,830 INFO  - Plugin <BaseRateplanCheck.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:34:35,830 INFO  - Plugin <ChargePacketCreation.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:34:35,834 INFO  - Plugin <TimeMatch.Inst-0> processed <42> events in <4> ms
+2012-10-09 13:34:36,045 INFO  - Plugin <PriceGroupMatch.Inst-0> processed <42> events in <211> ms
+2012-10-09 13:34:36,047 INFO  - Plugin <Rating.Inst-0> processed <42> events in <2> ms
+2012-10-09 13:34:36,048 INFO  - Plugin <GatherRUMImpacts.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:34:36,048 INFO  - Plugin <PreOutputMapping.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:34:36,048 INFO  - Plugin <AliasInTestCheck.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:34:36,048 INFO  - Plugin <FinancialCode.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:34:36,048 INFO  - Plugin <SuspensePreparation.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:34:36,054 INFO  - Plugin <Aggregation.Inst-0> processed <42> events in <6> ms
+2012-10-09 13:34:36,062 INFO  - Plugin <DumpLast.Inst-0> processed <42> events in <8> ms
+2012-10-09 13:34:36,194 INFO  - Transaction <2> closed
+2012-10-09 13:34:36,194 INFO  - Statistics: Records  <40>
+2012-10-09 13:34:36,194 INFO  -             Duration <409> ms
+2012-10-09 13:34:36,194 INFO  -             Speed    <97> records /sec
+2012-10-09 13:34:36,195 INFO  - Output <RatedOutput> persisted <42> events from a batch of <42> events in <133> ms
+2012-10-09 13:34:36,195 INFO  - Output <RejectOutput> persisted <2> events from a batch of <2> events in <0> ms
+2012-10-09 13:34:40,511 INFO  - Plugin <DumpBalance.Inst-0> processed <10> events in <8> ms
+2012-10-09 13:34:40,518 INFO  - Output <BalDBOutputAdapter> persisted <10> events from a batch of <10> events in <7> ms
+2012-10-09 13:34:40,525 INFO  - Transaction <2> closed
+2012-10-09 13:34:40,525 INFO  - Statistics: Records  <8>
+2012-10-09 13:34:40,525 INFO  -             Duration <24> ms
+2012-10-09 13:34:40,525 INFO  -             Speed    <333> records /sec
+2012-10-09 13:34:40,525 INFO  - Output <RejectOutput> persisted <2> events from a batch of <2> events in <7> ms
+2012-10-09 13:35:18,213 INFO  - Input  <InpAdapter> found <40> events for processing
+2012-10-09 13:35:18,245 INFO  - Plugin <Normalisation.Inst-0> processed <42> events in <2> ms
+2012-10-09 13:35:18,257 INFO  - Plugin <CustomerLookup.Inst-0> processed <42> events in <11> ms
+2012-10-09 13:35:18,258 INFO  - Plugin <ZoneOriginLookup.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:35:18,258 INFO  - Plugin <ZoneDestinationLookup.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:35:18,259 INFO  - Plugin <BaseRateplanCheck.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:35:18,260 INFO  - Plugin <ChargePacketCreation.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:35:18,268 INFO  - Plugin <TimeMatch.Inst-0> processed <42> events in <8> ms
+2012-10-09 13:35:18,400 INFO  - Plugin <PriceGroupMatch.Inst-0> processed <42> events in <132> ms
+2012-10-09 13:35:18,401 INFO  - Plugin <Rating.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:35:18,401 INFO  - Plugin <GatherRUMImpacts.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:35:18,402 INFO  - Plugin <PreOutputMapping.Inst-0> processed <42> events in <1> ms
+2012-10-09 13:35:18,402 INFO  - Plugin <AliasInTestCheck.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:35:18,402 INFO  - Plugin <FinancialCode.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:35:18,402 INFO  - Plugin <SuspensePreparation.Inst-0> processed <42> events in <0> ms
+2012-10-09 13:35:18,406 INFO  - Plugin <Aggregation.Inst-0> processed <42> events in <4> ms
+2012-10-09 13:35:18,415 INFO  - Plugin <DumpLast.Inst-0> processed <42> events in <9> ms
+2012-10-09 13:35:18,434 INFO  - Transaction <3> closed
+2012-10-09 13:35:18,434 INFO  - Statistics: Records  <40>
+2012-10-09 13:35:18,434 INFO  -             Duration <216> ms
+2012-10-09 13:35:18,434 INFO  -             Speed    <185> records /sec
+2012-10-09 13:35:18,435 INFO  - Output <RatedOutput> persisted <42> events from a batch of <42> events in <20> ms
+2012-10-09 13:35:18,435 INFO  - Output <RejectOutput> persisted <2> events from a batch of <2> events in <0> ms
+2012-10-09 13:35:22,589 INFO  - Plugin <DumpBalance.Inst-0> processed <10> events in <16> ms
+2012-10-09 13:35:22,601 INFO  - Output <BalDBOutputAdapter> persisted <10> events from a batch of <10> events in <12> ms
+2012-10-09 13:35:22,618 INFO  - Transaction <3> closed
+2012-10-09 13:35:22,619 INFO  - Statistics: Records  <8>
+2012-10-09 13:35:22,619 INFO  -             Duration <50> ms
+2012-10-09 13:35:22,619 INFO  -             Speed    <160> records /sec
+2012-10-09 13:35:22,619 INFO  - Output <RejectOutput> persisted <2> events from a batch of <2> events in <18> ms

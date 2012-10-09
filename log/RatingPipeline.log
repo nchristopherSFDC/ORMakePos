@@ -1,2 +1,7 @@
-2012-08-16 14:47:40,514 INFO  - Request Start for Transaction manager.
-2012-08-16 14:47:40,753 INFO  - Opened transaction <1>
+2012-10-09 13:33:23,175 INFO  - Request Start for Transaction manager.
+2012-10-09 13:33:23,370 INFO  - Opened transaction <1>
+2012-10-09 13:33:23,732 INFO  - Transaction <1> closed
+2012-10-09 13:34:35,785 INFO  - Opened transaction <2>
+2012-10-09 13:34:36,194 INFO  - Transaction <2> closed
+2012-10-09 13:35:18,218 INFO  - Opened transaction <3>
+2012-10-09 13:35:18,434 INFO  - Transaction <3> closed

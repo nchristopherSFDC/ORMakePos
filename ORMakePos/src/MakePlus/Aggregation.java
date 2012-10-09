@@ -17,7 +17,7 @@ public class Aggregation
   extends AbstractAggregation
 {
   // this is the CVS version info
-  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: Aggregation.java,v $, $Revision: 1.21 $, $Date: 2011/11/16 12:35:26 $";
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: Aggregation.java,v $, $Revision: 1.17 $, $Date: 2011/08/24 13:32:42 $";
 
   private String[] AggFields = new String[15];
   // this needs to be modified if aggregation keys are modified
@@ -58,10 +58,10 @@ public class Aggregation
         Stat = 1;
     }
     
-    dateobj = CurrentRecord.EntryDateUsed;
+    dateobj = CurrentRecord.EventStartDate;
     cal.setTime(dateobj);
     cal.set(Calendar.DAY_OF_MONTH,1);
-    CurrentRecord.AggregationID=CurrentRecord.MSN+CurrentRecord.Network+df.format(CurrentRecord.EntryDateUsed)+Stat;
+    CurrentRecord.AggregationID=CurrentRecord.GuidingKey+df.format(CurrentRecord.EventStartDate)+Stat;
      
 
     // the field that will be used for the aggregation scenario

@@ -14,7 +14,7 @@ import java.util.Iterator;
 public class BalanceRecord extends RatingRecord
 {
   // this is the CVS version info
-  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: BalanceRecord.java,v $, $Revision: 1.13 $, $Date: 2011/09/12 09:47:09 $";
+  public static String CVS_MODULE_INFO = "OpenRate, $RCSfile: BalanceRecord.java,v $, $Revision: 1.12 $, $Date: 2011/08/09 12:31:04 $";
 
     private static final String INPUT_DELIMITER = ";";
     private static final int INPUT_FIELD_COUNT = 17;

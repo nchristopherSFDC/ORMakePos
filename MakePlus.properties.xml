@@ -1,599 +1,601 @@
 <?xml version="1.0"?>
 <config>
-  <Application>
-    MakePlus
-  </Application>
+    <Application>
+        MakePlus
+    </Application>
 
-  <PipelineList>
+    <PipelineList>
+        <RatingPipeline>
+            <Active>True</Active>
+        </RatingPipeline>
+        <RejectionPipeline>
+            <Active>False</Active>
+        </RejectionPipeline>
+        <BalLoader>
+            <Active>True</Active>
+        </BalLoader>
+    </PipelineList>
+
     <RatingPipeline>
-      <Active>True</Active>
+        <InputAdapter>
+           <InpAdapter>
+                <ClassName>MakePlus.CDRInputAdapterDB</ClassName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>5000</BufferSize>
+                <DataSourceType>DB</DataSourceType>
+                <DataSource>PLATFORM_CDR_DB</DataSource>
+                <RecordCountStatement>Select count(*) from Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset, Platform_CDRs_Test_DB.dbo.TimeStamps where  [Platform_CDRs_Test_DB].[dbo].[TimeStamps].Last_Time_CDR_Processed &lt; Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset.DateTime</RecordCountStatement>
+                <InitStatement>select 1</InitStatement>
+                <RecordSelectStatement>Select * from Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset, Platform_CDRs_Test_DB.dbo.TimeStamps where  [Platform_CDRs_Test_DB].[dbo].[TimeStamps].Last_Time_CDR_Processed &lt; Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset.DateTime</RecordSelectStatement>
+                <CommitStatement>update [Platform_CDRs_Test_DB].[dbo].[TimeStamps] set [Last_Time_CDR_Processed] =(select MAX(DateTime) from [Platform_CDRs_Test_DB].[dbo].[Platform_CDRs_TestSet]),[Last_Time_stamp_Read] = GETDATE()</CommitStatement>
+                
+                <RollbackStatement></RollbackStatement>
+            </InpAdapter>
+        </InputAdapter>
+        <Process>
+
+            <Normalisation>
+                <ClassName>MakePlus.Normalisation</ClassName>
+                <DataCache>NormCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </Normalisation>
+
+            <CustomerLookup>
+                <!-- <ClassName>MakePlus.CustomerLookupHarness</ClassName>-->
+                <ClassName>MakePlus.CustomerLookup</ClassName>
+                <DataCache>CustomerCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </CustomerLookup>
+
+            <ZoneOriginLookup>
+                <ClassName>MakePlus.ZoneOriginLookup</ClassName>
+                <DataCache>ZoneOriginCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </ZoneOriginLookup>
+
+            <ZoneDestinationLookup>
+                <!--ClassName>MakePlus.ZoneDestinationLookup</ClassName-->
+                <ClassName>MakePlus.ZoneDestinationLookupNumberAnalysis</ClassName>
+                <DataCache>ZoneDestinationCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </ZoneDestinationLookup>
+
+            <BaseRateplanCheck>
+                <ClassName>MakePlus.BaseRateplanCheck</ClassName>
+                <DataCache>BaseRateplanCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </BaseRateplanCheck>
+
+            <ChargePacketCreation>
+                <ClassName>MakePlus.ChargePacketCreation</ClassName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </ChargePacketCreation>
+
+            <TimeMatch>
+                <ClassName>MakePlus.TimeMatch</ClassName>
+                <DataCache>TimeCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </TimeMatch>
+
+            <PriceGroupMatch>
+                <ClassName>MakePlus.PriceGroupMatch</ClassName>
+                <DataCache>PriceGroupCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </PriceGroupMatch>
+
+            <Rating>
+                <ClassName>MakePlus.Rating</ClassName>
+                <DataCache>RateCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </Rating>
+
+            <GatherRUMImpacts>
+                <ClassName>OpenRate.process.GatherRUMImpacts</ClassName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </GatherRUMImpacts>
+
+            <PreOutputMapping>
+                <ClassName>MakePlus.PreOutputMapping</ClassName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </PreOutputMapping>
+
+            <AliasInTestCheck>
+                <ClassName>MakePlus.AliasInTestCheck</ClassName>
+                <DataCache>AliasInTestCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </AliasInTestCheck>
+
+            <FinancialCode>
+                <ClassName>MakePlus.FinancialCode</ClassName>
+                <DataCache>FinancialCodeCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </FinancialCode>
+
+            <SuspensePreparation>
+                <ClassName>MakePlus.OutputPreparation</ClassName>
+                <DataCache>SuspensePreparationCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </SuspensePreparation>
+
+            <Aggregation>
+                <ClassName>MakePlus.Aggregation</ClassName>
+                <AggCache>AggregationCache</AggCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </Aggregation>
+
+            <DumpLast>
+                <ClassName>OpenRate.process.Dump</ClassName>
+                <Active>False</Active>
+                <DumpType>ALL</DumpType>
+                <DumpFilePath>Data/MakePlus</DumpFilePath>
+                <DumpFilePrefix>RatingPipeline_Last</DumpFilePrefix>
+                <DumpFileSuffix>.dump</DumpFileSuffix>
+            </DumpLast>
+
+        </Process>
+
+        <OutputAdapter>
+            <RatedOutput>
+                <ClassName>MakePlus.RatedOutput</ClassName>
+                <OutputName>RatedOutput</OutputName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+                <DataSource>OpenRateDB</DataSource>
+                <ValidateStatement>select 1 from [Ormakeplus].[dbo].rated_cdr</ValidateStatement>
+                <InitStatement>select 1 from [Ormakeplus].[dbo].rated_cdr</InitStatement>
+                <RecordInsertStatement>insert into [Ormakeplus].[dbo].rated_cdr (TYPE,SERVICE,DIRECTION,NETWORK,REMOTE_NETWORK,REMOTE_SWITCH,PORTING_PREFIX,START_TIMESTAMP,[USER],DESTINATION,CALLER,DURATION,RETAIL_PRICE,WHOLESALE_PRICE,LOCAL_POLO,LOCAL_ROLO,LOCAL_TRANSIT,REMOTE_POLO,REMOTE_ROLO,REMOTE_TRANSIT,RESELLER,FINANCIAL_CODE,AGGREGATION_ID,CALL_REF,NUMBER_TYPE,RESELLER_CODE,WHOLESALE_DESCRIPTION,RETAIL_DESCRIPTION,LOCALCOST_DESCRIPTION,REMOTECOST_DESCRIPTION,LOCALTRANSIT_DESCRIPTION,REMOTETRANSIT_DESCRIPTION,cdrGUID,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)</RecordInsertStatement>
+                <!--RecordInsertStatement>insert into rated_cdr (TYPE,SERVICE,DIRECTION,NETWORK,REMOTE_NETWORK,REMOTE_SWITCH,PORTING_PREFIX,START_TIMESTAMP,USER,DESTINATION,CALLER,DURATION,RETAIL_PRICE,WHOLESALE_PRICE,LOCAL_POLO,LOCAL_ROLO,LOCAL_TRANSIT,REMOTE_POLO,REMOTE_ROLO,REMOTE_TRANSIT,RESELLER,FINANCIAL_CODE,AGGREGATION_ID,CALL_REF,NUMBER_TYPE,RESELLER_CODE,WHOLESALE_DESCRIPTION,RETAIL_DESCRIPTION,LOCALCOST_DESCRIPTION,REMOTECOST_DESCRIPTION,LOCALTRANSIT_DESCRIPTION,REMOTETRANSIT_DESCRIPTION,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)</RecordInsertStatement-->
+                <CommitStatement>update [Ormakeplus].[dbo].rated_cdr set STATE=0 where STATE=1</CommitStatement>
+                <RollbackStatement>delete from [Ormakeplus].[dbo].rated_cdr where STATE=1</RollbackStatement>
+            </RatedOutput>
+
+            <RejectOutput>
+                <ClassName>OpenRate.adapter.NullOutputAdapter</ClassName>
+                <OutputName>RejectOutput</OutputName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+                <DataSource>OpenRateDB</DataSource>
+                <ValidateStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</ValidateStatement>
+                <InitStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</InitStatement>
+                <RecordInsertStatement>insert into [Ormakeplus].[dbo].rejected_cdr (EntryDate,CallReference,Network,CallType,RemoteNetwork,SupplierSwitch,Direction,PortingPrefix,CLI,Destination,UsageType,NumberType,DateTime,Duration,BillingEntity,DisplayNumber,Platform,Machine,LinkNumber,ORIGINAL_DATA,REJECTION_REASON,SUSPENSE_CATEGORY,REJECTION_TIMESTAMP,DIAGNOSTIC_INFO,cdrGUID,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,99)</RecordInsertStatement>
+                <CommitStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</CommitStatement>
+                <RollbackStatement>delete from [Ormakeplus].[dbo].rejected_cdr where STATE=99</RollbackStatement>
+            </RejectOutput>
+
+        </OutputAdapter>
     </RatingPipeline>
+
     <RejectionPipeline>
-      <Active>False</Active>
+        <InputAdapter>
+            <!--<InpAdapter>
+               <ClassName>MakePlus.CDRInputAdapter</ClassName>
+               <BatchSize>5000</BatchSize>
+               <InputFilePath>Data/MakePlus</InputFilePath>
+               <InputFilePrefix>CDR_</InputFilePrefix>
+               <InputFileSuffix>.csv</InputFileSuffix>
+               <DoneFilePath>Data/MakePlus</DoneFilePath>
+               <DoneFilePrefix>CDR_</DoneFilePrefix>
+               <DoneFileSuffix>.done</DoneFileSuffix>
+               <ErrFilePath>Data/MakePlus</ErrFilePath>
+               <ErrFilePrefix>CDR_</ErrFilePrefix>
+               <ErrFileSuffix>.err</ErrFileSuffix>
+            </InpAdapter>-->
+            <InpAdapter>
+                <ClassName>MakePlus.CDRRejectInputAdapterDB</ClassName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+                <DataSourceType>DB</DataSourceType>
+                <DataSource>OpenRateDB</DataSource>
+                <!--<RecordCountStatement>select count(*) from Platform_CDRs_TEST_DB.dbo.Platform_CDRs_TEST, Platform_CDRs_TEST_DB.dbo.TimeStamps WHERE
+                Platform_CDRs_TEST_DB.dbo.TimeStamps.Last_Time_Stamp_Read < Platform_CDRs_TEST_DB.dbo.Platform_CDRs_TEST.EntryDate AND Destination = '+441300497019'</RecordCountStatement>-->
+                <RecordCountStatement>Select count(*) from [Ormakeplus].[dbo].rejected_cdr WHERE STATE = 0</RecordCountStatement>
+                <InitStatement>select 1</InitStatement>
+                <!--RecordSelectStatement>Select TOP 1 * from Platform_CDRs_TEST_DB.dbo.Platform_CDRs_TEST, Platform_CDRs_TEST_DB.dbo.TimeStamps WHERE Platform_CDRs_TEST_DB.dbo.TimeStamps.Last_Time_Stamp_Read &lt; Platform_CDRs_TEST_DB.dbo.Platform_CDRs_TEST.EntryDate AND Destination = '+441300497019'</RecordSelectStatement>
+                <CommitStatement>update Platform_CDRs_TEST_DB.dbo.TimeStamps set Platform_CDRs_TEST_DB.dbo.TimeStamps.Last_Time_Stamp_Read = GetDate()</CommitStatement>
+                <RollbackStatement></RollbackStatement-->
+                <RecordSelectStatement>Select cdrGUID, EntryDate,CallReference,Network,CallType,RemoteNetwork,SupplierSwitch,Direction,PortingPrefix,CLI,Destination,UsageType,NumberType,DateTime,Duration,BillingEntity,DisplayNumber,Platform,Machine,LinkNumber from [Ormakeplus].[dbo].rejected_cdr WHERE STATE = 0</RecordSelectStatement>
+                <CommitStatement>delete [Ormakeplus].[dbo].rejected_cdr WHERE STATE = 0</CommitStatement>
+                <RollbackStatement>update [Ormakeplus].[dbo].rejected_cdr set STATE = 0</RollbackStatement>
+            </InpAdapter>
+        </InputAdapter>
+
+        <Process>
+
+            <Normalisation>
+                <ClassName>MakePlus.Normalisation</ClassName>
+                <DataCache>NormCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </Normalisation>
+
+            <CustomerLookup>
+                <!-- <ClassName>MakePlus.CustomerLookupHarness</ClassName>-->
+                <ClassName>MakePlus.CustomerLookup</ClassName>
+                <DataCache>CustomerCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </CustomerLookup>
+
+            <ZoneOriginLookup>
+                <ClassName>MakePlus.NumberTypeLookup</ClassName>
+                <DataCache>ZoneOriginCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </ZoneOriginLookup>
+
+            <ZoneDestinationLookup>
+                <!--ClassName>MakePlus.ZoneDestinationLookup</ClassName-->
+                <ClassName>MakePlus.ZoneDestinationLookupNumberAnalysis</ClassName>
+                <DataCache>ZoneDestinationCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </ZoneDestinationLookup>
+
+            <BaseRateplanCheck>
+                <ClassName>MakePlus.BaseRateplanCheck</ClassName>
+                <DataCache>BaseRateplanCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </BaseRateplanCheck>
+
+            <ChargePacketCreation>
+                <ClassName>MakePlus.ChargePacketCreation</ClassName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </ChargePacketCreation>
+
+            <TimeMatch>
+                <ClassName>MakePlus.TimeMatch</ClassName>
+                <DataCache>TimeCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </TimeMatch>
+
+            <PriceGroupMatch>
+                <ClassName>MakePlus.PriceGroupMatch</ClassName>
+                <DataCache>PriceGroupCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </PriceGroupMatch>
+
+            <Rating>
+                <ClassName>MakePlus.Rating</ClassName>
+                <DataCache>RateCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </Rating>
+
+            <GatherRUMImpacts>
+                <ClassName>OpenRate.process.GatherRUMImpacts</ClassName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </GatherRUMImpacts>
+
+            <PreOutputMapping>
+                <ClassName>MakePlus.PreOutputMapping</ClassName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </PreOutputMapping>
+
+            <AliasInTestCheck>
+                <ClassName>MakePlus.AliasInTestCheck</ClassName>
+                <DataCache>AliasInTestCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </AliasInTestCheck>
+
+            <FinancialCode>
+                <ClassName>MakePlus.FinancialCode</ClassName>
+                <DataCache>FinancialCodeCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </FinancialCode>
+
+            <SuspensePreparation>
+                <ClassName>MakePlus.OutputPreparation</ClassName>
+                <DataCache>SuspensePreparationCache</DataCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </SuspensePreparation>
+
+            <Aggregation>
+                <ClassName>MakePlus.Aggregation</ClassName>
+                <AggCache>AggregationCache</AggCache>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </Aggregation>
+
+            <DumpLast>
+                <ClassName>OpenRate.process.Dump</ClassName>
+                <Active>False</Active>
+                <DumpType>None</DumpType>
+                <DumpFilePath>Data/MakePlus</DumpFilePath>
+                <DumpFilePrefix>RatingPipeline_Last</DumpFilePrefix>
+                <DumpFileSuffix>.dump</DumpFileSuffix>
+            </DumpLast>
+
+        </Process>
+
+        <OutputAdapter>
+            <RatedOutput>
+                <ClassName>OpenRate.adapter.NullOutputAdapter</ClassName>
+                <OutputName>RatedOutput</OutputName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+                <DataSource>OpenRateDB</DataSource>
+                <ValidateStatement>select 1 from [Ormakeplus].[dbo].rated_cdr</ValidateStatement>
+                <InitStatement>select 1 from [Ormakeplus].[dbo].rated_cdr</InitStatement>
+                <RecordInsertStatement>insert into [Ormakeplus].[dbo].rated_cdr (TYPE,SERVICE,DIRECTION,NETWORK,REMOTE_NETWORK,REMOTE_SWITCH,PORTING_PREFIX,START_TIMESTAMP,[USER],DESTINATION,CALLER,DURATION,RETAIL_PRICE,WHOLESALE_PRICE,LOCAL_POLO,LOCAL_ROLO,LOCAL_TRANSIT,REMOTE_POLO,REMOTE_ROLO,REMOTE_TRANSIT,RESELLER,FINANCIAL_CODE,AGGREGATION_ID,CALL_REF,NUMBER_TYPE,RESELLER_CODE,WHOLESALE_DESCRIPTION,RETAIL_DESCRIPTION,LOCALCOST_DESCRIPTION,REMOTECOST_DESCRIPTION,LOCALTRANSIT_DESCRIPTION,REMOTETRANSIT_DESCRIPTION,cdrGUID,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)</RecordInsertStatement>
+                <CommitStatement>update [Ormakeplus].[dbo].rated_cdr set STATE=0 where STATE=1</CommitStatement>
+                <RollbackStatement>delete from [Ormakeplus].[dbo].rated_cdr where STATE=1</RollbackStatement>
+            </RatedOutput>
+
+            <RejectOutput>
+                <ClassName>MakePlus.RejectOutput</ClassName>
+                <OutputName>RejectOutput</OutputName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+                <DataSource>OpenRateDB</DataSource>
+                <ValidateStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</ValidateStatement>
+                <InitStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</InitStatement>
+                <RecordInsertStatement>insert into [Ormakeplus].[dbo].rejected_cdr (EntryDate,CallReference,Network,CallType,RemoteNetwork,SupplierSwitch,Direction,PortingPrefix,CLI,Destination,UsageType,NumberType,DateTime,Duration,BillingEntity,DisplayNumber,Platform,Machine,LinkNumber,REJECTION_REASON,SUSPENSE_CATEGORY,REJECTION_TIMESTAMP,DIAGNOSTIC_INFO,cdrGUID,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)</RecordInsertStatement>
+                <CommitStatement>update [Ormakeplus].[dbo].rejected_cdr set STATE=0 where STATE=1</CommitStatement>
+                <RollbackStatement>delete from [Ormakeplus].[dbo].rejected_cdr where STATE=1</RollbackStatement>
+            </RejectOutput>
+
+        </OutputAdapter>
     </RejectionPipeline>
+
     <BalLoader>
-      <Active>True</Active>
+        <InputAdapter>
+            <BalInputAdapter>
+                <ClassName>MakePlus.BalInputAdapter</ClassName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+                <InputFilePath>Data/MakePlus</InputFilePath>
+                <InputFilePrefix>Agg</InputFilePrefix>
+                <InputFileSuffix>.txt</InputFileSuffix>
+                <DoneFilePath>Data/MakePlus</DoneFilePath>
+                <DoneFilePrefix>Agg</DoneFilePrefix>
+                <DoneFileSuffix>.done</DoneFileSuffix>
+                <ErrFilePath>Data/MakePlus</ErrFilePath>
+                <ErrFilePrefix>Agg</ErrFilePrefix>
+                <ErrFileSuffix>.err</ErrFileSuffix>
+            </BalInputAdapter>
+        </InputAdapter>
+
+        <Process>
+            <DumpBalance>
+                <ClassName>OpenRate.process.Dump</ClassName>
+                <Active>false</Active>
+                <DumpType>All</DumpType>
+                <DumpFilePath>Data/MakePlus</DumpFilePath>
+                <DumpFilePrefix>BalLoader_</DumpFilePrefix>
+                <DumpFileSuffix>.dump</DumpFileSuffix>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+            </DumpBalance>
+        </Process>
+
+        <OutputAdapter>
+            <BalDBOutputAdapter>
+                <ClassName>MakePlus.BalDBOutputAdapter</ClassName>
+                <OutputName>DefaultOutput</OutputName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>5000</BufferSize>
+                <MaxSleep>50</MaxSleep>
+                <DataSource>OpenRateDB</DataSource>
+                <ValidateStatement>select count(*) from [Ormakeplus].[dbo].aggregated_cdr</ValidateStatement>
+                <InitStatement>select count(*) from [Ormakeplus].[dbo].aggregated_cdr</InitStatement>
+                <RecordInsertStatement>Exec [Ormakeplus].[dbo].[sp_UpdateAggregation]?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?</RecordInsertStatement>
+                <CommitStatement>update [Ormakeplus].[dbo].aggregated_cdr set DELTA_BAL_RETAIL=0.0, DELTA_BAL_WHOLESALE=0.0, DELTA_BAL_LOCALPOLO=0.0, DELTA_BAL_LOCALROLO=0.0, DELTA_BAL_LOCALTRANSIT=0.0, DELTA_BAL_REMOTETRANSIT=0.0, DELTA_BAL_REMOTEPOLO=0.0, DELTA_BAL_REMOTEROLO=0.0 where DELTA_BAL_RETAIL&lt;&gt;0.0 OR DELTA_BAL_WHOLESALE&lt;&gt;0.0 OR DELTA_BAL_LOCALROLO&lt;&gt;0.0 OR DELTA_BAL_LOCALPOLO&lt;&gt;0.0 OR DELTA_BAL_REMOTEROLO&lt;&gt;0.0 OR DELTA_BAL_REMOTEPOLO&lt;&gt;0.0 OR DELTA_BAL_LOCALTRANSIT&lt;&gt;0.0 OR DELTA_BAL_REMOTETRANSIT&lt;&gt;0.0</CommitStatement>
+                <RollbackStatement>update [Ormakeplus].[dbo].aggregated_cdr set RETAIL_PRICE=RETAIL_PRICE-DELTA_BAL_RETAIL,DELTA_BAL_RETAIL=0.0, WHOLESALE_PRICE=WHOLESALE_PRICE-DELTA_BAL_WHOLESALE,DELTA_BAL_WHOLESALE=0.0 ,REMOTE_POLO=REMOTE_POLO-DELTA_BAL_REMOTEPOLO,DELTA_BAL_REMOTEPOLO=0.0, REMOTE_ROLO=REMOTE_ROLO-DELTA_BAL_REMOTEROLO,DELTA_BAL_REMOTEROLO=0.0, LOCAL_TRANSIT=LOCAL_TRANSIT-DELTA_BAL_LOCALTRANSIT,DELTA_BAL_LOCALTRANSIT=0.0, REMOTE_TRANSIT=REMOTE_TRANSIT-DELTA_BAL_REMOTETRANSIT,DELTA_BAL_REMOTETRANSIT=0.0 where DELTA_BAL_RETAIL&lt;&gt;0.0 OR DELTA_BAL_WHOLESALE&lt;&gt;0.0 OR DELTA_BAL_LOCALROLO&lt;&gt;0.0 OR DELTA_BAL_LOCALPOLO&lt;&gt;0.0 OR DELTA_BAL_REMOTEROLO&lt;&gt;0.0 OR DELTA_BAL_REMOTEPOLO&lt;&gt;0.0 OR DELTA_BAL_LOCALTRANSIT&lt;&gt;0.0 OR DELTA_BAL_REMOTETRANSIT&lt;&gt;0.0</RollbackStatement>
+            </BalDBOutputAdapter>
+
+
+            <RejectOutput>
+                <ClassName>MakePlus.BalRejectOutputAdapter</ClassName>
+                <OutputName>RejectOutput</OutputName>
+                <BatchSize>5000</BatchSize>
+                <BufferSize>25000</BufferSize>
+                <MaxSleep>50</MaxSleep>
+                <OutputFilePath>Data/MakePlus</OutputFilePath>
+                <OutputFilePrefix>Agg</OutputFilePrefix>
+                <OutputFileSuffix>.rej</OutputFileSuffix>
+                <ErrFilePath>Data/MakePlus</ErrFilePath>
+                <ErrFilePrefix>Agg</ErrFilePrefix>
+                <ErrFileSuffix>.bal.err</ErrFileSuffix>
+                <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+                <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+            </RejectOutput>
+        </OutputAdapter>
+
     </BalLoader>
- </PipelineList>
 
-  <RatingPipeline>
-   <InputAdapter>
-	  <InpAdapter>
-         <ClassName>MakePlus.CDRInputAdapterDB</ClassName>
-         <BatchSize>5000</BatchSize>
-         <BufferSize>5000</BufferSize>
-         <DataSourceType>DB</DataSourceType>
-         <DataSource>PLATFORM_CDR_DB</DataSource>
-         <RecordCountStatement>Select count(*) from Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset, Platform_CDRs_Test_DB.dbo.TimeStamps WHERE STATE = 0</RecordCountStatement>
-         <InitStatement>update Platform_CDRs_Test_DB.dbo.Platform_CDRs_TestSet set STATE = 1 where STATE = 0</InitStatement>
-         <RecordSelectStatement>Select * from Platform_CDRs_Test_DB.dbo.Platform_CDRs_Testset, Platform_CDRs_Test_DB.dbo.TimeStamps WHERE STATE = 1</RecordSelectStatement>
-         <CommitStatement>update Platform_CDRs_Test_DB.dbo.Platform_CDRs_TestSet set STATE = 2 where STATE = 1</CommitStatement>
-         <RollbackStatement></RollbackStatement>
-      </InpAdapter>
-    </InputAdapter>
-    <Process>
-
-      <Normalisation>
-        <ClassName>MakePlus.Normalisation</ClassName>
-        <DataCache>NormCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </Normalisation>
-
-      <CustomerLookup>
-       <!-- <ClassName>MakePlus.CustomerLookupHarness</ClassName>-->
-        <ClassName>MakePlus.CustomerLookup</ClassName>
-        <DataCache>CustomerCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </CustomerLookup>
-
-      <ZoneOriginLookup>
-        <ClassName>MakePlus.ZoneOriginLookup</ClassName>
-        <DataCache>ZoneOriginCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </ZoneOriginLookup>
-
-      <ZoneDestinationLookup>
-        <!--ClassName>MakePlus.ZoneDestinationLookup</ClassName-->
-        <ClassName>MakePlus.ZoneDestinationLookupNumberAnalysis</ClassName>
-        <DataCache>ZoneDestinationCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </ZoneDestinationLookup>
-
-      <BaseRateplanCheck>
-        <ClassName>MakePlus.BaseRateplanCheck</ClassName>
-        <DataCache>BaseRateplanCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </BaseRateplanCheck>
-
-      <ChargePacketCreation>
-        <ClassName>MakePlus.ChargePacketCreation</ClassName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </ChargePacketCreation>
-
-      <TimeMatch>
-        <ClassName>MakePlus.TimeMatch</ClassName>
-        <DataCache>TimeCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </TimeMatch>
-
-      <PriceGroupMatch>
-        <ClassName>MakePlus.PriceGroupMatch</ClassName>
-        <DataCache>PriceGroupCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </PriceGroupMatch>
-
-      <Rating>
-        <ClassName>MakePlus.Rating</ClassName>
-        <DataCache>RateCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </Rating>
-
-      <GatherRUMImpacts>
-        <ClassName>OpenRate.process.GatherRUMImpacts</ClassName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </GatherRUMImpacts>
-
-      <PreOutputMapping>
-        <ClassName>MakePlus.PreOutputMapping</ClassName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </PreOutputMapping>
-
-      <AliasInTestCheck>
-        <ClassName>MakePlus.AliasInTestCheck</ClassName>
-        <DataCache>AliasInTestCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </AliasInTestCheck>
-
-      <FinancialCode>
-        <ClassName>MakePlus.FinancialCode</ClassName>
-        <DataCache>FinancialCodeCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </FinancialCode>
-
-      <SuspensePreparation>
-        <ClassName>MakePlus.OutputPreparation</ClassName>
-        <DataCache>SuspensePreparationCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </SuspensePreparation>
-
-      <Aggregation>
-        <ClassName>MakePlus.Aggregation</ClassName>
-        <AggCache>AggregationCache</AggCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </Aggregation>
-
-      <DumpLast>
-        <ClassName>OpenRate.process.Dump</ClassName>
-        <Active>False</Active>
-        <DumpType>ALL</DumpType>
-        <DumpFilePath>Data/MakePlus</DumpFilePath>
-        <DumpFilePrefix>RatingPipeline_Last</DumpFilePrefix>
-        <DumpFileSuffix>.dump</DumpFileSuffix>
-      </DumpLast>
-
-    </Process>
-
-   <OutputAdapter>
-      <RatedOutput>
-        <ClassName>MakePlus.RatedOutput</ClassName>
-        <OutputName>RatedOutput</OutputName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-        <DataSource>OpenRateDB</DataSource>
-        <ValidateStatement>select 1 from [Ormakeplus].[dbo].rated_cdr</ValidateStatement>
-        <InitStatement>select 1 from [Ormakeplus].[dbo].rated_cdr</InitStatement>
-        <RecordInsertStatement>insert into [Ormakeplus].[dbo].rated_cdr (TYPE,SERVICE,DIRECTION,NETWORK,REMOTE_NETWORK,REMOTE_SWITCH,PORTING_PREFIX,START_TIMESTAMP,[USER],DESTINATION,CALLER,DURATION,RETAIL_PRICE,WHOLESALE_PRICE,LOCAL_POLO,LOCAL_ROLO,LOCAL_TRANSIT,REMOTE_POLO,REMOTE_ROLO,REMOTE_TRANSIT,RESELLER,FINANCIAL_CODE,AGGREGATION_ID,CALL_REF,NUMBER_TYPE,RESELLER_CODE,WHOLESALE_DESCRIPTION,RETAIL_DESCRIPTION,LOCALCOST_DESCRIPTION,REMOTECOST_DESCRIPTION,LOCALTRANSIT_DESCRIPTION,REMOTETRANSIT_DESCRIPTION,cdrGUID,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)</RecordInsertStatement>
-        <!--RecordInsertStatement>insert into rated_cdr (TYPE,SERVICE,DIRECTION,NETWORK,REMOTE_NETWORK,REMOTE_SWITCH,PORTING_PREFIX,START_TIMESTAMP,USER,DESTINATION,CALLER,DURATION,RETAIL_PRICE,WHOLESALE_PRICE,LOCAL_POLO,LOCAL_ROLO,LOCAL_TRANSIT,REMOTE_POLO,REMOTE_ROLO,REMOTE_TRANSIT,RESELLER,FINANCIAL_CODE,AGGREGATION_ID,CALL_REF,NUMBER_TYPE,RESELLER_CODE,WHOLESALE_DESCRIPTION,RETAIL_DESCRIPTION,LOCALCOST_DESCRIPTION,REMOTECOST_DESCRIPTION,LOCALTRANSIT_DESCRIPTION,REMOTETRANSIT_DESCRIPTION,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)</RecordInsertStatement-->
-        <CommitStatement>update [Ormakeplus].[dbo].rated_cdr set STATE=0 where STATE=1</CommitStatement>
-        <RollbackStatement>delete from [Ormakeplus].[dbo].rated_cdr where STATE=1</RollbackStatement>
-      </RatedOutput>
-
-      <RejectOutput>
-        <ClassName>MakePlus.RejectOutput</ClassName>
-        <OutputName>RejectOutput</OutputName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-        <DataSource>OpenRateDB</DataSource>
-        <ValidateStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</ValidateStatement>
-        <InitStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</InitStatement>
-        <RecordInsertStatement>insert into [Ormakeplus].[dbo].rejected_cdr (EntryDate,CallReference,Network,CallType,RemoteNetwork,SupplierSwitch,Direction,PortingPrefix,CLI,Destination,UsageType,NumberType,DateTime,Duration,BillingEntity,DisplayNumber,Platform,Machine,LinkNumber,ORIGINAL_DATA,REJECTION_REASON,SUSPENSE_CATEGORY,REJECTION_TIMESTAMP,DIAGNOSTIC_INFO,cdrGUID,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,99)</RecordInsertStatement>
-        <CommitStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</CommitStatement>
-        <RollbackStatement>delete from [Ormakeplus].[dbo].rejected_cdr where STATE=99</RollbackStatement>
-      </RejectOutput>
-
-   </OutputAdapter>
-  </RatingPipeline>
-
-<RejectionPipeline>
-   <InputAdapter>
-     <!--<InpAdapter>
-         <ClassName>MakePlus.CDRInputAdapter</ClassName>
-         <BatchSize>5000</BatchSize>
-         <InputFilePath>Data/MakePlus</InputFilePath>
-         <InputFilePrefix>CDR_</InputFilePrefix>
-         <InputFileSuffix>.csv</InputFileSuffix>
-         <DoneFilePath>Data/MakePlus</DoneFilePath>
-         <DoneFilePrefix>CDR_</DoneFilePrefix>
-         <DoneFileSuffix>.done</DoneFileSuffix>
-         <ErrFilePath>Data/MakePlus</ErrFilePath>
-         <ErrFilePrefix>CDR_</ErrFilePrefix>
-         <ErrFileSuffix>.err</ErrFileSuffix>
-      </InpAdapter>-->
-      <InpAdapter>
-         <ClassName>MakePlus.CDRRejectInputAdapterDB</ClassName>
-         <BatchSize>5000</BatchSize>
-         <BufferSize>25000</BufferSize>
-         <DataSourceType>DB</DataSourceType>
-         <DataSource>OpenRateDB</DataSource>
-         <!--<RecordCountStatement>select count(*) from Platform_CDRs_TEST_DB.dbo.Platform_CDRs_TEST, Platform_CDRs_TEST_DB.dbo.TimeStamps WHERE
-         Platform_CDRs_TEST_DB.dbo.TimeStamps.Last_Time_Stamp_Read < Platform_CDRs_TEST_DB.dbo.Platform_CDRs_TEST.EntryDate AND Destination = '+441300497019'</RecordCountStatement>-->
-         <RecordCountStatement>Select count(*) from [Ormakeplus].[dbo].rejected_cdr WHERE STATE = 0</RecordCountStatement>
-         <InitStatement>select 1</InitStatement>
-         <!--RecordSelectStatement>Select TOP 1 * from Platform_CDRs_TEST_DB.dbo.Platform_CDRs_TEST, Platform_CDRs_TEST_DB.dbo.TimeStamps WHERE Platform_CDRs_TEST_DB.dbo.TimeStamps.Last_Time_Stamp_Read &lt; Platform_CDRs_TEST_DB.dbo.Platform_CDRs_TEST.EntryDate AND Destination = '+441300497019'</RecordSelectStatement>
-         <CommitStatement>update Platform_CDRs_TEST_DB.dbo.TimeStamps set Platform_CDRs_TEST_DB.dbo.TimeStamps.Last_Time_Stamp_Read = GetDate()</CommitStatement>
-         <RollbackStatement></RollbackStatement-->
-         <RecordSelectStatement>Select cdrGUID, EntryDate,CallReference,Network,CallType,RemoteNetwork,SupplierSwitch,Direction,PortingPrefix,CLI,Destination,UsageType,NumberType,DateTime,Duration,BillingEntity,DisplayNumber,Platform,Machine,LinkNumber from [Ormakeplus].[dbo].rejected_cdr WHERE STATE = 0</RecordSelectStatement>
-         <CommitStatement>delete [Ormakeplus].[dbo].rejected_cdr WHERE STATE = 0</CommitStatement>
-         <RollbackStatement>update [Ormakeplus].[dbo].rejected_cdr set STATE = 0</RollbackStatement>
-      </InpAdapter>
-     </InputAdapter>
-
-    <Process>
-
-      <Normalisation>
-        <ClassName>MakePlus.Normalisation</ClassName>
-        <DataCache>NormCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </Normalisation>
-
-      <CustomerLookup>
-       <!-- <ClassName>MakePlus.CustomerLookupHarness</ClassName>-->
-        <ClassName>MakePlus.CustomerLookup</ClassName>
-        <DataCache>CustomerCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </CustomerLookup>
-
-      <ZoneOriginLookup>
-        <ClassName>MakePlus.NumberTypeLookup</ClassName>
-        <DataCache>ZoneOriginCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </ZoneOriginLookup>
-
-      <ZoneDestinationLookup>
-        <!--ClassName>MakePlus.ZoneDestinationLookup</ClassName-->
-        <ClassName>MakePlus.ZoneDestinationLookupNumberAnalysis</ClassName>
-        <DataCache>ZoneDestinationCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </ZoneDestinationLookup>
-
-      <BaseRateplanCheck>
-        <ClassName>MakePlus.BaseRateplanCheck</ClassName>
-        <DataCache>BaseRateplanCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </BaseRateplanCheck>
-
-      <ChargePacketCreation>
-        <ClassName>MakePlus.ChargePacketCreation</ClassName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </ChargePacketCreation>
-
-      <TimeMatch>
-        <ClassName>MakePlus.TimeMatch</ClassName>
-        <DataCache>TimeCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </TimeMatch>
-
-      <PriceGroupMatch>
-        <ClassName>MakePlus.PriceGroupMatch</ClassName>
-        <DataCache>PriceGroupCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </PriceGroupMatch>
-
-      <Rating>
-        <ClassName>MakePlus.Rating</ClassName>
-        <DataCache>RateCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </Rating>
-
-      <GatherRUMImpacts>
-        <ClassName>OpenRate.process.GatherRUMImpacts</ClassName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </GatherRUMImpacts>
-
-      <PreOutputMapping>
-        <ClassName>MakePlus.PreOutputMapping</ClassName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </PreOutputMapping>
-
-      <AliasInTestCheck>
-        <ClassName>MakePlus.AliasInTestCheck</ClassName>
-        <DataCache>AliasInTestCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </AliasInTestCheck>
-
-      <FinancialCode>
-        <ClassName>MakePlus.FinancialCode</ClassName>
-        <DataCache>FinancialCodeCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </FinancialCode>
-
-      <SuspensePreparation>
-        <ClassName>MakePlus.OutputPreparation</ClassName>
-        <DataCache>SuspensePreparationCache</DataCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </SuspensePreparation>
-
-      <Aggregation>
-        <ClassName>MakePlus.Aggregation</ClassName>
-        <AggCache>AggregationCache</AggCache>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </Aggregation>
-
-      <DumpLast>
-        <ClassName>OpenRate.process.Dump</ClassName>
-        <Active>False</Active>
-        <DumpType>None</DumpType>
-        <DumpFilePath>Data/MakePlus</DumpFilePath>
-        <DumpFilePrefix>RatingPipeline_Last</DumpFilePrefix>
-        <DumpFileSuffix>.dump</DumpFileSuffix>
-      </DumpLast>
-
-    </Process>
-
-   <OutputAdapter>
-      <RatedOutput>
-        <ClassName>MakePlus.RatedOutput</ClassName>
-        <OutputName>RatedOutput</OutputName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-        <DataSource>OpenRateDB</DataSource>
-        <ValidateStatement>select 1 from [Ormakeplus].[dbo].rated_cdr</ValidateStatement>
-        <InitStatement>select 1 from [Ormakeplus].[dbo].rated_cdr</InitStatement>
-        <RecordInsertStatement>insert into [Ormakeplus].[dbo].rated_cdr (TYPE,SERVICE,DIRECTION,NETWORK,REMOTE_NETWORK,REMOTE_SWITCH,PORTING_PREFIX,START_TIMESTAMP,[USER],DESTINATION,CALLER,DURATION,RETAIL_PRICE,WHOLESALE_PRICE,LOCAL_POLO,LOCAL_ROLO,LOCAL_TRANSIT,REMOTE_POLO,REMOTE_ROLO,REMOTE_TRANSIT,RESELLER,FINANCIAL_CODE,AGGREGATION_ID,CALL_REF,NUMBER_TYPE,RESELLER_CODE,WHOLESALE_DESCRIPTION,RETAIL_DESCRIPTION,LOCALCOST_DESCRIPTION,REMOTECOST_DESCRIPTION,LOCALTRANSIT_DESCRIPTION,REMOTETRANSIT_DESCRIPTION,cdrGUID,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)</RecordInsertStatement>
-        <CommitStatement>update [Ormakeplus].[dbo].rated_cdr set STATE=0 where STATE=1</CommitStatement>
-        <RollbackStatement>delete from [Ormakeplus].[dbo].rated_cdr where STATE=1</RollbackStatement>
-      </RatedOutput>
-
-      <RejectOutput>
-        <ClassName>MakePlus.RejectOutput</ClassName>
-        <OutputName>RejectOutput</OutputName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-        <DataSource>OpenRateDB</DataSource>
-        <ValidateStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</ValidateStatement>
-        <InitStatement>select 1 from [Ormakeplus].[dbo].rejected_cdr</InitStatement>
-        <RecordInsertStatement>insert into [Ormakeplus].[dbo].rejected_cdr (EntryDate,CallReference,Network,CallType,RemoteNetwork,SupplierSwitch,Direction,PortingPrefix,CLI,Destination,UsageType,NumberType,DateTime,Duration,BillingEntity,DisplayNumber,Platform,Machine,LinkNumber,REJECTION_REASON,SUSPENSE_CATEGORY,REJECTION_TIMESTAMP,DIAGNOSTIC_INFO,cdrGUID,STATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)</RecordInsertStatement>
-        <CommitStatement>update [Ormakeplus].[dbo].rejected_cdr set STATE=0 where STATE=1</CommitStatement>
-        <RollbackStatement>delete from [Ormakeplus].[dbo].rejected_cdr where STATE=1</RollbackStatement>
-      </RejectOutput>
-
-   </OutputAdapter>
-  </RejectionPipeline>
-
-  <BalLoader>
-    <InputAdapter>
-      <BalInputAdapter>
-        <ClassName>MakePlus.BalInputAdapter</ClassName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-        <InputFilePath>Data/MakePlus</InputFilePath>
-        <InputFilePrefix>Agg</InputFilePrefix>
-        <InputFileSuffix>.txt</InputFileSuffix>
-        <DoneFilePath>Data/MakePlus</DoneFilePath>
-        <DoneFilePrefix>Agg</DoneFilePrefix>
-        <DoneFileSuffix>.done</DoneFileSuffix>
-        <ErrFilePath>Data/MakePlus</ErrFilePath>
-        <ErrFilePrefix>Agg</ErrFilePrefix>
-        <ErrFileSuffix>.err</ErrFileSuffix>
-      </BalInputAdapter>
-    </InputAdapter>
-
-    <Process>
-      <DumpBalance>
-        <ClassName>OpenRate.process.Dump</ClassName>
-        <Active>false</Active>
-        <DumpType>All</DumpType>
-        <DumpFilePath>Data/MakePlus</DumpFilePath>
-        <DumpFilePrefix>BalLoader_</DumpFilePrefix>
-        <DumpFileSuffix>.dump</DumpFileSuffix>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-      </DumpBalance>
-    </Process>
-
-    <OutputAdapter>
-      <BalDBOutputAdapter>
-        <ClassName>MakePlus.BalDBOutputAdapter</ClassName>
-        <OutputName>DefaultOutput</OutputName>
-        <BatchSize>5000</BatchSize>
-        <BufferSize>25000</BufferSize>
-        <MaxSleep>50</MaxSleep>
-        <DataSource>OpenRateDB</DataSource>
-        <ValidateStatement>select count(*) from [Ormakeplus].[dbo].aggregated_cdr</ValidateStatement>
-        <InitStatement>select count(*) from [Ormakeplus].[dbo].aggregated_cdr</InitStatement>
-        <RecordInsertStatement>Exec [Ormakeplus].[dbo].[sp_UpdateAggregation]?,?,?,?,?,?,?,?,?,?,?,?,?,?,?</RecordInsertStatement>
-        <CommitStatement>update [Ormakeplus].[dbo].aggregated_cdr set DELTA_BAL_RETAIL=0.0, DELTA_BAL_WHOLESALE=0.0, DELTA_BAL_LOCALPOLO=0.0, DELTA_BAL_LOCALROLO=0.0, DELTA_BAL_LOCALTRANSIT=0.0, DELTA_BAL_REMOTETRANSIT=0.0, DELTA_BAL_REMOTEPOLO=0.0, DELTA_BAL_REMOTEROLO=0.0 where DELTA_BAL_RETAIL&lt;&gt;0.0 OR DELTA_BAL_WHOLESALE&lt;&gt;0.0 OR DELTA_BAL_LOCALROLO&lt;&gt;0.0 OR DELTA_BAL_LOCALPOLO&lt;&gt;0.0 OR DELTA_BAL_REMOTEROLO&lt;&gt;0.0 OR DELTA_BAL_REMOTEPOLO&lt;&gt;0.0 OR DELTA_BAL_LOCALTRANSIT&lt;&gt;0.0 OR DELTA_BAL_REMOTETRANSIT&lt;&gt;0.0</CommitStatement>
-        <RollbackStatement>update [Ormakeplus].[dbo].aggregated_cdr set RETAIL_PRICE=RETAIL_PRICE-DELTA_BAL_RETAIL,DELTA_BAL_RETAIL=0.0, WHOLESALE_PRICE=WHOLESALE_PRICE-DELTA_BAL_WHOLESALE,DELTA_BAL_WHOLESALE=0.0 ,REMOTE_POLO=REMOTE_POLO-DELTA_BAL_REMOTEPOLO,DELTA_BAL_REMOTEPOLO=0.0, REMOTE_ROLO=REMOTE_ROLO-DELTA_BAL_REMOTEROLO,DELTA_BAL_REMOTEROLO=0.0, LOCAL_TRANSIT=LOCAL_TRANSIT-DELTA_BAL_LOCALTRANSIT,DELTA_BAL_LOCALTRANSIT=0.0, REMOTE_TRANSIT=REMOTE_TRANSIT-DELTA_BAL_REMOTETRANSIT,DELTA_BAL_REMOTETRANSIT=0.0 where DELTA_BAL_RETAIL&lt;&gt;0.0 OR DELTA_BAL_WHOLESALE&lt;&gt;0.0 OR DELTA_BAL_LOCALROLO&lt;&gt;0.0 OR DELTA_BAL_LOCALPOLO&lt;&gt;0.0 OR DELTA_BAL_REMOTEROLO&lt;&gt;0.0 OR DELTA_BAL_REMOTEPOLO&lt;&gt;0.0 OR DELTA_BAL_LOCALTRANSIT&lt;&gt;0.0 OR DELTA_BAL_REMOTETRANSIT&lt;&gt;0.0</RollbackStatement>
-      </BalDBOutputAdapter>
-
-      <RejectOutput>
-       <ClassName>MakePlus.BalRejectOutputAdapter</ClassName>
-       <OutputName>RejectOutput</OutputName>
-       <BatchSize>5000</BatchSize>
-       <BufferSize>25000</BufferSize>
-       <MaxSleep>50</MaxSleep>
-       <OutputFilePath>Data/MakePlus</OutputFilePath>
-       <OutputFilePrefix>Agg</OutputFilePrefix>
-       <OutputFileSuffix>.rej</OutputFileSuffix>
-       <ErrFilePath>Data/MakePlus</ErrFilePath>
-       <ErrFilePrefix>Agg</ErrFilePrefix>
-       <ErrFileSuffix>.bal.err</ErrFileSuffix>
-       <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
-       <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
-     </RejectOutput>
-  </OutputAdapter>
-
-  </BalLoader>
-
-  <Resource>
-    <LogFactory>
-     <ClassName>OpenRate.logging.LogFactory</ClassName>
-     <Properties>log.properties</Properties>
-     <DefaultCategory>ConfigTest</DefaultCategory>
-   </LogFactory>
-
-    <ECI>
-      <ClassName>OpenRate.configurationmanager.EventHandler</ClassName>
-      <Port>8088</Port>
-      <MaxConnection>2</MaxConnection>
-	  <SemaphoreFile>C:\Users\Vikram Middha\Desktop\Vikram\Espresso\Open Rate\ORMakePos\Semaphore.txt</SemaphoreFile>
-      <!--SemaphoreFile>C:\My Stuff\NetBeansProjects-Linux\NetBeansProjects\ORMakePos\Semaphore\Semaphore.txt</SemaphoreFile-->
-      <!--SemaphoreFile>Z:\NoBackup\Data\OR\ORMakePos\Semaphore\Semaphore.txt</SemaphoreFile-->
-    </ECI>
-
-    <TransactionManagerFactory>
-      <ClassName>OpenRate.transaction.TransactionManagerFactory</ClassName>
-    </TransactionManagerFactory>
-
-    <DataSourceFactory>
-      <ClassName>OpenRate.db.DataSourceFactory</ClassName>
-      <DataSourceBuilder>
-        <ClassName>OpenRate.db.C3P0DataSource</ClassName>
-      </DataSourceBuilder>
-      <DataSource>
-        <OpenRateDB>
-          <db_url>jdbc:sqlserver://localhost;datbaseName=Ormakeplus;</db_url>
-          <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
-          <username>SA</username>
-          <password>12345qwert!</password>
-          <ValidationQuery>SELECT 1</ValidationQuery>
-          <InitQuery>SELECT 1</InitQuery>
-        </OpenRateDB>
-        <PLATFORM_CDR_DB>
-          <db_url>jdbc:sqlserver://localhost;databaseName=Platform_CDRs_Test_DB;</db_url>
-          <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
-          <username>SA</username>
-          <password>12345qwert!</password>
-          <ValidationQuery>SELECT 1</ValidationQuery>
-          <InitQuery>SELECT 1</InitQuery>
-        </PLATFORM_CDR_DB>
-        <!--OpenRateDB>
-          <db_url>jdbc:mysql://localhost:3306/ormakeplus?zeroDateTimeBehavior=convertToNull</db_url>
-          <driver>com.mysql.jdbc.Driver</driver>
-          <username>root</username>
-          <password>cpr</password>
-          <ValidationQuery>select 1 from dual</ValidationQuery>
-          <InitQuery>select 1 from dual</InitQuery>
-          <TestConnectionPeriod>60</TestConnectionPeriod>
-        </OpenRateDB>
-        <PLATFORM_CDR_DB>
-          <db_url>jdbc:mysql://localhost:3306/ormakeplus?zeroDateTimeBehavior=convertToNull</db_url>
-          <driver>com.mysql.jdbc.Driver</driver>
-          <username>root</username>
-          <password>cpr</password>
-          <ValidationQuery>select 1</ValidationQuery>
-          <InitQuery>select 1</InitQuery>
-          <TestConnectionPeriod>60</TestConnectionPeriod>
-        </PLATFORM_CDR_DB-->
-      </DataSource>
-    </DataSourceFactory>
-
-    <CacheFactory>
-      <ClassName>OpenRate.cache.CacheFactory</ClassName>
-      <CacheableClass>
-
-        <NormCache>
-          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <SelectStatement>select MAP_GROUP, NUMBER, OLD_PREFIX, NEW_PREFIX from [Ormakeplus].[dbo].NORM_MAP order by RANK</SelectStatement>
-          <KeyFields>1</KeyFields>
-        </NormCache>
-
-        <CustomerCache>
-          <ClassName>OpenRate.cache.CustomerCacheAudited</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <UpdateFrequency>5</UpdateFrequency>
-
-          <LoginSelectStatement>select ID,ALIAS,ACCOUNTID,SUBSCRIPTIONID,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].alias where STARTDATE &gt; ?</LoginSelectStatement>
-          <AuditSegmentSelectStatement>select ACCOUNTVERID,ACCOUNTID,MSN,EFFECTIVEDATE,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].account_version where STARTDATE &gt; ? order by EFFECTIVEDATE desc</AuditSegmentSelectStatement>
-          <ProductSelectStatement>select ACCOUNTVERID,ID,PRODUCTID,SUBSCRIPTIONID,SERVICE,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].product where STARTDATE &gt; ?</ProductSelectStatement>
-          <ERASelectStatement>select ACCOUNTVERID,ERAKEY,ERAVALUE,ModT from [Ormakeplus].[dbo].e_r_a where ModT &gt; ?</ERASelectStatement>
-          <LoginSelectStatement>select ID,ALIAS,ACCOUNTID,SUBSCRIPTIONID,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].ALIAS where ModT &gt; ?</LoginSelectStatement>
-          <AuditSegmentSelectStatement>select ACCOUNTVERID,ACCOUNTID,MSN,EFFECTIVEDATE,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].ACCOUNT_VERSION where ModT &gt; ? order by EFFECTIVEDATE desc</AuditSegmentSelectStatement>
-          <ProductSelectStatement>select ACCOUNTVERID,ID,PRODUCTID,SUBSCRIPTIONID,SERVICE,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].PRODUCT where ModT &gt; ?</ProductSelectStatement>
-          <ERASelectStatement>select ACCOUNTVERID,ERAKEY,ERAVALUE,ModT from [Ormakeplus].[dbo].E_R_A where ModT &gt; ?</ERASelectStatement>
-        </CustomerCache>
-
-        <ZoneOriginCache>
-          <ClassName>OpenRate.cache.BestMatchCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <SelectStatement>SELECT MAP_GROUP, PREFIX, TIER_CODE, DESCRIPTION, CATEGORY FROM [Ormakeplus].[dbo].origin_map</SelectStatement>
-        </ZoneOriginCache>
-
-        <ZoneDestinationCache>
-          <ClassName>OpenRate.cache.BestMatchCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <SelectStatement>SELECT MAP_GROUP, PREFIX, TIER_CODE, DESCRIPTION, CATEGORY FROM [Ormakeplus].[dbo].destination_map</SelectStatement>
-        </ZoneDestinationCache>
-
-        <TimeCache>
-          <ClassName>OpenRate.cache.TimeModelCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <ModelSelectStatement>select TIME_MODEL_NAME_IN,DAY_IN,FROM_IN,TO_IN,RESULT_OUT from [Ormakeplus].[dbo].time_model_interval</ModelSelectStatement>
-          <MappingSelectStatement>select PRODUCT_NAME_IN,TIME_MODEL_OUT from [Ormakeplus].[dbo].time_model_map</MappingSelectStatement>
-       </TimeCache>
-
-        <PriceGroupCache>
-          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <SelectStatement>select MAP_GROUP,DEST_ZONE_RESULT,TIME_RESULT,ORIG_ZONE_RESULT,NETWORK,DIRECTION,REMOTE_NETWORK,PORTING_PREFIX,CDR_TYPE,SERVICE,REMOTE_SWITCH,PRICE_GROUP,DESCRIPTION from [Ormakeplus].[dbo].PRICE_MAP order by RANK</SelectStatement>
-          <KeyFields>10</KeyFields>
-        </PriceGroupCache>
-
-        <RateCache>
-          <ClassName>OpenRate.cache.RUMCPRateCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <SelectStatement>select PRICE_MODEL,STEP,TIER_FROM,TIER_TO,BEAT,FACTOR,CHARGE_BASE from [Ormakeplus].[dbo].price_model</SelectStatement>
-        </RateCache>
-
-        <BaseRateplanCache>
-          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <SelectStatement>SELECT 'DEF',SPECIFIC_RATEPLAN,BASE_RATEPLAN FROM [Ormakeplus].[dbo].specific_rateplan</SelectStatement>
-          <KeyFields>1</KeyFields>
-        </BaseRateplanCache>
-
-        <FinancialCodeCache>
-          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <SelectStatement>SELECT 'DEF',NETWORK,CODE FROM [Ormakeplus].[dbo].financial_code</SelectStatement>
-          <KeyFields>1</KeyFields>
-        </FinancialCodeCache>
-
-        <AliasInTestCache>
-          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <SelectStatement>SELECT 'DEF',ALIAS,'DEF' FROM [Ormakeplus].[dbo].alias_in_test</SelectStatement>
-          <KeyFields>1</KeyFields>
-        </AliasInTestCache>
-
-        <SuspensePreparationCache>
-          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
-          <DataSourceType>DB</DataSourceType>
-          <DataSource>OpenRateDB</DataSource>
-          <SelectStatement>select MAP_GROUP, ERROR_CODE, OUTPUT_NAME, SUSPENSE_CATEGORY from [Ormakeplus].[dbo].suspense_map order by RANK</SelectStatement>
-          <KeyFields>1</KeyFields>
-        </SuspensePreparationCache>
-
-        <AggregationCache>
-          <ClassName>OpenRate.cache.AggregationCache</ClassName>
-          <DataSourceType>File</DataSourceType>
-          <AggConfigFileName>ConfigData/MakePlus/aggregations.dat</AggConfigFileName>
-          <AggResultPath>Data/MakePlus</AggResultPath>
-        </AggregationCache>
-
-      </CacheableClass>
-    </CacheFactory>
-
-  </Resource>
+    <Resource>
+        <LogFactory>
+            <ClassName>OpenRate.logging.LogFactory</ClassName>
+            <Properties>log.properties</Properties>
+            <DefaultCategory>ConfigTest</DefaultCategory>
+        </LogFactory>
+
+        <ECI>
+            <ClassName>OpenRate.configurationmanager.EventHandler</ClassName>
+            <Port>8088</Port>
+            <MaxConnection>2</MaxConnection>
+            <SemaphoreFile>C:\Users\Vikram Middha\Desktop\Vikram\Espresso\Open Rate\ORMakePos\Semaphore.txt</SemaphoreFile>
+            <!--SemaphoreFile>C:\My Stuff\NetBeansProjects-Linux\NetBeansProjects\ORMakePos\Semaphore\Semaphore.txt</SemaphoreFile-->
+            <!--SemaphoreFile>Z:\NoBackup\Data\OR\ORMakePos\Semaphore\Semaphore.txt</SemaphoreFile-->
+        </ECI>
+
+        <TransactionManagerFactory>
+            <ClassName>OpenRate.transaction.TransactionManagerFactory</ClassName>
+        </TransactionManagerFactory>
+
+        <DataSourceFactory>
+            <ClassName>OpenRate.db.DataSourceFactory</ClassName>
+            <DataSourceBuilder>
+                <ClassName>OpenRate.db.C3P0DataSource</ClassName>
+            </DataSourceBuilder>
+            <DataSource>
+                <OpenRateDB>
+                    <db_url>jdbc:sqlserver://localhost;datbaseName=Ormakeplus;</db_url>
+                    <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+                    <username>SA</username>
+                    <password>12345qwert!</password>
+                    <ValidationQuery>SELECT 1</ValidationQuery>
+                    <InitQuery>SELECT 1</InitQuery>
+                </OpenRateDB>
+                <PLATFORM_CDR_DB>
+                    <db_url>jdbc:sqlserver://localhost;databaseName=Platform_CDRs_Test_DB;</db_url>
+                    <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+                    <username>SA</username>
+                    <password>12345qwert!</password>
+                    <ValidationQuery>SELECT 1</ValidationQuery>
+                    <InitQuery>SELECT 1</InitQuery>
+                </PLATFORM_CDR_DB>
+                <!--OpenRateDB>
+                  <db_url>jdbc:mysql://localhost:3306/ormakeplus?zeroDateTimeBehavior=convertToNull</db_url>
+                  <driver>com.mysql.jdbc.Driver</driver>
+                  <username>root</username>
+                  <password>cpr</password>
+                  <ValidationQuery>select 1 from dual</ValidationQuery>
+                  <InitQuery>select 1 from dual</InitQuery>
+                  <TestConnectionPeriod>60</TestConnectionPeriod>
+                </OpenRateDB>
+                <PLATFORM_CDR_DB>
+                  <db_url>jdbc:mysql://localhost:3306/ormakeplus?zeroDateTimeBehavior=convertToNull</db_url>
+                  <driver>com.mysql.jdbc.Driver</driver>
+                  <username>root</username>
+                  <password>cpr</password>
+                  <ValidationQuery>select 1</ValidationQuery>
+                  <InitQuery>select 1</InitQuery>
+                  <TestConnectionPeriod>60</TestConnectionPeriod>
+                </PLATFORM_CDR_DB-->
+            </DataSource>
+        </DataSourceFactory>
+
+        <CacheFactory>
+            <ClassName>OpenRate.cache.CacheFactory</ClassName>
+            <CacheableClass>
+
+                <NormCache>
+                    <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <SelectStatement>select MAP_GROUP, NUMBER, OLD_PREFIX, NEW_PREFIX from [Ormakeplus].[dbo].NORM_MAP order by RANK</SelectStatement>
+                    <KeyFields>1</KeyFields>
+                </NormCache>
+
+                <CustomerCache>
+                    <ClassName>OpenRate.cache.CustomerCacheAudited</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <UpdateFrequency>5</UpdateFrequency>
+
+                    <LoginSelectStatement>select ID,ALIAS,ACCOUNTID,SUBSCRIPTIONID,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].alias where STARTDATE &gt; ?</LoginSelectStatement>
+                    <AuditSegmentSelectStatement>select ACCOUNTVERID,ACCOUNTID,MSN,EFFECTIVEDATE,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].account_version where STARTDATE &gt; ? order by EFFECTIVEDATE desc</AuditSegmentSelectStatement>
+                    <ProductSelectStatement>select ACCOUNTVERID,ID,PRODUCTID,SUBSCRIPTIONID,SERVICE,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].product where STARTDATE &gt; ?</ProductSelectStatement>
+                    <ERASelectStatement>select ACCOUNTVERID,ERAKEY,ERAVALUE,ModT from [Ormakeplus].[dbo].e_r_a where ModT &gt; ?</ERASelectStatement>
+                    <LoginSelectStatement>select ID,ALIAS,ACCOUNTID,SUBSCRIPTIONID,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].ALIAS where ModT &gt; ?</LoginSelectStatement>
+                    <AuditSegmentSelectStatement>select ACCOUNTVERID,ACCOUNTID,MSN,EFFECTIVEDATE,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].ACCOUNT_VERSION where ModT &gt; ? order by EFFECTIVEDATE desc</AuditSegmentSelectStatement>
+                    <ProductSelectStatement>select ACCOUNTVERID,ID,PRODUCTID,SUBSCRIPTIONID,SERVICE,STARTDATE,ENDDATE,ModT from [Ormakeplus].[dbo].PRODUCT where ModT &gt; ?</ProductSelectStatement>
+                    <ERASelectStatement>select ACCOUNTVERID,ERAKEY,ERAVALUE,ModT from [Ormakeplus].[dbo].E_R_A where ModT &gt; ?</ERASelectStatement>
+                </CustomerCache>
+
+                <ZoneOriginCache>
+                    <ClassName>OpenRate.cache.BestMatchCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <SelectStatement>SELECT MAP_GROUP, PREFIX, TIER_CODE, DESCRIPTION, CATEGORY FROM [Ormakeplus].[dbo].origin_map</SelectStatement>
+                </ZoneOriginCache>
+
+                <ZoneDestinationCache>
+                    <ClassName>OpenRate.cache.BestMatchCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <SelectStatement>SELECT MAP_GROUP, PREFIX, TIER_CODE, DESCRIPTION, CATEGORY FROM [Ormakeplus].[dbo].destination_map</SelectStatement>
+                </ZoneDestinationCache>
+
+                <TimeCache>
+                    <ClassName>OpenRate.cache.TimeModelCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <ModelSelectStatement>select TIME_MODEL_NAME_IN,DAY_IN,FROM_IN,TO_IN,RESULT_OUT from [Ormakeplus].[dbo].time_model_interval</ModelSelectStatement>
+                    <MappingSelectStatement>select PRODUCT_NAME_IN,TIME_MODEL_OUT from [Ormakeplus].[dbo].time_model_map</MappingSelectStatement>
+                </TimeCache>
+
+                <PriceGroupCache>
+                    <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <SelectStatement>select MAP_GROUP,DEST_ZONE_RESULT,TIME_RESULT,ORIG_ZONE_RESULT,NETWORK,DIRECTION,REMOTE_NETWORK,PORTING_PREFIX,CDR_TYPE,SERVICE,REMOTE_SWITCH,PRICE_GROUP,DESCRIPTION from [Ormakeplus].[dbo].PRICE_MAP order by RANK</SelectStatement>
+                    <KeyFields>10</KeyFields>
+                </PriceGroupCache>
+
+                <RateCache>
+                    <ClassName>OpenRate.cache.RUMCPRateCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <SelectStatement>select PRICE_MODEL,STEP,TIER_FROM,TIER_TO,BEAT,FACTOR,CHARGE_BASE from [Ormakeplus].[dbo].price_model</SelectStatement>
+                </RateCache>
+
+                <BaseRateplanCache>
+                    <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <SelectStatement>SELECT 'DEF',SPECIFIC_RATEPLAN,BASE_RATEPLAN FROM [Ormakeplus].[dbo].specific_rateplan</SelectStatement>
+                    <KeyFields>1</KeyFields>
+                </BaseRateplanCache>
+
+                <FinancialCodeCache>
+                    <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <SelectStatement>SELECT 'DEF',NETWORK,CODE FROM [Ormakeplus].[dbo].financial_code</SelectStatement>
+                    <KeyFields>1</KeyFields>
+                </FinancialCodeCache>
+
+                <AliasInTestCache>
+                    <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <SelectStatement>SELECT 'DEF',ALIAS,'DEF' FROM [Ormakeplus].[dbo].alias_in_test</SelectStatement>
+                    <KeyFields>1</KeyFields>
+                </AliasInTestCache>
+
+                <SuspensePreparationCache>
+                    <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+                    <DataSourceType>DB</DataSourceType>
+                    <DataSource>OpenRateDB</DataSource>
+                    <SelectStatement>select MAP_GROUP, ERROR_CODE, OUTPUT_NAME, SUSPENSE_CATEGORY from [Ormakeplus].[dbo].suspense_map order by RANK</SelectStatement>
+                    <KeyFields>1</KeyFields>
+                </SuspensePreparationCache>
+
+                <AggregationCache>
+                    <ClassName>OpenRate.cache.AggregationCache</ClassName>
+                    <DataSourceType>File</DataSourceType>
+                    <AggConfigFileName>ConfigData/MakePlus/aggregations.dat</AggConfigFileName>
+                    <AggResultPath>Data/MakePlus</AggResultPath>
+                </AggregationCache>
+
+            </CacheableClass>
+        </CacheFactory>
+
+    </Resource>
 </config>
